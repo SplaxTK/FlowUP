@@ -4,7 +4,7 @@
 $host = 'localhost';
 $dbname = 'flowup'; 
 $user = 'root';        
-$pass = '#Hamburguer136415110802012345678910';            
+$pass = getenv('SENHA');          
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass, [
