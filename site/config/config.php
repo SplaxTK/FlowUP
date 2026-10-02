@@ -2,7 +2,11 @@
 $host = 'localhost';
 $db = 'flowup';
 $user = 'root';
+<<<<<<< HEAD
 $pass = getenv('SENHA');
+=======
+$pass = '';
+>>>>>>> 027ff9b178ed55261883e0aab599b3878f02e864
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
