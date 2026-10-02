@@ -2,12 +2,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 require_once __DIR__ . '/../functions/flowup.php';
 require_once __DIR__ . '/../config/config.php';
+
 $pontosUsuario = flowup_pontos($pdo, $_SESSION['user_email'] ?? null);
-$scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-$sitePosition = strpos($scriptPath, '/site/');
-$siteUrl = $sitePosition !== false ? substr($scriptPath, 0, $sitePosition + strlen('/site')) : '/site';
+
+$siteUrl = '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

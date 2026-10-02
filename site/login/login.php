@@ -37,7 +37,7 @@ require_once __DIR__ . '/../includes/header.php';
             <aside class="sidebar">
             <div class="logo">FlowUp</div>
             <nav class="side-nav">
-                <a class="active" href="../index.php">Início</a>
+                <a class="active" href="../index.php">Dashboard</a>
                 <a class="nav-link" href="../tarefa.php">Tarefas</a>
                 <a class="nav-link" href="../calendario.php">Calendário</a>
                 <a class="nav-link" href="../personalizar.php">Personalizar</a>
