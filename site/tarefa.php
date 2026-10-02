@@ -41,7 +41,7 @@ if ($email) {
             exit;
         }
     }
-    $stmt = $pdo->prepare('SELECT * FROM novas_tarefas WHERE email = :email AND status <> "inativa" ORDER BY FIELD(tipo, "diaria", "semanal", "mensal", "meta"), data_criacao DESC');
+    $stmt = $pdo->prepare('SELECT * FROM novas_tarefas WHERE email = :email AND status <> \'inativa\' ORDER BY FIELD(tipo, \'diaria\', \'semanal\', \'mensal\', \'meta\'), data_criacao DESC');
     $stmt->execute(['email' => $email]);
     $tarefas = $stmt->fetchAll();
     $concluidas = flowup_concluidas($pdo, $email, $tarefas);

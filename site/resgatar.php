@@ -23,7 +23,7 @@ if ($email) {
             $messageType = str_contains($message, 'sucesso') ? 'success' : 'error';
         }
     }
-    $rewards = $pdo->query('SELECT * FROM recompensas WHERE status = "disponivel" ORDER BY qtd_pon_neces ASC, data_criacao DESC')->fetchAll();
+    $rewards = $pdo->query('SELECT * FROM recompensas WHERE status = \'disponivel\' ORDER BY qtd_pon_neces ASC, data_criacao DESC')->fetchAll();
     $pontosUsuario = flowup_pontos($pdo, $email);
 } else {
     $rewards = [];

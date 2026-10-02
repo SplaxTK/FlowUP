@@ -74,8 +74,8 @@ function flowup_tarefas_hoje(PDO $pdo, ?string $email): int
         'SELECT COUNT(*)
          FROM novas_tarefas
          WHERE email = :email
-           AND tipo = "diaria"
-           AND status = "ativa"'
+           AND tipo = \'diaria\'
+           AND status = \'ativa\''
     );
     $stmt->execute(['email' => $email]);
     return (int) $stmt->fetchColumn();
@@ -91,8 +91,8 @@ function flowup_metas_hoje(PDO $pdo, ?string $email): int
         'SELECT COUNT(*)
          FROM novas_tarefas
          WHERE email = :email
-           AND tipo = "meta"
-           AND status = "ativa"'
+           AND tipo = \'meta\'
+           AND status = \'ativa\''
     );
     $stmt->execute(['email' => $email]);
     return (int) $stmt->fetchColumn();
@@ -132,7 +132,7 @@ function flowup_concluidas(PDO $pdo, string $email, array $tarefas): array
 
 function flowup_concluir(PDO $pdo, string $email, int $id): string
 {
-    $stmt = $pdo->prepare('SELECT * FROM novas_tarefas WHERE id_tarefas = :id AND email = :email AND status <> "inativa"');
+    $stmt = $pdo->prepare('SELECT * FROM novas_tarefas WHERE id_tarefas = :id AND email = :email AND status <> \'inativa\'');
     $stmt->execute(['id' => $id, 'email' => $email]);
     $tarefa = $stmt->fetch();
     if (!$tarefa) {
@@ -174,7 +174,7 @@ function flowup_resgatar(PDO $pdo, string $email, int $id): string
 {
     $pdo->beginTransaction();
     try {
-        $reward = $pdo->prepare('SELECT * FROM recompensas WHERE id_recompensa = :id AND status = "disponivel" FOR UPDATE');
+        $reward = $pdo->prepare('SELECT * FROM recompensas WHERE id_recompensa = :id AND status = \'disponivel\' FOR UPDATE');
         $reward->execute(['id' => $id]);
         $recompensa = $reward->fetch();
         if (!$recompensa) {
@@ -195,7 +195,7 @@ function flowup_resgatar(PDO $pdo, string $email, int $id): string
         $history = $pdo->prepare('INSERT INTO historico_pontos (id_pontos, qtd_pontos_anterior, qtd_pontos_novo) VALUES (:id, :anterior, :novo)');
         $history->execute(['id' => $pointsId, 'anterior' => $points, 'novo' => $novo]);
 
-        $insert = $pdo->prepare('INSERT INTO novas_recompensas (descricao, qtd_pon_neces, email, status) VALUES (:descricao, :pontos, :email, "resgatada")');
+        $insert = $pdo->prepare('INSERT INTO novas_recompensas (descricao, qtd_pon_neces, email, status) VALUES (:descricao, :pontos, :email, \'resgatada\')');
         $insert->execute(['descricao' => $recompensa['descricao'], 'pontos' => $recompensa['qtd_pon_neces'], 'email' => $email]);
         $pdo->commit();
         return 'Recompensa resgatada com sucesso!';
