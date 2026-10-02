@@ -18,8 +18,8 @@
         <div class="main-panel">
             <header class="topbar">
                 <div>
-                    <p class="small-label">Dashboard</p>
-                    <h1>Bem-vindo ao FlowUp</h1>
+                    <p class="small-label">Calendário</p>
+                    <h1>Seu calendário de tarefas</h1>
                 </div>
 
                 <div class="topbar-actions points-actions">
