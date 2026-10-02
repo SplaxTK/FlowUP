@@ -1,5 +1,8 @@
 <?php
-    require_once __DIR__ . '/includes/header.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/functions/flowup.php';
 
 $email = flowup_email($pdo);
 $message = $_SESSION['form_message'] ?? '';
@@ -57,6 +60,7 @@ if ($email) {
     }
 }
 $grupos = ['diaria' => 'Diárias', 'semanal' => 'Semanais', 'mensal' => 'Mensais', 'meta' => 'Metas'];
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 
