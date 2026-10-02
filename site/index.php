@@ -57,23 +57,16 @@
                 <section class="cards-grid">
                     <article class="card large-card">
                         <div class="card-title">Planejamento</div>
-                        <div class="line"></div>
-                        <div class="line"></div>
-                        <div class="line short"></div>
                     </article>
 
                     <article class="card">
                         <div class="card-title">Calendário</div>
-                        <div class="calendar-box"></div>
                     </article>
                 </section>
 
                 <section class="bottom-grid">
                     <article class="card">
                         <div class="card-title">Lista de tarefas</div>
-                        <div class="task-item"></div>
-                        <div class="task-item"></div>
-                        <div class="task-item"></div>
                     </article>
 
                     <article class="card_clima">
