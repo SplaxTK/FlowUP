@@ -8,7 +8,7 @@ require_once __DIR__ . '/../config/config.php';
 
 $pontosUsuario = flowup_pontos($pdo, $_SESSION['user_email'] ?? null);
 
-$siteUrl = '';
+$siteUrl = getenv('APP_URL') ?: '/Hatsune/pi/FlowUp/site';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
