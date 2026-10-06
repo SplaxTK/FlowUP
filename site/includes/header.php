@@ -9,7 +9,9 @@ require_once __DIR__ . '/../config/config.php';
 $pontosUsuario = flowup_pontos($pdo, $_SESSION['user_email'] ?? null);
 
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$forwardedProto = strtolower(trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')[0]));
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $forwardedProto === 'https';
+$scheme = $isHttps ? 'https' : 'http';
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 $sitePath = str_replace('\\', '/', dirname($scriptName));
 $sitePath = preg_replace('~/login$~', '', $sitePath);
