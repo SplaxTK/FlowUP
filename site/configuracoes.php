@@ -6,12 +6,12 @@
         <aside class="sidebar">
             <div class="logo">FlowUp</div>
             <nav class="side-nav">
-                <a class="nav-link" href="index.php">Dashboard</a>
-                <a class="nav-link" href="tarefa.php">Tarefas</a>
-                <a class="nav-link" href="calendario.php">Calendário</a>
-                <a class="nav-link" href="personalizar.php">Personalizar</a>
-                <a class="nav-link" href="resgatar.php">Resgatar</a>
-                <a class="active" href="configuracoes.php">Configurações</a>
+                <a class="nav-link" href="index.php"><img src="assets/img/icons/dashboard-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Dashboard</a>
+                <a class="nav-link" href="tarefa.php"><img src="assets/img/icons/tasks-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Tarefas</a>
+                <a class="nav-link" href="calendario.php"><img src="assets/img/icons/calendar-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Calendário</a>
+                <a class="nav-link" href="personalizar.php"><img src="assets/img/icons/customize-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Personalizar</a>
+                <a class="nav-link" href="resgatar.php"><img src="assets/img/icons/redeem-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Resgatar</a>
+                <a class="active" href="configuracoes.php"><img src="assets/img/icons/settings-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Configurações</a>
             </nav>
         </aside>
 
@@ -82,5 +82,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -16,13 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Formulário PHP</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
+<?php
+$pageTitle = 'Formulário PHP';
+require_once __DIR__ . '/../includes/header.php';
+?>
 <body>
     <header>
         <h1>Formulário PHP</h1>
@@ -48,5 +45,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </main>
-</body>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

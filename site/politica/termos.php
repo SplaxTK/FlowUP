@@ -3,7 +3,7 @@
 ?>
 <body class="legal-page">
     <main class="content legal-content">
-        <a class="back-link" href="../login/cadastro.php" aria-label="Voltar para o cadastro">
+        <a class="back-link" href="../login/cadastro.php" data-voltar-anterior aria-label="Voltar para a página anterior">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m12 19-7-7 7-7"></path>
                 <path d="M19 12H5"></path>
@@ -54,5 +54,4 @@
             </section>
         </article>
     </main>
-</body>
-</html>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -14,7 +14,7 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $forwar
 $scheme = $isHttps ? 'https' : 'http';
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 $sitePath = str_replace('\\', '/', dirname($scriptName));
-$sitePath = preg_replace('~/login$~', '', $sitePath);
+$sitePath = preg_replace('~/(login|politica|functions)$~', '', $sitePath);
 $sitePath = rtrim($sitePath, '/');
 
 $siteUrl = getenv('APP_URL');
@@ -22,14 +22,4 @@ if (!$siteUrl) {
     $siteUrl = $scheme . '://' . $host . $sitePath;
 }
 $siteUrl = rtrim($siteUrl, '/');
-?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowUp</title>
-    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl); ?>/assets/img/flowUp.png">
-    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl); ?>/assets/css/style.css">
-    <script src="<?php echo htmlspecialchars($siteUrl); ?>/assets/js/script.js" defer></script>
-</head>
+require_once __DIR__ . '/head.php';
