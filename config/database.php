@@ -11,6 +11,10 @@ if (is_file($envPath) && is_readable($envPath)) {
     }
 }
 
+if (getenv('JWT_SECRET_KEY') === false && !empty($env['JWT_SECRET_KEY'])) {
+    putenv('JWT_SECRET_KEY=' . $env['JWT_SECRET_KEY']);
+}
+
 // Produção (Vercel/Aiven) usa DB_*.
 // Localmente, se DB_HOST não existir, usa o XAMPP.
 $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');

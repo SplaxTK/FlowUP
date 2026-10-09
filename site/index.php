@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/helpers/auth_middleware.php';
-
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/functions/flowup.php';
 

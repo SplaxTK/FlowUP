@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($senha, $user['senha'])) {
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_full_name'] = $user['nome_completo'];
             $_SESSION['user_username'] = $user['usuario'];
@@ -31,15 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'id' => $user['id'],
                 'email' => $user['email']
             ]);
-            setcookie(
-                'auth_token',
-                $token,
-                time() + (3600 * 24 * 7),
-                '/',
-                '',
-                true,
-                true
-            );
+            setcookie('auth_token', $token, flowup_auth_cookie_options(time() + (3600 * 24 * 7)));
 
             header('Location: ../index.php');
             exit;
