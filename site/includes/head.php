@@ -22,7 +22,7 @@
                 pontos: true
             };
             const validThemes = ['claro', 'escuro'];
-            const validColors = ['azul', 'roxo', 'verde', 'laranja', 'ciano', 'ceu', 'turquesa', 'esmeralda', 'lima', 'amarelo', 'ambar', 'vermelho', 'rosa', 'pink', 'fucsia', 'indigo'];
+            const validColors = ['azul', 'roxo', 'verde', 'laranja', 'ciano', 'ceu', 'turquesa', 'esmeralda', 'lima', 'amarelo', 'ambar', 'vermelho', 'rosa', 'pink', 'fucsia', 'indigo', 'branco', 'prata', 'grafite', 'preto'];
             const validDensities = ['compacta', 'normal', 'espacosa'];
             const validFontSizes = ['pequena', 'media', 'grande'];
             let consented = document.cookie.split(';').some(function (value) {

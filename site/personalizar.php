@@ -49,21 +49,25 @@
                             <div><h3>Cor principal</h3><p>Escolha a cor dos principais elementos.</p></div>
                             <div class="cores">
                                 <label title="Azul"><input type="radio" name="cor" value="azul" aria-label="Azul"><span class="cor azul"></span></label>
+                                <label title="Índigo"><input type="radio" name="cor" value="indigo" aria-label="Índigo"><span class="cor indigo"></span></label>
                                 <label title="Roxo"><input type="radio" name="cor" value="roxo" aria-label="Roxo"><span class="cor roxo"></span></label>
-                                <label title="Verde"><input type="radio" name="cor" value="verde" aria-label="Verde"><span class="cor verde"></span></label>
+                                <label title="Fúcsia"><input type="radio" name="cor" value="fucsia" aria-label="Fúcsia"><span class="cor fucsia"></span></label>
+                                <label title="Pink"><input type="radio" name="cor" value="pink" aria-label="Pink"><span class="cor pink"></span></label>
+                                <label title="Rosa"><input type="radio" name="cor" value="rosa" aria-label="Rosa"><span class="cor rosa"></span></label>
+                                <label title="Vermelho"><input type="radio" name="cor" value="vermelho" aria-label="Vermelho"><span class="cor vermelho"></span></label>
                                 <label title="Laranja"><input type="radio" name="cor" value="laranja" aria-label="Laranja"><span class="cor laranja"></span></label>
+                                <label title="Âmbar"><input type="radio" name="cor" value="ambar" aria-label="Âmbar"><span class="cor ambar"></span></label>
+                                <label title="Amarelo"><input type="radio" name="cor" value="amarelo" aria-label="Amarelo"><span class="cor amarelo"></span></label>
+                                <label title="Lima"><input type="radio" name="cor" value="lima" aria-label="Lima"><span class="cor lima"></span></label>
+                                <label title="Verde"><input type="radio" name="cor" value="verde" aria-label="Verde"><span class="cor verde"></span></label>
+                                <label title="Esmeralda"><input type="radio" name="cor" value="esmeralda" aria-label="Esmeralda"><span class="cor esmeralda"></span></label>
+                                <label title="Turquesa"><input type="radio" name="cor" value="turquesa" aria-label="Turquesa"><span class="cor turquesa"></span></label>
                                 <label title="Ciano"><input type="radio" name="cor" value="ciano" aria-label="Ciano"><span class="cor ciano"></span></label>
                                 <label title="Azul-céu"><input type="radio" name="cor" value="ceu" aria-label="Azul-céu"><span class="cor ceu"></span></label>
-                                <label title="Turquesa"><input type="radio" name="cor" value="turquesa" aria-label="Turquesa"><span class="cor turquesa"></span></label>
-                                <label title="Esmeralda"><input type="radio" name="cor" value="esmeralda" aria-label="Esmeralda"><span class="cor esmeralda"></span></label>
-                                <label title="Lima"><input type="radio" name="cor" value="lima" aria-label="Lima"><span class="cor lima"></span></label>
-                                <label title="Amarelo"><input type="radio" name="cor" value="amarelo" aria-label="Amarelo"><span class="cor amarelo"></span></label>
-                                <label title="Âmbar"><input type="radio" name="cor" value="ambar" aria-label="Âmbar"><span class="cor ambar"></span></label>
-                                <label title="Vermelho"><input type="radio" name="cor" value="vermelho" aria-label="Vermelho"><span class="cor vermelho"></span></label>
-                                <label title="Rosa"><input type="radio" name="cor" value="rosa" aria-label="Rosa"><span class="cor rosa"></span></label>
-                                <label title="Pink"><input type="radio" name="cor" value="pink" aria-label="Pink"><span class="cor pink"></span></label>
-                                <label title="Fúcsia"><input type="radio" name="cor" value="fucsia" aria-label="Fúcsia"><span class="cor fucsia"></span></label>
-                                <label title="Índigo"><input type="radio" name="cor" value="indigo" aria-label="Índigo"><span class="cor indigo"></span></label>
+                                <label title="Branco"><input type="radio" name="cor" value="branco" aria-label="Branco"><span class="cor branco"></span></label>
+                                <label title="Prata"><input type="radio" name="cor" value="prata" aria-label="Prata"><span class="cor prata"></span></label>
+                                <label title="Grafite"><input type="radio" name="cor" value="grafite" aria-label="Grafite"><span class="cor grafite"></span></label>
+                                <label title="Preto"><input type="radio" name="cor" value="preto" aria-label="Preto"><span class="cor preto"></span></label>
                             </div>
                         </div>
                         <div class="opcao">

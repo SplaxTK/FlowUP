@@ -1,10 +1,21 @@
+/* 1. Azul (padrão) */
 :root {
     --cor-principal: #2563eb;
     --cor-principal-hover: #1d4ed8;
+    --cor-texto-botao: #ffffff;
     --cor-sidebar-a: #1f3b6d;
     --cor-sidebar-b: #264a86;
 }
 
+/* 2. Índigo */
+html[data-cor="indigo"] {
+    --cor-principal: #4f46e5;
+    --cor-principal-hover: #4338ca;
+    --cor-sidebar-a: #312e81;
+    --cor-sidebar-b: #4338ca;
+}
+
+/* 3. Roxo */
 html[data-cor="roxo"] {
     --cor-principal: #7c3aed;
     --cor-principal-hover: #6d28d9;
@@ -12,90 +23,7 @@ html[data-cor="roxo"] {
     --cor-sidebar-b: #6d28d9;
 }
 
-html[data-cor="verde"] {
-    --cor-principal: #16a34a;
-    --cor-principal-hover: #15803d;
-    --cor-sidebar-a: #14532d;
-    --cor-sidebar-b: #15803d;
-}
-
-html[data-cor="laranja"] {
-    --cor-principal: #ea580c;
-    --cor-principal-hover: #c2410c;
-    --cor-sidebar-a: #9a3412;
-    --cor-sidebar-b: #ea580c;
-}
-
-html[data-cor="ciano"] {
-    --cor-principal: #0891b2;
-    --cor-principal-hover: #0e7490;
-    --cor-sidebar-a: #164e63;
-    --cor-sidebar-b: #0e7490;
-}
-
-html[data-cor="ceu"] {
-    --cor-principal: #0284c7;
-    --cor-principal-hover: #0369a1;
-    --cor-sidebar-a: #0c4a6e;
-    --cor-sidebar-b: #0369a1;
-}
-
-html[data-cor="turquesa"] {
-    --cor-principal: #0d9488;
-    --cor-principal-hover: #0f766e;
-    --cor-sidebar-a: #134e4a;
-    --cor-sidebar-b: #0f766e;
-}
-
-html[data-cor="esmeralda"] {
-    --cor-principal: #059669;
-    --cor-principal-hover: #047857;
-    --cor-sidebar-a: #064e3b;
-    --cor-sidebar-b: #047857;
-}
-
-html[data-cor="lima"] {
-    --cor-principal: #65a30d;
-    --cor-principal-hover: #4d7c0f;
-    --cor-sidebar-a: #365314;
-    --cor-sidebar-b: #4d7c0f;
-}
-
-html[data-cor="amarelo"] {
-    --cor-principal: #ca8a04;
-    --cor-principal-hover: #a16207;
-    --cor-sidebar-a: #713f12;
-    --cor-sidebar-b: #a16207;
-}
-
-html[data-cor="ambar"] {
-    --cor-principal: #d97706;
-    --cor-principal-hover: #b45309;
-    --cor-sidebar-a: #78350f;
-    --cor-sidebar-b: #b45309;
-}
-
-html[data-cor="vermelho"] {
-    --cor-principal: #dc2626;
-    --cor-principal-hover: #b91c1c;
-    --cor-sidebar-a: #7f1d1d;
-    --cor-sidebar-b: #b91c1c;
-}
-
-html[data-cor="rosa"] {
-    --cor-principal: #e11d48;
-    --cor-principal-hover: #be123c;
-    --cor-sidebar-a: #881337;
-    --cor-sidebar-b: #be123c;
-}
-
-html[data-cor="pink"] {
-    --cor-principal: #db2777;
-    --cor-principal-hover: #be185d;
-    --cor-sidebar-a: #831843;
-    --cor-sidebar-b: #be185d;
-}
-
+/* 4. Fúcsia */
 html[data-cor="fucsia"] {
     --cor-principal: #c026d3;
     --cor-principal-hover: #a21caf;
@@ -103,11 +31,132 @@ html[data-cor="fucsia"] {
     --cor-sidebar-b: #a21caf;
 }
 
-html[data-cor="indigo"] {
-    --cor-principal: #4f46e5;
-    --cor-principal-hover: #4338ca;
-    --cor-sidebar-a: #312e81;
-    --cor-sidebar-b: #4338ca;
+/* 5. Pink */
+html[data-cor="pink"] {
+    --cor-principal: #db2777;
+    --cor-principal-hover: #be185d;
+    --cor-sidebar-a: #831843;
+    --cor-sidebar-b: #be185d;
+}
+
+/* 6. Rosa */
+html[data-cor="rosa"] {
+    --cor-principal: #e11d48;
+    --cor-principal-hover: #be123c;
+    --cor-sidebar-a: #881337;
+    --cor-sidebar-b: #be123c;
+}
+
+/* 7. Vermelho */
+html[data-cor="vermelho"] {
+    --cor-principal: #dc2626;
+    --cor-principal-hover: #b91c1c;
+    --cor-sidebar-a: #7f1d1d;
+    --cor-sidebar-b: #b91c1c;
+}
+
+/* 8. Laranja */
+html[data-cor="laranja"] {
+    --cor-principal: #ea580c;
+    --cor-principal-hover: #c2410c;
+    --cor-sidebar-a: #9a3412;
+    --cor-sidebar-b: #ea580c;
+}
+
+/* 9. Âmbar */
+html[data-cor="ambar"] {
+    --cor-principal: #d97706;
+    --cor-principal-hover: #b45309;
+    --cor-sidebar-a: #78350f;
+    --cor-sidebar-b: #b45309;
+}
+
+/* 10. Amarelo */
+html[data-cor="amarelo"] {
+    --cor-principal: #ca8a04;
+    --cor-principal-hover: #a16207;
+    --cor-sidebar-a: #713f12;
+    --cor-sidebar-b: #a16207;
+}
+
+/* 11. Lima */
+html[data-cor="lima"] {
+    --cor-principal: #65a30d;
+    --cor-principal-hover: #4d7c0f;
+    --cor-sidebar-a: #365314;
+    --cor-sidebar-b: #4d7c0f;
+}
+
+/* 12. Verde */
+html[data-cor="verde"] {
+    --cor-principal: #16a34a;
+    --cor-principal-hover: #15803d;
+    --cor-sidebar-a: #14532d;
+    --cor-sidebar-b: #15803d;
+}
+
+/* 13. Esmeralda */
+html[data-cor="esmeralda"] {
+    --cor-principal: #059669;
+    --cor-principal-hover: #047857;
+    --cor-sidebar-a: #064e3b;
+    --cor-sidebar-b: #047857;
+}
+
+/* 14. Turquesa */
+html[data-cor="turquesa"] {
+    --cor-principal: #0d9488;
+    --cor-principal-hover: #0f766e;
+    --cor-sidebar-a: #134e4a;
+    --cor-sidebar-b: #0f766e;
+}
+
+/* 15. Ciano */
+html[data-cor="ciano"] {
+    --cor-principal: #0891b2;
+    --cor-principal-hover: #0e7490;
+    --cor-sidebar-a: #164e63;
+    --cor-sidebar-b: #0e7490;
+}
+
+/* 16. Céu */
+html[data-cor="ceu"] {
+    --cor-principal: #0284c7;
+    --cor-principal-hover: #0369a1;
+    --cor-sidebar-a: #0c4a6e;
+    --cor-sidebar-b: #0369a1;
+}
+
+/* 17. Branco (cizento) */
+html[data-cor="branco"] {
+    --cor-principal: #a1a1a1;
+    --cor-principal-hover: #929599;
+    --cor-sidebar-a: #6e6f72;
+    --cor-sidebar-b: #979a9e;
+}
+
+/* 18. Prata (cinza claro) */
+html[data-cor="prata"] {
+    --cor-principal: #9ca3af;
+    --cor-principal-hover: #6b7280;
+    --cor-sidebar-a: #374151;
+    --cor-sidebar-b: #6b7280;
+}
+
+/* 19. Grafite (cinza escuro) */
+html[data-cor="grafite"] {
+    --cor-principal: #4b5563;
+    --cor-principal-hover: #374151;
+    --cor-sidebar-a: #1f2937;
+    --cor-sidebar-b: #374151;
+}
+
+/* 20. Preto (neutro) */
+html[data-cor="preto"] {
+    --cor-principal: #4d515a;
+    --cor-principal-hover: #4a4e57;
+    --cor-sidebar-a: #111827;
+    --cor-sidebar-b: #1f2937;
 }
 
 html[data-fonte="pequena"] {
@@ -718,6 +767,13 @@ body {
 .cor.pink { background: #db2777; }
 .cor.fucsia { background: #c026d3; }
 .cor.indigo { background: #4f46e5; }
+.cor.branco {
+    border-color: #cbd5e1;
+    background: #f3f4f6;
+}
+.cor.prata { background: #9ca3af; }
+.cor.grafite { background: #4b5563; }
+.cor.preto { background: #374151; }
 
 .switch-item {
     cursor: pointer;
@@ -1469,22 +1525,32 @@ body.escuro .sidebar {
     font-size: 0.875rem;
 }
 
-html[data-cor] .pill.active,
-html[data-cor] .btn-salvar,
-html[data-cor] .btn,
-html[data-cor] .complete-button,
-html[data-cor] .switch-item input:checked + .switch {
-    background-color: var(--cor-principal);
-}
-
-html[data-cor] .pill.active {
+html[data-cor] .points-badge {
     border-color: var(--cor-principal);
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
 }
 
-html[data-cor] .btn-salvar:hover,
-html[data-cor] .btn:hover,
-html[data-cor] .complete-button:hover {
-    background-color: var(--cor-principal-hover);
+html[data-cor] .points-badge::before {
+    background: var(--cor-texto-botao);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
+}
+
+html[data-cor] .topbar .pill.active {
+    border-color: var(--cor-principal);
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
+}
+
+html[data-cor] .topbar .pill.active:hover {
+    border-color: var(--cor-principal-hover);
+    background: var(--cor-principal-hover);
+}
+
+html[data-cor] .complete-button:disabled {
+    background: #cbd5e1;
+    color: #475569;
+    cursor: not-allowed;
 }
 
 html[data-cor] .form-link:hover,
