@@ -78,7 +78,7 @@
             <p>Você tem certeza que deseja encerrar sua sessão?</p>
             <div class="logout-modal-actions">
                 <button class="btn-secundario" type="button" data-close-logout>Continuar aqui</button>
-                <a class="btn-sair" href="functions/logout.php">Sair agora</a>
+                <a class="btn-sair" href="login/logout.php">Sair agora</a>
             </div>
         </div>
     </div>

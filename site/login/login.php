@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
 
 $error = '';
 $identificador = '';
@@ -23,6 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_full_name'] = $user['nome_completo'];
             $_SESSION['user_username'] = $user['usuario'];
             $_SESSION['user_email'] = $user['email'];
+
+            $token = gerarTokenAutenticacao([
+                'id' => $user['id'],
+                'email' => $user['email']
+            ]);
+            setcookie(
+                'auth_token',
+                $token,
+                time() + (3600 * 24 * 7),
+                '/',
+                '',
+                true,
+                true
+            );
+
             header('Location: ../index.php');
             exit;
         }

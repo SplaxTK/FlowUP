@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../functions/flowup.php';
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
+require_once __DIR__ . '/../helpers/auth_middleware.php';
 
 $pontosUsuario = flowup_pontos($pdo, $_SESSION['user_email'] ?? null);
 
