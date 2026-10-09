@@ -957,13 +957,13 @@ body.escuro .fonte input:checked + span {
     transition: 0.2s;
 }
 
-.switch-item input:checked + .switch { background: #2563eb; }
+.switch-item input:checked + .switch { background: var(--cor-principal); }
 .switch-item input:checked + .switch::after { transform: translateX(22px); }
 
-.acoes { display: flex; justify-content: flex-end; gap: 12px; }
+.acoes { display: flex; justify-content: flex-end; gap: 12px; position: fixed; bottom: 20px; right: 20px; z-index: 10; }
 .btn-salvar { padding: 13px 22px; border-radius: 9px; cursor: pointer; font-size: 14px; }
-.btn-salvar { border: none; background: #2563eb; color: #fff; }
-.btn-salvar:hover { background: #1d4ed8; }
+.btn-salvar { border: none; background: var(--cor-principal); color: var(--cor-texto-botao); }
+.btn-salvar:hover { background: var(--cor-principal-hover); }
 
 body.escuro { background: #111827; color: #f8fafc; }
 body.escuro .topbar,
@@ -1463,7 +1463,7 @@ select {
 }
 
 .switch-item input:checked + .switch {
-    background: #2563eb;
+    background: var(--cor-principal);
 }
 
 .switch-item input:checked + .switch::after {
@@ -1490,13 +1490,13 @@ select {
 }
 
 .btn-salvar {
-    background: #2563eb;
-    color: #ffffff;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
     border: none;
 }
 
 .btn-salvar:hover {
-    background: #1d4ed8;
+    background: var(--cor-principal-hover);
 }
 
 
@@ -1646,6 +1646,7 @@ body.escuro .sidebar {
     border: 1px solid transparent;
     border-radius: 10px;
     font-weight: 700;
+    position: fixed;
 }
 
 .preferences-message.success {
