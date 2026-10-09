@@ -1,8 +1,15 @@
 <?php
-    require_once __DIR__ . '/includes/header.php';
-    $tarefasHoje = flowup_tarefas_hoje($pdo, $_SESSION['user_email'] ?? null);
-    $metasHoje = flowup_metas_hoje($pdo, $_SESSION['user_email'] ?? null);
+require_once __DIR__ . '/helpers/auth_middleware.php';
+
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/functions/flowup.php';
+
+require_once __DIR__ . '/includes/header.php';
+
+$tarefasHoje = flowup_tarefas_hoje($pdo, $user_email);
+$metasHoje = flowup_metas_hoje($pdo, $user_email);
 ?>
+
 <body>
     <div class="app-shell">
         <aside class="sidebar">
