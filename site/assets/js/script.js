@@ -91,3 +91,17 @@ if (formatoData) formatoData.addEventListener("change", function () {
     );
 
 });
+
+const sidebarToggle = document.getElementById("sidebarToggle");
+const appShell = sidebarToggle ? sidebarToggle.closest(".app-shell") : null;
+
+if (sidebarToggle && appShell) {
+    sidebarToggle.addEventListener("click", function () {
+        const isCollapsed = appShell.classList.toggle("sidebar-collapsed");
+        sidebarToggle.setAttribute("aria-expanded", String(!isCollapsed));
+        sidebarToggle.setAttribute(
+            "aria-label",
+            isCollapsed ? "Expandir menu lateral" : "Recolher menu lateral"
+        );
+    });
+}

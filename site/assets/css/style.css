@@ -207,9 +207,63 @@ body {
     overflow-y: auto;
 }
 
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 .logo {
     font-size: 1.6rem;
     font-weight: 800;
+}
+
+.sidebar-toggle {
+    position: relative;
+    display: grid;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+    place-items: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-toggle:focus-visible,
+.sidebar-toggle:active {
+    background: transparent;
+}
+
+.sidebar-toggle:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+.sidebar-toggle-icon {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.sidebar-toggle-icon-collapsed {
+    display: none;
+}
+
+.sidebar-collapsed .sidebar-toggle-icon-expanded {
+    display: none;
+}
+
+.sidebar-collapsed .sidebar-toggle-icon-collapsed {
+    display: block;
 }
 
 .side-nav {
@@ -1275,6 +1329,10 @@ body.escuro .muted-text,
 body.escuro .empty-state { color: #9ca3af; }
 
 @media (max-width: 900px) {
+    .sidebar-toggle {
+        display: none;
+    }
+
     .app-shell {
         flex-direction: column;
     }
@@ -1840,13 +1898,11 @@ body.escuro select {
     border-color: #4b5563;
 }
 
-
 /* =========================
    RESPONSIVO
 ========================= */
 
 @media (max-width: 700px) {
-
     .sidebar {
         width: 70px;
         padding: 20px 8px;
@@ -1881,5 +1937,33 @@ body.escuro select {
         align-items: flex-start;
         gap: 15px;
     }
+}
 
+@media (min-width: 901px) {
+    .app-shell.sidebar-collapsed .sidebar {
+        width: 72px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .app-shell.sidebar-collapsed .sidebar-logo-text,
+    .app-shell.sidebar-collapsed .side-nav a {
+        font-size: 0;
+    }
+
+    .app-shell.sidebar-collapsed .side-nav a {
+        justify-content: center;
+        gap: 0;
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .app-shell.sidebar-collapsed .main-panel {
+        margin-left: 72px;
+    }
+
+    .app-shell.sidebar-collapsed .topbar {
+        left: 72px;
+        width: calc(100% - 72px);
+    }
 }
