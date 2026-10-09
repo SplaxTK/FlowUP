@@ -40,7 +40,7 @@
                 <div class="config-intro"><h2>Configurações</h2><p>Gerencie sua conta e as preferências do FlowUp.</p></div>
 
                 <section class="card config-card">
-                    <div class="titulo-card"><div class="icone">👤</div><div><h2>Minha conta</h2><p>Gerencie suas informações pessoais.</p></div></div>
+                    <div class="titulo-card"><div class="icone"><img class="img-icon" src="assets/img/icons/user-icon.png" alt="Ícone de perfil"></div><div><h2>Minha conta</h2><p>Gerencie suas informações pessoais.</p></div></div>
                     <form action="functions/salvar_configuracoes.php" method="post" class="config-form">
                         <div class="campo"><label for="usuario">Usuário</label><input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required value="<?php echo htmlspecialchars($_SESSION['user_username'] ?? ''); ?>"></div>
                         <div class="campo"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="Digite seu e-mail" required value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>"></div>
@@ -49,20 +49,20 @@
                 </section>
 
                 <section class="card config-card">
-                    <div class="titulo-card"><div class="icone">🔔</div><div><h2>Notificações</h2><p>Escolha quais avisos deseja receber.</p></div></div>
+                    <div class="titulo-card"><div class="icone"><img class="img-icon" src="assets/img/icons/bell-icon.png" alt="Ícone de notificações"></div><div><h2>Notificações</h2><p>Escolha quais avisos deseja receber.</p></div></div>
                     <label class="switch-item"><div><strong>Lembretes de tarefas</strong><span>Receba lembretes sobre suas tarefas.</span></div><input type="checkbox" id="notificacaoTarefas" checked><span class="switch"></span></label>
                     <label class="switch-item"><div><strong>Metas</strong><span>Receba avisos sobre seu progresso.</span></div><input type="checkbox" id="notificacaoMetas" checked><span class="switch"></span></label>
                     <label class="switch-item"><div><strong>Recompensas</strong><span>Saiba quando ganhar novos mimos.</span></div><input type="checkbox" id="notificacaoMimos" checked><span class="switch"></span></label>
                 </section>
 
                 <section class="card config-card">
-                    <div class="titulo-card"><div class="icone">🌎</div><div><h2>Preferências</h2><p>Configure opções gerais do sistema.</p></div></div>
+                    <div class="titulo-card"><div class="icone"><img class="img-icon" src="assets/img/icons/earth-icon.png" alt="Ícone de preferências"></div><div><h2>Preferências</h2><p>Configure opções gerais do sistema.</p></div></div>
                     <div class="opcao"><div><strong>Idioma</strong><p>Idioma utilizado pelo FlowUp.</p></div><select id="idioma"><option value="pt-br">Português (Brasil)</option><option value="en">English</option></select></div>
                     <div class="opcao"><div><strong>Formato de data</strong><p>Escolha como as datas serão exibidas.</p></div><select id="formatoData"><option value="br">DD/MM/AAAA</option><option value="us">MM/DD/AAAA</option></select></div>
                 </section>
 
                 <section class="card config-card">
-                    <div class="titulo-card"><div class="icone">🔒</div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
+                    <div class="titulo-card"><div class="icone"><img class="img-icon" src="assets/img/icons/lock-icon.png" alt="Ícone de segurança"></div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
                     <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha">Alterar senha</button>
                     <button type="button" class="btn-sair" id="btnSair">Sair da conta</button></div>
                 </section>
