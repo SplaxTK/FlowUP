@@ -21,7 +21,11 @@
                     <p class="small-label">Personalizar</p>
                     <h1>Personalize seu espaço</h1>
                 </div>
-                    <div class="topbar-actions points-actions"><span class="points-badge" aria-label="Pontos acumulados"><?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts</span></div>
+                <div class="topbar-actions points-actions" data-preferencia-inicio="pontos">
+                <span class="points-badge" aria-label="Pontos acumulados">
+                <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
+                </span>
+                </div>
                             <div class="topbar-actions">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <a href="configuracoes.php" class="pill active">
@@ -38,13 +42,24 @@
                 <form method="post">
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone">🎨</div>
+                            <div class="icone"><img class="img-icon" src="assets/img/icons/brush-icon.png" alt="Pincel" aria-hidden="true"></div>
+                            
                             <div><h2>Aparência</h2><p>Escolha como o FlowUp será exibido.</p></div>
                         </div>
+
                         <div class="opcao">
-                            <div><h3>Tema</h3><p>Escolha entre o tema claro ou escuro.</p></div>
-                            <select name="tema" id="tema"><option value="claro">Claro</option><option value="escuro">Escuro</option></select>
+                            <div>
+                                <h3>Tema</h3>
+                                <p>Escolha entre o tema claro ou escuro.</p>
+                            </div>
+
+                            <button type="button" class="theme-btn" id="themeToggle" aria-label="Alternar tema">
+                                <img class="theme-btn-icon icon-sun" src="assets/img/icons/sun-icon.png" alt="" aria-hidden="true">
+                                <img class="theme-btn-icon icon-moon" src="assets/img/icons/moon-icon.png" alt="" aria-hidden="true">
+                            </button>
+                            <input type="hidden" name="tema" value="claro">
                         </div>
+
                         <div class="opcao">
                             <div><h3>Cor principal</h3><p>Escolha a cor dos principais elementos.</p></div>
                             <div class="cores">
@@ -71,16 +86,22 @@
                             </div>
                         </div>
                         <div class="opcao">
+
                             <div><h3>Espaçamento</h3><p>Defina o espaço entre os elementos.</p></div>
-                            <select name="densidade"><option value="compacta">Compacta</option><option value="normal" selected>Normal</option><option value="espacosa">Espaçosa</option></select>
+                            <div class="densidade" role="radiogroup" aria-label="Espaçamento">
+                                <label><input type="radio" name="densidade" value="compacta"><span>Compacta</span></label>
+                                <label><input type="radio" name="densidade" value="normal" checked><span>Normal</span></label>
+                                <label><input type="radio" name="densidade" value="espacosa"><span>Espaçosa</span></label>
+                            </div>
                         </div>
+
                         <div class="opcao">
                             <div><h3>Tamanho da fonte</h3><p>Ajuste o tamanho dos textos.</p></div>
-                            <select name="fonte">
-                                <option value="pequena">Pequena</option>
-                                <option value="media" selected>Média</option>
-                                <option value="grande">Grande</option>
-                            </select>
+                            <div class="fonte" role="radiogroup" aria-label="Tamanho da fonte">
+                                <label><input type="radio" name="fonte" value="pequena"><span>Pequena</span></label>
+                                <label><input type="radio" name="fonte" value="media" checked><span>Média</span></label>
+                                <label><input type="radio" name="fonte" value="grande"><span>Grande</span></label>
+                            </div>
                         </div>
                         <label class="switch-item">
                             <div><strong>Texto em negrito</strong><span>Aumentar o destaque dos textos.</span></div>
@@ -91,7 +112,7 @@
 
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone">🏠</div>
+                            <div class="icone"><img class="img-icon" src="assets/img/icons/home-icon.png" alt="Casa" aria-hidden="true"></div>
                             <div><h2>Página inicial</h2><p>Escolha quais blocos deseja visualizar no painel.</p></div>
                         </div>
                         <label class="switch-item"><div><strong>Calendário</strong><span>Mostrar o calendário no painel.</span></div><input type="checkbox" name="calendario" checked><span class="switch"></span></label>
@@ -104,7 +125,7 @@
 
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone">🍪</div>
+                            <div class="icone"><img class="img-icon" src="assets/img/icons/cookie-icon.png" alt="Cookie" aria-hidden="true"></div>
                             <div><h2>Privacidade e cookies</h2><p>Revise sua escolha de cookies e armazenamento local.</p></div>
                         </div>
                         <div class="opcao cookie-preferences">

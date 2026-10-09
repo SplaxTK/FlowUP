@@ -19,11 +19,11 @@
             <header class="topbar">
                 <div><p class="small-label">Configurações</p><h1>Gerencie sua conta</h1></div>
     
-                <div class="topbar-actions points-actions">
+                <div class="topbar-actions points-actions" data-preferencia-inicio="pontos">
                 <span class="points-badge" aria-label="Pontos acumulados">
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
-                </div>                            
+                </div>                          
                  <div class="topbar-actions">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <a href="configuracoes.php" class="pill active">

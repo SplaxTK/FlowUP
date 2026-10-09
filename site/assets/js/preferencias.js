@@ -133,8 +133,9 @@
     if (!form) return;
 
     const theme = form.querySelector('[name="tema"]');
-    const density = form.querySelector('[name="densidade"]');
-    const fontSize = form.querySelector('[name="fonte"]');
+    const themeButton = document.getElementById('themeToggle');
+    const densityInputs = form.querySelectorAll('input[name="densidade"]');
+    const fontSizeInputs = form.querySelectorAll('input[name="fonte"]');
     const bold = form.querySelector('[name="negrito"]');
     const colorInputs = form.querySelectorAll('input[name="cor"]');
     const homeInputs = {
@@ -153,11 +154,13 @@
 
     function formValues() {
         const selectedColor = form.querySelector('input[name="cor"]:checked');
+        const selectedDensity = form.querySelector('input[name="densidade"]:checked');
+        const selectedFontSize = form.querySelector('input[name="fonte"]:checked');
         const values = {
             tema: theme.value,
             cor: selectedColor ? selectedColor.value : preferenceDefaults.cor,
-            densidade: density.value,
-            fonte: fontSize.value,
+            densidade: selectedDensity ? selectedDensity.value : preferenceDefaults.densidade,
+            fonte: selectedFontSize ? selectedFontSize.value : preferenceDefaults.fonte,
             negrito: bold.checked
         };
         Object.keys(homeInputs).forEach(function (key) {
@@ -166,10 +169,24 @@
         return values;
     }
 
+    function updateThemeButton(value) {
+        if (!themeButton) return;
+        themeButton.dataset.tema = value;
+        themeButton.setAttribute(
+            'aria-label',
+            value === 'escuro' ? 'Tema escuro ativo. Clique para o tema claro' : 'Tema claro ativo. Clique para o tema escuro'
+        );
+    }
+
     function setFormValues(values) {
         theme.value = values.tema;
-        density.value = values.densidade;
-        fontSize.value = values.fonte;
+        updateThemeButton(values.tema);
+        densityInputs.forEach(function (input) {
+            input.checked = input.value === values.densidade;
+        });
+        fontSizeInputs.forEach(function (input) {
+            input.checked = input.value === values.fonte;
+        });
         bold.checked = values.negrito;
         colorInputs.forEach(function (input) {
             input.checked = input.value === values.cor;
@@ -208,6 +225,14 @@
     }
 
     setFormValues(saved);
+
+    if (themeButton) {
+        themeButton.addEventListener('click', function () {
+            theme.value = theme.value === 'escuro' ? 'claro' : 'escuro';
+            updateThemeButton(theme.value);
+            preferencesApi.apply(formValues());
+        });
+    }
 
     form.addEventListener('change', function () {
         preferencesApi.apply(formValues());

@@ -22,7 +22,7 @@
                     <h1>Seu calendário de tarefas</h1>
                 </div>
 
-                <div class="topbar-actions points-actions">
+                <div class="topbar-actions points-actions" data-preferencia-inicio="pontos">
                 <span class="points-badge" aria-label="Pontos acumulados">
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
