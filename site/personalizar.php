@@ -32,16 +32,7 @@
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
                 </div>
-                            <div class="topbar-actions">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="configuracoes.php" class="pill active">
-                            <?php echo ($_SESSION['user_username'] ?? 'Perfil'); ?>
-                        </a>
-                    <?php else: ?>
-                        <a href="login/login.php" class="pill">Entrar</a>
-                        <a href="login/cadastro.php" class="pill active">Cadastrar</a>
-                    <?php endif; ?>
-                </div>
+                <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
 
             <main class="content personalizar-content">

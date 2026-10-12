@@ -1,6 +1,20 @@
 <?php
+require_once __DIR__ . '/../config/admin_accounts.php';
 
 define('JWT_SECRET', getenv('JWT_SECRET_KEY') ?: '');
+
+function flowup_user_is_admin(array $user): bool
+{
+    $email = strtolower(trim((string) ($user['email'] ?? '')));
+
+    foreach (FLOWUP_ADMIN_EMAILS as $adminEmail) {
+        if ($email !== '' && $email === strtolower($adminEmail)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 function flowup_is_https_request(): bool
 {

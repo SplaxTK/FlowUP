@@ -506,6 +506,127 @@ body.escuro .icone-tema .icone-escuro {
     gap: 10px;
 }
 
+.perfil-actions {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.perfil-button {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    background: #f9fafb;
+    cursor: pointer;
+}
+
+.perfil-button:hover,
+.perfil-button:focus-visible {
+    border-color: var(--cor-principal);
+    outline: 2px solid var(--cor-principal);
+    outline-offset: 2px;
+}
+
+.perfil-user-icon {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.perfil-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 20;
+    width: 270px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+}
+
+.perfil-menu[hidden] {
+    display: none;
+}
+
+.perfil-menu-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.perfil-menu-user .perfil-user-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    background: #f3f4f6;
+}
+
+.perfil-menu-user-info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.perfil-menu-user-info strong,
+.perfil-menu-user-info span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.perfil-menu-user-info span {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.perfil-menu-links {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+}
+
+.perfil-menu-links a {
+    padding: 10px;
+    border-radius: 8px;
+    color: #1f2937;
+    text-decoration: none;
+}
+
+.perfil-menu-links a:hover,
+.perfil-menu-links a:focus-visible,
+.perfil-menu-links button:hover,
+.perfil-menu-links button:focus-visible {
+    border-radius: 8px;
+    background: #f3f4f6;
+}
+
+.perfil-menu-links .perfil-menu-logout {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 12px 10px;
+    border: 1px solid transparent;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: transparent;
+    color: #b91c1c;
+    cursor: pointer;
+    font: inherit;
+    line-height: 20px;
+    text-align: left;
+}
+
 .pill {
     border: 1px solid #d1d5db;
     background: #f9fafb;
@@ -1058,6 +1179,15 @@ body.escuro { background: #111827; color: #f8fafc; }
 body.escuro .topbar,
 body.escuro .card,
 body.escuro .hero-card { background: #1f2937; border-color: #374151; }
+body.escuro .perfil-menu { background: #1f2937; border-color: #374151; }
+body.escuro .perfil-menu-user { border-color: #374151; }
+body.escuro .perfil-menu-user-info span { color: #9ca3af; }
+body.escuro .perfil-menu-links a { color: #f8fafc; }
+body.escuro .perfil-menu-links a:hover,
+body.escuro .perfil-menu-links a:focus-visible,
+body.escuro .perfil-menu-links button:hover,
+body.escuro .perfil-menu-links button:focus-visible { background: #374151; }
+body.escuro .perfil-menu-links .perfil-menu-logout { border-color: transparent; border-top-color: #374151; color: #fca5a5; }
 body.escuro .opcao, body.escuro .switch-item { border-color: #374151; }
 body.escuro .opcao p, body.escuro .switch-item span:not(.switch) { color: #9ca3af; }
 body.escuro .opcao select { background: #374151; color: #fff; border-color: #4b5563; }

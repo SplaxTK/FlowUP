@@ -34,7 +34,6 @@ if (btnSenha) btnSenha.addEventListener("click", function () {
 // SAIR DA CONTA
 // ==========================
 
-const btnSair = document.getElementById("btnSair");
 const logoutModal = document.getElementById("logoutModal");
 
 function fecharLogoutModal() {
@@ -43,13 +42,21 @@ function fecharLogoutModal() {
     document.body.classList.remove("modal-aberto");
 }
 
-if (btnSair && logoutModal) btnSair.addEventListener("click", function () {
-    logoutModal.hidden = false;
-    document.body.classList.add("modal-aberto");
-    logoutModal.querySelector("[data-close-logout]").focus();
-});
-
 if (logoutModal) {
+    document.querySelectorAll("#btnSair, [data-open-logout]").forEach(function (trigger) {
+        trigger.addEventListener("click", function () {
+            logoutModal.hidden = false;
+            document.body.classList.add("modal-aberto");
+            const perfilMenu = document.getElementById("perfilMenu");
+            const perfilButton = document.getElementById("perfilButton");
+            if (perfilMenu && perfilButton) {
+                perfilMenu.hidden = true;
+                perfilButton.setAttribute("aria-expanded", "false");
+            }
+            logoutModal.querySelector(".logout-modal-close").focus();
+        });
+    });
+
     logoutModal.querySelectorAll("[data-close-logout]").forEach(function (elemento) {
         elemento.addEventListener("click", fecharLogoutModal);
     });
@@ -103,5 +110,35 @@ if (sidebarToggle && appShell) {
             "aria-label",
             isCollapsed ? "Expandir menu lateral" : "Recolher menu lateral"
         );
+    });
+}
+
+const perfilActions = document.getElementById("perfilActions");
+const perfilButton = document.getElementById("perfilButton");
+const perfilMenu = document.getElementById("perfilMenu");
+
+if (perfilActions && perfilButton && perfilMenu) {
+    function fecharMenuPerfil(devolverFoco) {
+        perfilMenu.hidden = true;
+        perfilButton.setAttribute("aria-expanded", "false");
+        if (devolverFoco) perfilButton.focus();
+    }
+
+    perfilButton.addEventListener("click", function () {
+        const abrirMenu = perfilMenu.hidden;
+        perfilMenu.hidden = !abrirMenu;
+        perfilButton.setAttribute("aria-expanded", String(abrirMenu));
+    });
+
+    document.addEventListener("click", function (evento) {
+        if (!perfilActions.contains(evento.target)) {
+            fecharMenuPerfil(false);
+        }
+    });
+
+    document.addEventListener("keydown", function (evento) {
+        if (evento.key === "Escape" && !perfilMenu.hidden) {
+            fecharMenuPerfil(true);
+        }
     });
 }

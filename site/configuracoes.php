@@ -30,16 +30,7 @@
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
                 </div>                          
-                 <div class="topbar-actions">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="configuracoes.php" class="pill active">
-                            <?php echo ($_SESSION['user_username'] ?? 'Perfil'); ?>
-                        </a>
-                    <?php else: ?>
-                        <a href="login/login.php" class="pill">Entrar</a>
-                        <a href="login/cadastro.php" class="pill active">Cadastrar</a>
-                    <?php endif; ?>
-                </div>
+                <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
 
             <main class="content configuracoes-content">
@@ -76,16 +67,4 @@
         </div>
     </div>
 
-    <div class="logout-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle" hidden>
-        <div class="logout-modal-backdrop" data-close-logout></div>
-        <div class="logout-modal-card">
-            <button class="logout-modal-close" type="button" aria-label="Fechar" data-close-logout>&times;</button>
-            <h2 id="logoutModalTitle">Sair da conta</h2>
-            <p>Você tem certeza que deseja encerrar sua sessão?</p>
-            <div class="logout-modal-actions">
-                <button class="btn-secundario" type="button" data-close-logout>Continuar aqui</button>
-                <a class="btn-sair" href="login/logout.php">Sair agora</a>
-            </div>
-        </div>
-    </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

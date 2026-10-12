@@ -25,6 +25,7 @@ if (!$isPublicPage) {
             $_SESSION['user_full_name'] = $usuario['nome_completo'];
             $_SESSION['user_username'] = $usuario['usuario'];
             $_SESSION['user_email'] = $usuario['email'];
+            $_SESSION['is_admin'] = flowup_user_is_admin($usuario);
         } else {
             $usuarioLogado = false;
         }

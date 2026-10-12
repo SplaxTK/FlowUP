@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_full_name'] = $user['nome_completo'];
             $_SESSION['user_username'] = $user['usuario'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['is_admin'] = flowup_user_is_admin($user);
 
             $token = gerarTokenAutenticacao([
                 'id' => $user['id'],

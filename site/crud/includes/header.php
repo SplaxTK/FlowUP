@@ -12,9 +12,9 @@
         <div class="navbar-content">
             <h1>FlowUP</h1>
             <div class="nav-links">
-                <a href="index.php?secao=cadastro" class="<?php echo ($secao == 'cadastro') ? 'ativo' : ''; ?>">Cadastro</a>
-                <a href="index.php?secao=tarefas" class="<?php echo ($secao == 'tarefas') ? 'ativo' : ''; ?>">Tarefas</a>
-                <a href="index.php?secao=recompensa" class="<?php echo ($secao == 'recompensa') ? 'ativo' : ''; ?>">Recompensas</a>
+                <a href="painel.php?secao=cadastro" class="<?php echo ($secao == 'cadastro') ? 'ativo' : ''; ?>">Cadastro</a>
+                <a href="painel.php?secao=tarefas" class="<?php echo ($secao == 'tarefas') ? 'ativo' : ''; ?>">Tarefas</a>
+                <a href="painel.php?secao=recompensa" class="<?php echo ($secao == 'recompensa') ? 'ativo' : ''; ?>">Recompensas</a>
             </div>
         </div>
     </div>

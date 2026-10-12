@@ -52,7 +52,7 @@
             <div class="botoes">
                 <?php if ($acao == 'editar'): ?>
                     <button type="submit" name="atualizar" class="btn-primario">Atualizar</button>
-                    <a href="index.php?secao=cadastro" class="btn-secundario">Cancelar</a>
+                    <a href="painel.php?secao=cadastro" class="btn-secundario">Cancelar</a>
                 <?php else: ?>
                     <button type="submit" name="criar" class="btn-primario">Criar</button>
                     <button type="reset" class="btn-secundario">Limpar</button>
@@ -82,7 +82,7 @@
                             <td><?php echo e(date('d/m/Y H:i', strtotime($item['criado_em']))); ?></td>
                             <td>
                                 <div class="acoes">
-                                    <a href="index.php?secao=cadastro&acao=editar&email=<?php echo urlencode($item['email']); ?>" class="btn-editar">Editar</a>
+                                    <a href="painel.php?secao=cadastro&acao=editar&email=<?php echo urlencode($item['email']); ?>" class="btn-editar">Editar</a>
                                     <form method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza?');">
                                         <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION['csrf_token']); ?>">
                                         <input type="hidden" name="email" value="<?php echo e($item['email']); ?>">
@@ -96,7 +96,7 @@
             </table>
         <?php else: ?>
             <div class="vazio">
-                <p>Nenhum cadastro encontrado. <a href="index.php?secao=cadastro">Crie um novo!</a></p>
+                <p>Nenhum cadastro encontrado. <a href="painel.php?secao=cadastro">Crie um novo!</a></p>
             </div>
         <?php endif; ?>
     </div>
