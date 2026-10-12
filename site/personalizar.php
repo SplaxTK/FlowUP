@@ -48,7 +48,7 @@
                 <form method="post">
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone"><img class="img-icon" src="assets/img/icons/brush-icon.png" alt="Pincel" aria-hidden="true"></div>
+                            <div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/brush-icon.png" alt="Pincel" aria-hidden="true"><img class="img-icon icone-escuro" src="assets/img/icons/brush-icon-2.png" alt="" aria-hidden="true"></div>
                             
                             <div><h2>Aparência</h2><p>Escolha como o FlowUp será exibido.</p></div>
                         </div>
@@ -118,7 +118,7 @@
 
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone"><img class="img-icon" src="assets/img/icons/home-icon.png" alt="Casa" aria-hidden="true"></div>
+                            <div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/home-icon.png" alt="Casa" aria-hidden="true"><img class="img-icon icone-escuro" src="assets/img/icons/home-icon-2.png" alt="" aria-hidden="true"></div>
                             <div><h2>Página inicial</h2><p>Escolha quais blocos deseja visualizar no painel.</p></div>
                         </div>
                         <label class="switch-item"><div><strong>Calendário</strong><span>Mostrar o calendário no painel.</span></div><input type="checkbox" name="calendario" checked><span class="switch"></span></label>
@@ -131,7 +131,7 @@
 
                     <section class="card personalizar-card">
                         <div class="titulo-card">
-                            <div class="icone"><img class="img-icon" src="assets/img/icons/cookie-icon.png" alt="Cookie" aria-hidden="true"></div>
+                            <div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/cookie-icon.png" alt="Cookie" aria-hidden="true"><img class="img-icon icone-escuro" src="assets/img/icons/cookie-icon-2.png" alt="" aria-hidden="true"></div>
                             <div><h2>Privacidade e cookies</h2><p>Revise sua escolha de cookies e armazenamento local.</p></div>
                         </div>
                         <div class="opcao cookie-preferences">

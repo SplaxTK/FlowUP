@@ -352,6 +352,22 @@ body {
     height: 30px;
 }
 
+.icone-tema .icone-escuro {
+    display: none;
+}
+
+body.escuro .icone-tema {
+    background: #263b61;
+}
+
+body.escuro .icone-tema .icone-claro {
+    display: none;
+}
+
+body.escuro .icone-tema .icone-escuro {
+    display: block;
+}
+
 .theme-btn {
     position: relative;
     width: 48px;
@@ -500,9 +516,9 @@ body {
 }
 
 .pill.active {
-    background: #2563eb;
-    color: white;
-    border-color: #2563eb;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
+    border-color: var(--cor-principal);
     text-decoration: none;
 }
 
@@ -538,6 +554,7 @@ body {
     width: 100%;
     padding: 32px 40px;
     background: #ffffff;
+    color: #1f2937;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
@@ -570,6 +587,24 @@ body {
 .legal-updated {
     color: #6b7280;
     font-size: 0.85rem;
+}
+
+body.escuro.legal-page .legal-card {
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+body.escuro.legal-page .legal-card h1 {
+    color: #f8fafc;
+}
+
+body.escuro.legal-page .legal-card h2 {
+    color: #bfdbfe;
+}
+
+body.escuro.legal-page .legal-updated {
+    color: #9ca3af;
 }
 
 .hero-card {
@@ -1088,12 +1123,12 @@ body.escuro .opcao select { background: #374151; color: #fff; border-color: #4b5
     padding: 12px 20px;
     border: none;
     border-radius: 9px;
-    background: #2563eb;
-    color: #fff;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
     cursor: pointer;
 }
 
-.btn:hover { background: #1d4ed8; }
+.btn:hover { background: var(--cor-principal-hover); }
 
 .config-actions {
     display: flex;
@@ -1264,8 +1299,8 @@ transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     padding: 9px 13px;
     border: 0;
     border-radius: 9px;
-    background: #2563eb;
-    color: #fff;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
     cursor: pointer;
     font: inherit;
     font-weight: 700;
@@ -1273,7 +1308,7 @@ transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .complete-button:hover,
-.btn.form-submit:hover { background: #1d4ed8; }
+.btn.form-submit:hover { background: var(--cor-principal-hover); }
 .complete-button:disabled { background: #cbd5e1; cursor: not-allowed; }
 .is-complete strong { text-decoration: line-through; color: #64748b; }
 .completed-label { color: #15803d !important; font-weight: 700; }
