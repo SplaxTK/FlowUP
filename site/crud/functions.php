@@ -56,20 +56,15 @@ function obterCadastroPorEmail($pdo, $email) {
     return $resultado ?: null;
 }
 
-function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto, $senha = null) {
+function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto) {
     try {
-        // Se a senha for informada, atualiza o hash dela; caso contrário, atualiza apenas o nome
-        if (!empty($senha)) {
-            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-            $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo, senha = :senha WHERE email = :email";
-            $params = [':usuario' => $usuario, ':nome_completo' => $nomeCompleto, ':senha' => $senhaHash, ':email' => $email];
-        } else {
-            $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo WHERE email = :email";
-            $params = [':usuario' => $usuario, ':nome_completo' => $nomeCompleto, ':email' => $email];
-        }
-
+        $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo WHERE email = :email";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute([
+            ':usuario' => $usuario,
+            ':nome_completo' => $nomeCompleto,
+            ':email' => $email
+        ]);
 
         return ['sucesso' => true, 'mensagem' => 'Cadastro atualizado com sucesso!'];
     } catch (PDOException $e) {

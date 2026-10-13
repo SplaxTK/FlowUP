@@ -44,10 +44,14 @@
                 <input type="text" id="nome_completo" name="nome_completo" required value="<?php echo ($registro) ? e($registro['nome_completo']) : ''; ?>">
             </div>
             
-            <div class="form-group">
-                <label for="senha">Senha: <?php echo ($acao == 'editar') ? '(Preencha apenas para alterar)' : ''; ?></label>
-                <input type="password" id="senha" name="senha" <?php echo ($acao == 'editar') ? '' : 'required'; ?> value="">
-            </div>
+            <?php if ($acao == 'editar'): ?>
+                <p>A senha não pode ser alterada pelo painel administrativo.</p>
+            <?php else: ?>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required value="">
+                </div>
+            <?php endif; ?>
             
             <div class="botoes">
                 <?php if ($acao == 'editar'): ?>

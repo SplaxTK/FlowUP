@@ -33,7 +33,7 @@ if (!$isPublicPage) {
 
     if (!$usuarioLogado) {
         $scriptDirectory = str_replace('\\', '/', dirname($scriptName ?: '/index.php'));
-        $sitePath = preg_replace('~/(?:login|politica|functions)$~', '', $scriptDirectory);
+        $sitePath = preg_replace('~/(?:login|politica|functions|crud)$~', '', $scriptDirectory);
         $sitePath = rtrim($sitePath, '/');
 
         header('Location: ' . $sitePath . '/login/login.php');

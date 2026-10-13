@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if (isset($_POST['atualizar'])) {
-        $resultado = atualizarCadastro($pdo, $_POST['email'], $_POST['usuario'], $_POST['nome_completo'], $_POST['senha']);
+        $resultado = atualizarCadastro($pdo, $_POST['email'], $_POST['usuario'], $_POST['nome_completo']);
         $mensagem = $resultado['mensagem'];
         $tipo_mensagem = $resultado['sucesso'] ? 'sucesso' : 'erro';
         $acao = '';
