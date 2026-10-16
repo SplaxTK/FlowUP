@@ -8,7 +8,7 @@ require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../helpers/auth_helper.php';
 require_once __DIR__ . '/../helpers/auth_middleware.php';
 
-$pontosUsuario = flowup_pontos($pdo, $_SESSION['user_email'] ?? null);
+$pontosUsuario = flowup_pontos($pdo, flowup_user_id());
 
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $forwardedProto = strtolower(trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')[0]));

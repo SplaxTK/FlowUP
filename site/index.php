@@ -4,8 +4,9 @@ require_once __DIR__ . '/functions/flowup.php';
 
 require_once __DIR__ . '/includes/header.php';
 
-$tarefasHoje = flowup_tarefas_hoje($pdo, $user_email);
-$metasHoje = flowup_metas_hoje($pdo, $user_email);
+$userId = flowup_user_id();
+$tarefasHoje = flowup_tarefas_hoje($pdo, $userId);
+$metasHoje = flowup_metas_hoje($pdo, $userId);
 ?>
 
 <body>

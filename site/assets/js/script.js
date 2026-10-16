@@ -4,31 +4,47 @@
 
 const btnSenha = document.getElementById("btnSenha");
 
-if (btnSenha) btnSenha.addEventListener("click", function () {
+function abrirModalSenha(email) {
+    // evita abrir duas vezes
+    if (document.getElementById("modalSenha")) return;
 
-    const novaSenha = prompt(
-        "Digite sua nova senha:"
-    );
+    const overlay = document.createElement("div");
+    overlay.id = "modalSenha";
+    overlay.className = "modal-overlay";
 
-    if (novaSenha === null) {
-        return;
-    }
+    overlay.innerHTML = `
+        <div class="modal-box" role="dialog" aria-modal="true">
+            <button class="modal-fechar" aria-label="Fechar">&times;</button>
+            <div class="modal-icone">✉️</div>
+            <h2>Verifique seu e-mail</h2>
+            <p>
+                Enviamos um link para redefinir sua senha${email ? ` para <strong>${email}</strong>` : ""}.
+                Confira sua caixa de entrada e a pasta de spam.
+            </p>
+            <button class="modal-ok">Entendi</button>
+        </div>
+    `;
 
-    if (novaSenha.length < 6) {
+    document.body.appendChild(overlay);
 
-        alert(
-            "A senha deve possuir pelo menos 6 caracteres."
-        );
+    const fechar = () => {
+        overlay.remove();
+        document.removeEventListener("keydown", onEsc);
+    };
+    const onEsc = (e) => { if (e.key === "Escape") fechar(); };
 
-        return;
-    }
+    overlay.querySelector(".modal-fechar").addEventListener("click", fechar);
+    overlay.querySelector(".modal-ok").addEventListener("click", fechar);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) fechar(); });
+    document.addEventListener("keydown", onEsc);
+}
 
-    alert(
-        "Senha alterada com sucesso!"
-    );
-
-});
-
+if (btnSenha) {
+    btnSenha.addEventListener("click", function () {
+        // coloque aqui o e-mail do usuário, se tiver (ex: "usuario@email.com")
+        abrirModalSenha("");
+    });
+}
 
 // ==========================
 // SAIR DA CONTA

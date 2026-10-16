@@ -60,7 +60,7 @@
 
                 <section class="card config-card">
                     <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/lock-icon.png" alt="Ícone de segurança"><img class="img-icon icone-escuro" src="assets/img/icons/lock-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
-                    <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha">Alterar senha</button>
+                    <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha" href=email.php>Alterar senha</button>
                     <button type="button" class="btn-sair" id="btnSair">Sair da conta</button></div>
                 </section>
             </main>

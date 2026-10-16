@@ -129,5 +129,18 @@
         })();
     </script>
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/style.css">
+
+    <?php
+        $calendarCssPath = __DIR__ . '/../assets/css/calendar.css';
+
+        if (
+        basename($_SERVER['SCRIPT_NAME'] ?? '') === 'calendario.php'
+        && is_file($calendarCssPath)
+):
+?>
+    <link rel="stylesheet"
+          href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/calendar.css?v=<?php echo filemtime($calendarCssPath); ?>">
+<?php endif; ?>
+
     <script src="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/js/script.js" defer></script>
 </head>

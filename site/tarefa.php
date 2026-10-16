@@ -2,15 +2,16 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/helpers/auth_middleware.php';
 require_once __DIR__ . '/functions/flowup.php';
 
-$email = flowup_email($pdo);
+$userId = flowup_user_id();
 $message = $_SESSION['form_message'] ?? '';
 $messageType = $_SESSION['form_message_type'] ?? '';
 
 unset($_SESSION['form_message'], $_SESSION['form_message_type']);
 
-if ($email) {
+if ($userId !== null) {
     flowup_prepare_schema($pdo);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,8 +25,19 @@ if ($email) {
                 $_SESSION['form_message'] = 'Preencha a tarefa, o tipo e uma pontuação válida.';
                 $_SESSION['form_message_type'] = 'error';
             } else {
-                $stmt = $pdo->prepare('INSERT INTO novas_tarefas (descricao, tipo, qtd_pon_ganho, email) VALUES (:descricao, :tipo, :pontos, :email)');
-                $stmt->execute(['descricao' => $descricao, 'tipo' => $tipo, 'pontos' => $pontos, 'email' => $email]);
+                if (flowup_table_has_column($pdo, 'novas_tarefas', 'user_id')) {
+                    $stmt = $pdo->prepare(
+                        'INSERT INTO novas_tarefas (user_id, descricao, tipo, qtd_pon_ganho)
+                         VALUES (:user_id, :descricao, :tipo, :pontos)'
+                    );
+                    $stmt->execute(['user_id' => $userId, 'descricao' => $descricao, 'tipo' => $tipo, 'pontos' => $pontos]);
+                } else {
+                    $stmt = $pdo->prepare(
+                        'INSERT INTO novas_tarefas (email, descricao, tipo, qtd_pon_ganho)
+                         SELECT email, :descricao, :tipo, :pontos FROM usuarios WHERE id = :user_id'
+                    );
+                    $stmt->execute(['descricao' => $descricao, 'tipo' => $tipo, 'pontos' => $pontos, 'user_id' => $userId]);
+                }
                 
                 $_SESSION['form_message'] = 'Tarefa adicionada com sucesso!';
                 $_SESSION['form_message_type'] = 'success';
@@ -35,7 +47,7 @@ if ($email) {
             exit;
             
         } elseif (isset($_POST['concluir'])) {
-            $msgResult = flowup_concluir($pdo, $email, (int) $_POST['id_tarefa']);
+            $msgResult = flowup_concluir($pdo, $userId, (int) $_POST['id_tarefa']);
             
             $_SESSION['form_message'] = $msgResult;
             $_SESSION['form_message_type'] = 'success';
@@ -44,11 +56,17 @@ if ($email) {
             exit;
         }
     }
-    $stmt = $pdo->prepare('SELECT * FROM novas_tarefas WHERE email = :email AND status <> \'inativa\' ORDER BY FIELD(tipo, \'diaria\', \'semanal\', \'mensal\', \'meta\'), data_criacao DESC');
-    $stmt->execute(['email' => $email]);
+    $stmt = $pdo->prepare(
+        'SELECT t.*
+         FROM novas_tarefas AS t
+         WHERE ' . flowup_user_filter($pdo, 'novas_tarefas', 't') . '
+           AND t.status <> \'inativa\'
+         ORDER BY FIELD(t.tipo, \'diaria\', \'semanal\', \'mensal\', \'meta\'), t.data_criacao DESC'
+    );
+    $stmt->execute(['user_id' => $userId]);
     $tarefas = $stmt->fetchAll();
-    $concluidas = flowup_concluidas($pdo, $email, $tarefas);
-    $pontosUsuario = flowup_pontos($pdo, $email);
+    $concluidas = flowup_concluidas($pdo, $userId, $tarefas);
+    $pontosUsuario = flowup_pontos($pdo, $userId);
 } else {
     $tarefas = [];
     $concluidas = [];
@@ -109,7 +127,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
                 <aside class="card add-task-card">
                     <p class="small-label">Novo objetivo</p><h2>Adicionar tarefa</h2><p>Crie uma missão e defina quantos pontos ela vale.</p>
-                    <?php if ($email): ?><form method="post" class="task-form"><label for="descricao">Tarefa</label><input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Caminhar por 20 minutos"><label for="tipo">Frequência</label><select id="tipo" name="tipo"><option value="diaria">Diária</option><option value="semanal">Semanal</option><option value="mensal">Mensal</option><option value="meta">Meta</option></select><label for="pontos">Pontos</label><input id="pontos" name="pontos" type="number" min="1" max="10000" required placeholder="10"><button class="btn form-submit" name="adicionar" type="submit">Adicionar tarefa</button></form><?php else: ?><a class="pill active" href="login/login.php">Entrar para adicionar</a><?php endif; ?>
+                    <?php if ($userId !== null): ?><form method="post" class="task-form"><label for="descricao">Tarefa</label><input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Caminhar por 20 minutos"><label for="tipo">Frequência</label><select id="tipo" name="tipo"><option value="diaria">Diária</option><option value="semanal">Semanal</option><option value="mensal">Mensal</option><option value="meta">Meta</option></select><label for="pontos">Pontos</label><input id="pontos" name="pontos" type="number" min="1" max="10000" required placeholder="10"><button class="btn form-submit" name="adicionar" type="submit">Adicionar tarefa</button></form><?php else: ?><a class="pill active" href="login/login.php">Entrar para adicionar</a><?php endif; ?>
                 </aside>
             </section>
         </main>

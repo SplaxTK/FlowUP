@@ -1,0 +1,766 @@
+# Link do site postado
+
+    https://flowup-gamma.vercel.app/
+
+# FlowUp — Agenda, Organização e Produtividade Gamificada
+
+> **Organize sua rotina. Cumpra seus objetivos. Evolua a cada conquista.**
+
+O FlowUp é uma aplicação web de organização pessoal que combina agenda, gerenciamento de tarefas, planejamento de rotinas e elementos de gamificação para tornar a produtividade mais visual, motivadora e consistente.
+
+O projeto busca transformar atividades do dia a dia em objetivos acompanháveis, permitindo que o usuário organize seus compromissos, acompanhe seu progresso e desenvolva hábitos de organização.
+
+---
+
+## 1. Visão geral e conceito do produto
+
+### 1.1. O que é o FlowUp?
+
+O FlowUp é uma plataforma de produtividade pessoal com foco em organização, acompanhamento de tarefas e evolução contínua.
+
+Sua proposta é reunir, em um único ambiente, ferramentas para planejar o dia, gerenciar compromissos, acompanhar atividades e visualizar o progresso do usuário.
+
+Diferentemente de uma agenda convencional, o FlowUp propõe uma experiência que pode incorporar elementos de jogos, como pontos, níveis, conquistas e recompensas, incentivando a continuidade do uso e a conclusão das atividades.
+
+### 1.2. Objetivos principais
+
+- Centralizar tarefas, rotinas e compromissos.
+- Facilitar o planejamento diário e semanal.
+- Tornar o progresso pessoal fácil de visualizar.
+- Incentivar a consistência por meio de mecânicas de gamificação.
+- Reduzir a desorganização e o esquecimento de atividades.
+- Oferecer uma interface intuitiva, agradável e responsiva.
+- Criar uma experiência de produtividade que estimule o usuário sem transformar a organização em uma obrigação excessivamente rígida.
+
+### 1.3. Público-alvo
+
+O público-alvo principal inclui estudantes, profissionais e pessoas que desejam melhorar sua organização pessoal.
+
+**Perfis de usuários:**
+
+- Estudantes que precisam organizar estudos, trabalhos e provas.
+- Pessoas que desejam estruturar suas rotinas.
+- Profissionais que precisam acompanhar compromissos e atividades.
+- Usuários que preferem acompanhar objetivos por meio de indicadores visuais e recompensas.
+- Pessoas que procuram uma alternativa mais envolvente às agendas tradicionais.
+
+### 1.4. Problema que o FlowUp procura resolver
+
+A falta de organização pode dificultar o cumprimento de compromissos, a manutenção de hábitos e o acompanhamento de objetivos.
+
+O FlowUp pretende reduzir esse problema ao combinar planejamento, execução e acompanhamento do progresso em uma experiência integrada.
+
+O princípio central do produto é:
+
+**Planejar → Executar → Acompanhar → Evoluir.**
+
+---
+
+## 2. Identidade visual e branding
+
+### 2.1. Conceito da marca
+
+O nome **FlowUp** remete à ideia de manter o fluxo das atividades e avançar continuamente.
+
+A identidade da marca deve transmitir:
+
+- Evolução e progresso.
+- Clareza e organização.
+- Modernidade e tecnologia.
+- Leveza e facilidade de uso.
+- Motivação e realização pessoal.
+
+A interface deve equilibrar produtividade e engajamento, sem exagerar em elementos decorativos que possam prejudicar a leitura ou a navegação.
+
+### 2.2. Logo e identidade gráfica
+
+O projeto utiliza o arquivo:
+
+`assets/img/flowUp.png`
+
+Esse arquivo corresponde ao recurso visual da marca identificado na estrutura do projeto.
+
+Diretrizes para sua utilização:
+
+- Preservar a proporção original da imagem.
+- Evitar distorções, cortes ou alterações desnecessárias.
+- Garantir contraste adequado com o fundo.
+- Utilizar dimensões consistentes entre as páginas.
+- Verificar a legibilidade em telas menores.
+- Centralizar a identidade visual nos elementos compartilhados da interface.
+
+A definição de uma versão oficial para fundos claros e escuros, assim como de uma paleta cromática definitiva, deve ser consolidada conforme os arquivos visuais existentes.
+
+### 2.3. Diretrizes de UI/UX
+
+A experiência visual do FlowUp deve seguir estes princípios:
+
+**Hierarquia visual**
+
+Informações importantes, como tarefas pendentes, compromissos próximos e indicadores de progresso, devem ser facilmente identificáveis.
+
+**Consistência**
+
+Botões, menus, formulários, cartões, ícones e espaçamentos devem seguir padrões compartilhados entre as páginas.
+
+**Feedback visual**
+
+Ações como concluir uma tarefa, salvar um compromisso ou alterar uma configuração devem apresentar respostas visuais claras.
+
+**Responsividade**
+
+A interface deve funcionar em computadores, tablets e celulares.
+
+**Acessibilidade**
+
+A aplicação deve buscar contraste adequado, textos legíveis, navegação compreensível e controles acessíveis por teclado.
+
+**Gamificação equilibrada**
+
+Pontos, níveis e conquistas devem reforçar o progresso, sem competir visualmente com as funcionalidades essenciais de organização.
+
+### 2.4. Organização dos estilos
+
+Os principais arquivos de estilo identificados são:
+
+- `assets/css/style.css` — estilos gerais da aplicação.
+- `assets/css/calendar.css` — estilos específicos do calendário.
+
+A folha de estilos do calendário deve complementar a identidade visual global, evitando a criação de uma interface visualmente independente do restante da aplicação.
+
+---
+
+## 3. Funcionalidades e recursos
+
+### 3.1. Painel principal
+
+O painel principal deve funcionar como ponto de entrada para as atividades do usuário.
+
+Pode reunir:
+
+- Resumo das tarefas pendentes.
+- Próximos compromissos.
+- Atividades concluídas.
+- Indicadores de produtividade.
+- Pontuação e progresso gamificado, quando implementados.
+- Acesso rápido ao calendário.
+- Navegação para as demais áreas da aplicação.
+
+O objetivo é permitir que o usuário compreenda rapidamente o que precisa fazer e quais são suas prioridades.
+
+### 3.2. Calendário e agenda
+
+O calendário é uma das áreas centrais do FlowUp.
+
+A implementação identificada contempla recursos de navegação e gerenciamento de eventos, incluindo visualizações em diferentes escalas de tempo.
+
+**Recursos do calendário:**
+
+- Navegação entre datas.
+- Visualização mensal.
+- Visualização semanal.
+- Visualização diária.
+- Pesquisa de eventos.
+- Filtros por categoria.
+- Criação de compromissos.
+- Edição de eventos existentes.
+- Duplicação de eventos.
+- Exclusão de eventos.
+- Integração e sincronização com o Google Agenda, conforme o suporte disponível na implementação.
+
+O calendário utiliza o FullCalendar, identificado na versão 6.1.15 por meio de CDN na implementação considerada.
+
+A experiência deve preservar os controles específicos da agenda, mantendo o cabeçalho, a navegação, o menu de perfil e os demais componentes visuais alinhados ao padrão geral da aplicação.
+
+### 3.3. Gerenciamento de tarefas
+
+O módulo de tarefas deve permitir que o usuário transforme objetivos em atividades organizadas.
+
+Funcionalidades previstas para esse módulo:
+
+- Criar tarefas com título e descrição.
+- Definir datas de vencimento.
+- Acompanhar o status das atividades.
+- Editar informações.
+- Marcar tarefas como concluídas.
+- Excluir tarefas.
+- Organizar atividades por categorias ou prioridades.
+- Consultar tarefas pendentes e concluídas.
+
+O gerenciamento de tarefas deve ser integrado à experiência de produtividade, permitindo que atividades concluídas contribuam para os indicadores do usuário.
+
+Esses recursos devem ser considerados funcionalidades planejadas até que sua implementação seja confirmada no código.
+
+### 3.4. Rotinas e hábitos
+
+O módulo de rotinas poderá permitir a organização de atividades recorrentes.
+
+Exemplos de uso:
+
+- Planejamento de estudos.
+- Rotinas de leitura.
+- Organização de tarefas domésticas.
+- Revisão de objetivos.
+- Atividades recorrentes de trabalho.
+
+Recursos propostos:
+
+- Definição de frequência.
+- Acompanhamento de execuções.
+- Histórico de atividades.
+- Indicadores de consistência.
+- Visualização das rotinas no planejamento diário.
+
+O objetivo é facilitar a manutenção de hábitos, sem penalizar excessivamente o usuário quando uma atividade não for concluída.
+
+### 3.5. Sistema de gamificação
+
+A gamificação é um dos principais diferenciais conceituais do FlowUp.
+
+Sua finalidade é tornar o progresso perceptível e incentivar a continuidade do uso.
+
+**Sistema de pontos**
+
+O sistema poderá atribuir pontos por atividades elegíveis, como concluir tarefas ou cumprir objetivos definidos.
+
+As regras precisam ser centralizadas no back-end para impedir que o usuário altere sua pontuação diretamente pela interface.
+
+**Níveis de progressão**
+
+Os pontos acumulados poderão contribuir para a evolução de nível.
+
+A progressão deve utilizar regras claras e consistentes, com indicadores visuais que mostrem o avanço até o próximo nível.
+
+**Conquistas**
+
+As conquistas poderão reconhecer marcos importantes, como:
+
+- Primeira tarefa concluída.
+- Sequência de dias com atividades realizadas.
+- Cumprimento de determinado número de objetivos.
+- Conclusão de metas pessoais.
+- Marcos de evolução na organização.
+
+**Recompensas**
+
+Como evolução futura, o sistema poderá oferecer recompensas virtuais, distintivos ou elementos de personalização.
+
+As recompensas devem ser transparentes e vinculadas a critérios verificáveis.
+
+**Histórico de progresso**
+
+O usuário poderá consultar sua evolução por meio de registros de atividades, pontos recebidos e conquistas desbloqueadas.
+
+> As mecânicas de pontos, níveis, conquistas e recompensas representam o sistema de gamificação proposto. Suas regras definitivas e seu estado de implementação devem ser verificados no código do projeto.
+
+### 3.6. Perfil do usuário
+
+O projeto possui uma estrutura de menu de perfil compartilhado, identificada pelo arquivo `includes/profile_menu.php`.
+
+A experiência deve oferecer um acesso organizado às ações relacionadas à conta.
+
+Recursos que podem compor o perfil:
+
+- Identificação do usuário.
+- Acesso às configurações pessoais.
+- Preferências da aplicação.
+- Consulta de progresso.
+- Encerramento de sessão.
+
+Ações que alterem informações pessoais ou encerrem a sessão devem apresentar comportamentos claros e previsíveis.
+
+### 3.7. Pesquisa e filtros
+
+A pesquisa e os filtros devem facilitar a localização de compromissos e atividades.
+
+No calendário, os recursos identificados incluem pesquisa de eventos e filtros por categoria.
+
+Como evolução, o mesmo padrão poderá ser aplicado às tarefas, permitindo filtrar por status, data, prioridade e categoria, conforme os módulos disponíveis.
+
+### 3.8. Integrações
+
+A integração com o Google Agenda faz parte dos recursos identificados na implementação do calendário.
+
+Essa integração exige configuração adequada das credenciais, permissões e mecanismos de sincronização.
+
+A aplicação deve tratar corretamente:
+
+- Falhas de autenticação.
+- Permissões concedidas pelo usuário.
+- Erros de comunicação.
+- Atualizações de eventos.
+- Possíveis duplicações.
+- Diferenças entre eventos locais e eventos externos.
+
+A disponibilidade efetiva da sincronização depende da configuração do serviço e da implementação correspondente.
+
+---
+
+## 4. Arquitetura e stack tecnológica
+
+### 4.1. Visão geral
+
+A arquitetura identificada utiliza PHP para as páginas e componentes do servidor, com CSS e JavaScript para a interface e suas interações.
+
+A integração com APIs permite separar determinadas operações de dados da apresentação visual.
+
+### 4.2. Tecnologias
+
+| Tecnologia | Responsabilidade |
+|---|---|
+| HTML5 | Estrutura das páginas |
+| CSS3 | Estilização e responsividade |
+| JavaScript | Interatividade e atualização da interface |
+| PHP | Renderização das páginas e lógica do servidor |
+| API HTTP/REST | Comunicação entre interface e operações de dados, conforme implementadas |
+| FullCalendar 6.1.15 | Visualizações e interação com o calendário |
+| Banco de dados relacional | Persistência de usuários, tarefas, eventos e progresso |
+| Google Calendar API | Integração externa com a agenda, quando configurada |
+
+O banco de dados e o mecanismo de persistência definitivos devem ser confirmados nos arquivos de configuração e nas consultas existentes.
+
+### 4.3. Estrutura de diretórios
+
+A estrutura de referência identificada no projeto é:
+
+```text
+FlowUp/
+├── index.php
+├── calendario.php
+│
+├── api/
+│   └── calendar.php
+│
+├── config/
+│   └── config.php
+│
+├── functions/
+│   └── flowup.php
+│
+├── includes/
+│   ├── head.php
+│   ├── header.php
+│   ├── profile_menu.php
+│   └── footer.php
+│
+└── assets/
+    ├── img/
+    │   └── flowUp.png
+    │
+    ├── css/
+    │   ├── style.css
+    │   └── calendar.css
+    │
+    └── js/
+        ├── script.js
+        └── calendar.js
+```
+
+Essa estrutura representa os caminhos identificados no desenvolvimento e não necessariamente a totalidade dos arquivos existentes.
+
+### 4.4. Responsabilidade dos arquivos
+
+**`index.php`**
+
+Página principal e referência visual e estrutural para a aplicação. Alterações nas demais páginas devem preservar a consistência com o padrão estabelecido nela.
+
+**`calendario.php`**
+
+Página responsável pela interface do calendário, incluindo navegação por datas, visualizações, pesquisa, filtros e ações de gerenciamento de eventos.
+
+**`api/calendar.php`**
+
+Ponto de comunicação para as operações do calendário, conforme a implementação atual.
+
+**`config/config.php`**
+
+Arquivo de configuração da aplicação. Credenciais e segredos devem ser protegidos e não devem ser publicados no repositório.
+
+**`functions/flowup.php`**
+
+Local destinado às funções compartilhadas identificadas no projeto.
+
+**`includes/head.php`**
+
+Componente compartilhado para informações do documento e carregamento de recursos do cabeçalho HTML.
+
+**`includes/header.php`**
+
+Componente compartilhado do cabeçalho visual da aplicação.
+
+**`includes/profile_menu.php`**
+
+Componente de navegação e ações relacionadas ao perfil.
+
+**`includes/footer.php`**
+
+Componente compartilhado do rodapé.
+
+**`assets/css/style.css`**
+
+Folha de estilos global.
+
+**`assets/css/calendar.css`**
+
+Folha de estilos específica do calendário, carregada conforme a página.
+
+**`assets/js/script.js`**
+
+Arquivo de JavaScript geral da aplicação.
+
+**`assets/js/calendar.js`**
+
+Arquivo destinado às interações do calendário.
+
+### 4.5. Organização recomendada do back-end
+
+A lógica do servidor deve ser organizada para evitar duplicação de regras.
+
+Recomenda-se separar:
+
+- Autenticação e autorização.
+- Regras de negócio.
+- Operações de banco de dados.
+- Validação de entrada.
+- Processamento de requisições.
+- Formatação das respostas da API.
+
+As operações da API devem validar os dados recebidos e retornar respostas consistentes, com códigos HTTP adequados.
+
+### 4.6. Modelo de dados sugerido
+
+A estrutura abaixo é uma proposta inicial de banco de dados. Os nomes e relacionamentos definitivos devem acompanhar o código existente.
+
+**Tabela `users`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador do usuário |
+| `name` | Nome de exibição |
+| `email` | E-mail de acesso |
+| `password_hash` | Hash seguro da senha |
+| `created_at` | Data de criação |
+
+**Tabela `tasks`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador da tarefa |
+| `user_id` | Proprietário da tarefa |
+| `title` | Título |
+| `description` | Descrição |
+| `due_date` | Data de vencimento |
+| `status` | Estado da atividade |
+| `category_id` | Categoria associada |
+| `created_at` | Data de criação |
+| `completed_at` | Data de conclusão |
+
+**Tabela `events`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador do evento |
+| `user_id` | Proprietário do evento |
+| `title` | Título do compromisso |
+| `description` | Descrição |
+| `start_at` | Data e hora de início |
+| `end_at` | Data e hora de término |
+| `category_id` | Categoria associada |
+| `external_event_id` | Identificador externo, quando aplicável |
+
+**Tabela `categories`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador da categoria |
+| `user_id` | Proprietário ou contexto da categoria |
+| `name` | Nome |
+| `color` | Cor de identificação |
+
+**Tabela `user_progress`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador do registro |
+| `user_id` | Usuário relacionado |
+| `total_points` | Pontuação acumulada |
+| `level` | Nível atual |
+| `updated_at` | Última atualização |
+
+**Tabela `achievements`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador da conquista |
+| `name` | Nome |
+| `description` | Descrição |
+| `criteria` | Critérios de obtenção |
+
+**Tabela `user_achievements`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador do registro |
+| `user_id` | Usuário relacionado |
+| `achievement_id` | Conquista obtida |
+| `unlocked_at` | Data de desbloqueio |
+
+**Tabela `point_transactions`**
+
+| Campo | Finalidade |
+|---|---|
+| `id` | Identificador da transação |
+| `user_id` | Usuário relacionado |
+| `points` | Quantidade de pontos |
+| `reason` | Motivo da movimentação |
+| `reference_id` | Identificador da atividade relacionada |
+| `created_at` | Data da movimentação |
+
+O histórico de transações permite auditar a pontuação e reduzir problemas de duplicação ou alteração indevida de pontos.
+
+### 4.7. Segurança
+
+A segurança deve ser considerada desde as primeiras fases do desenvolvimento.
+
+Recomendações:
+
+- Utilizar `password_hash()` e `password_verify()` para senhas.
+- Utilizar consultas preparadas para interações com o banco.
+- Validar e normalizar os dados recebidos.
+- Escapar corretamente conteúdo exibido em HTML.
+- Implementar proteção contra CSRF nas operações aplicáveis.
+- Verificar a autorização no servidor em cada operação protegida.
+- Não confiar em IDs, pontuações ou permissões enviados pelo navegador.
+- Proteger sessões e cookies.
+- Manter credenciais e tokens fora dos arquivos públicos.
+- Registrar erros sem expor informações sensíveis ao usuário.
+
+Se houver diferentes níveis de acesso, as permissões devem ser verificadas no back-end, não apenas pela visibilidade dos botões.
+
+### 4.8. Padrões de desenvolvimento
+
+O `index.php` deve servir como referência principal de identidade visual e estrutura compartilhada.
+
+Ao desenvolver ou modificar outra página:
+
+1. Reutilizar os componentes compartilhados.
+2. Preservar a identidade visual global.
+3. Manter as funcionalidades específicas da página.
+4. Evitar duplicação de CSS e JavaScript.
+5. Validar a compatibilidade entre PHP, HTML, CSS e JavaScript.
+6. Testar as operações de ponta a ponta.
+7. Garantir que os recursos existentes continuem funcionando.
+
+---
+
+## 5. Próximos passos e roadmap
+
+O desenvolvimento deve ocorrer de forma incremental, priorizando uma aplicação funcional antes de expandir a complexidade.
+
+### Fase 1 — Consolidação da base
+
+**Objetivo:** garantir consistência e estabilidade.
+
+Atividades:
+
+- Revisar a estrutura atual dos arquivos.
+- Confirmar as dependências e configurações.
+- Padronizar o cabeçalho, o rodapé e o menu de perfil.
+- Alinhar o calendário ao padrão visual do `index.php`.
+- Verificar a responsividade das páginas.
+- Validar os fluxos de criação, edição e exclusão de eventos.
+- Revisar as integrações com APIs.
+
+**Resultado esperado:** base técnica e visual consistente.
+
+### Fase 2 — MVP de produtividade
+
+**Objetivo:** oferecer os recursos essenciais de organização.
+
+Atividades:
+
+- Consolidar o painel principal.
+- Implementar ou concluir o gerenciamento de tarefas.
+- Garantir a persistência dos dados.
+- Organizar categorias e status.
+- Integrar tarefas e compromissos à experiência de planejamento.
+- Validar formulários, pesquisas e filtros.
+- Melhorar o tratamento de erros.
+
+**Resultado esperado:** uma aplicação capaz de organizar e acompanhar atividades de forma confiável.
+
+### Fase 3 — Gamificação
+
+**Objetivo:** incorporar uma camada de progressão ao sistema.
+
+Atividades:
+
+- Definir regras de pontuação.
+- Implementar registros de transações de pontos.
+- Criar o cálculo de níveis.
+- Implementar conquistas.
+- Exibir o progresso no painel.
+- Prevenir recompensas duplicadas.
+- Criar testes para as regras de pontuação.
+
+**Resultado esperado:** progresso verificável e integrado às atividades do usuário.
+
+### Fase 4 — Rotinas e personalização
+
+**Objetivo:** ampliar as possibilidades de planejamento.
+
+Atividades:
+
+- Implementar atividades recorrentes.
+- Desenvolver histórico de hábitos.
+- Adicionar configurações pessoais.
+- Melhorar filtros e visualizações.
+- Avaliar notificações e lembretes.
+- Aprimorar a experiência em dispositivos móveis.
+
+**Resultado esperado:** maior flexibilidade na organização diária.
+
+### Fase 5 — Integrações e funcionalidades avançadas
+
+**Objetivo:** ampliar a utilidade da plataforma.
+
+Possibilidades:
+
+- Aprimorar a sincronização com o Google Agenda.
+- Implementar notificações configuráveis.
+- Criar relatórios de progresso.
+- Adicionar estatísticas por período.
+- Implementar personalização visual.
+- Desenvolver mecanismos de exportação de dados.
+- Avaliar novas integrações externas.
+
+**Resultado esperado:** uma plataforma mais completa e adaptável.
+
+### Fase 6 — Qualidade e manutenção contínua
+
+**Objetivo:** garantir estabilidade, segurança e evolução sustentável.
+
+Atividades:
+
+- Automatizar testes.
+- Corrigir falhas identificadas.
+- Monitorar erros.
+- Revisar desempenho.
+- Atualizar dependências.
+- Melhorar a acessibilidade.
+- Documentar novas funcionalidades.
+- Revisar periodicamente a segurança.
+
+**Resultado esperado:** uma aplicação preparada para receber melhorias contínuas.
+
+---
+
+## 6. Critérios de qualidade do projeto
+
+Cada funcionalidade deve ser considerada concluída somente quando:
+
+- Funciona de acordo com sua finalidade.
+- Valida os dados recebidos.
+- Persiste as alterações corretamente, quando aplicável.
+- Apresenta feedback adequado ao usuário.
+- Respeita as permissões de acesso.
+- Mantém a consistência visual.
+- Funciona nos dispositivos suportados.
+- Não quebra funcionalidades existentes.
+- Possui testes compatíveis com sua importância.
+
+A aparência da interface, isoladamente, não comprova que uma funcionalidade está implementada. Os fluxos devem ser testados na aplicação real.
+
+---
+
+## 7. Como executar o projeto
+
+As instruções abaixo são uma orientação geral para uma aplicação PHP. Os requisitos exatos dependem das configurações presentes no repositório.
+
+### Pré-requisitos
+
+- PHP em uma versão compatível com o código existente.
+- Servidor web com suporte a PHP ou servidor local para desenvolvimento.
+- Banco de dados, caso exigido pela implementação.
+- Navegador moderno.
+- Credenciais de integração externa, caso sejam necessárias.
+
+### Execução local
+
+1. Clone o repositório ou extraia os arquivos do projeto.
+2. Configure o ambiente PHP.
+3. Revise `config/config.php` e preencha as configurações necessárias sem expor credenciais.
+4. Configure o banco de dados, se aplicável.
+5. Inicie o servidor web.
+6. Acesse a página principal pelo navegador.
+7. Abra o calendário e teste a navegação e as operações disponíveis.
+
+Para iniciar um servidor de desenvolvimento PHP, caso a configuração do projeto permita, execute no terminal, a partir da pasta apropriada:
+
+```bash
+php -S localhost:8000
+```
+
+Em seguida, acesse:
+
+`http://localhost:8000`
+
+Se o projeto depender de regras específicas de Apache, configurações de diretório ou serviços externos, utilize o ambiente correspondente.
+
+### Dependências externas
+
+O calendário utiliza o FullCalendar 6.1.15 na implementação identificada. Como a biblioteca é carregada por CDN, sua disponibilidade depende da conexão com a internet e do endereço configurado.
+
+A integração com o Google Agenda também depende das credenciais e permissões necessárias.
+
+---
+
+## 8. Boas práticas para contribuir
+
+Ao adicionar ou modificar funcionalidades:
+
+- Preserve o padrão visual definido no `index.php`.
+- Reutilize os componentes de `includes/`.
+- Mantenha os estilos globais em `assets/css/style.css`.
+- Utilize `assets/css/calendar.css` para regras específicas do calendário.
+- Centralize as interações gerais em `assets/js/script.js`.
+- Mantenha as interações específicas do calendário em `assets/js/calendar.js`.
+- Preserve as operações existentes ao refatorar arquivos.
+- Evite duplicar regras de negócio entre páginas e APIs.
+- Documente configurações novas e dependências.
+- Teste as alterações antes de considerá-las concluídas.
+
+---
+
+## 9. Visão de futuro
+
+O FlowUp pretende evoluir de uma ferramenta de agenda para um ambiente integrado de organização e progresso pessoal.
+
+A combinação entre planejamento, acompanhamento e gamificação pode permitir que o usuário não apenas registre suas tarefas, mas também compreenda seus hábitos e acompanhe sua evolução ao longo do tempo.
+
+A evolução do projeto deve priorizar três pilares:
+
+1. **Confiabilidade:** as funcionalidades essenciais devem funcionar corretamente.
+2. **Usabilidade:** organizar atividades deve ser simples e intuitivo.
+3. **Progressão:** o usuário deve conseguir perceber seus avanços de maneira clara e significativa.
+
+O crescimento da plataforma deve ocorrer sem comprometer a simplicidade da experiência principal.
+
+---
+
+## 10. Status e documentação
+
+Este README reúne a visão conceitual, a estrutura técnica identificada e as propostas de evolução do FlowUp.
+
+Para manter a documentação fiel ao estado real do software, cada recurso deve ser classificado durante a manutenção do projeto como:
+
+- **Implementado:** existe no código e foi validado por testes.
+- **Em desenvolvimento:** possui implementação parcial.
+- **Planejado:** faz parte da visão do produto, mas ainda precisa ser desenvolvido.
+- **Pendente de validação:** existe no código, mas seu funcionamento ainda não foi confirmado.
+
+A estrutura de arquivos descrita neste documento é uma referência inicial e pode precisar de ajustes conforme o repositório evoluir.
+
+---
+
+**FlowUp — Transforme organização em progresso.**

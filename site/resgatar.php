@@ -1,10 +1,10 @@
 <?php
     require_once __DIR__ . '/includes/header.php';
 
-$email = flowup_email($pdo);
+$userId = flowup_user_id();
 $message = '';
 $messageType = 'success';
-if ($email) {
+if ($userId !== null) {
     flowup_prepare_schema($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['adicionar_recompensa'])) {
@@ -19,12 +19,12 @@ if ($email) {
                 $message = 'Recompensa adicionada.';
             }
         } elseif (isset($_POST['resgatar'])) {
-            $message = flowup_resgatar($pdo, $email, (int) $_POST['id_recompensa']);
+            $message = flowup_resgatar($pdo, $userId, (int) $_POST['id_recompensa']);
             $messageType = str_contains($message, 'sucesso') ? 'success' : 'error';
         }
     }
     $rewards = $pdo->query('SELECT * FROM recompensas WHERE status = \'disponivel\' ORDER BY qtd_pon_neces ASC, data_criacao DESC')->fetchAll();
-    $pontosUsuario = flowup_pontos($pdo, $email);
+    $pontosUsuario = flowup_pontos($pdo, $userId);
 } else {
     $rewards = [];
     $pontosUsuario = 0;
@@ -62,10 +62,10 @@ if ($email) {
             <section class="reward-layout">
                 <div><div class="section-heading"><div><p class="small-label">Catálogo</p><h2>Suas recompensas</h2></div><span class="muted-text"><?php echo count($rewards); ?> disponíveis</span></div><div class="reward-grid">
                     <?php foreach ($rewards as $reward): $canRedeem = $pontosUsuario >= (int) $reward['qtd_pon_neces']; ?>
-                        <article class="card reward-card"><h3><?php echo htmlspecialchars($reward['descricao']); ?></h3><p>Use seus pontos para resgatar esta recompensa.</p><div class="reward-footer"><strong><?php echo number_format((int) $reward['qtd_pon_neces'], 0, ',', '.'); ?> pts</strong><?php if ($email): ?><form method="post"><input type="hidden" name="id_recompensa" value="<?php echo (int) $reward['id_recompensa']; ?>"><button class="complete-button" name="resgatar" type="submit" <?php echo $canRedeem ? '' : 'disabled'; ?>><?php echo $canRedeem ? 'Resgatar' : 'Faltam pontos'; ?></button></form><?php endif; ?></div></article>
+                        <article class="card reward-card"><h3><?php echo htmlspecialchars($reward['descricao']); ?></h3><p>Use seus pontos para resgatar esta recompensa.</p><div class="reward-footer"><strong><?php echo number_format((int) $reward['qtd_pon_neces'], 0, ',', '.'); ?> pts</strong><?php if ($userId !== null): ?><form method="post"><input type="hidden" name="id_recompensa" value="<?php echo (int) $reward['id_recompensa']; ?>"><button class="complete-button" name="resgatar" type="submit" <?php echo $canRedeem ? '' : 'disabled'; ?>><?php echo $canRedeem ? 'Resgatar' : 'Faltam pontos'; ?></button></form><?php endif; ?></div></article>
                     <?php endforeach; if (!$rewards): ?><div class="card empty-state">Nenhuma recompensa cadastrada ainda.</div><?php endif; ?>
                 </div></div>
-                <aside class="card add-task-card"><p class="small-label">Sua próxima conquista</p><h2>Adicionar recompensa</h2><p>Cadastre algo que você quer conquistar e defina o custo em pontos.</p><?php if ($email): ?><form method="post" class="task-form"><label for="descricao">Recompensa</label><input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Uma hora de videogame"><label for="pontos">Custo em pontos</label><input id="pontos" name="pontos" type="number" min="1" max="100000" required placeholder="300"><button class="btn form-submit" name="adicionar_recompensa" type="submit">Adicionar recompensa</button></form><?php else: ?><a class="pill active" href="login/login.php">Entrar para continuar</a><?php endif; ?></aside>
+                <aside class="card add-task-card"><p class="small-label">Sua próxima conquista</p><h2>Adicionar recompensa</h2><p>Cadastre algo que você quer conquistar e defina o custo em pontos.</p><?php if ($userId !== null): ?><form method="post" class="task-form"><label for="descricao">Recompensa</label><input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Uma hora de videogame"><label for="pontos">Custo em pontos</label><input id="pontos" name="pontos" type="number" min="1" max="100000" required placeholder="300"><button class="btn form-submit" name="adicionar_recompensa" type="submit">Adicionar recompensa</button></form><?php else: ?><a class="pill active" href="login/login.php">Entrar para continuar</a><?php endif; ?></aside>
             </section>
         </main>
     </div>

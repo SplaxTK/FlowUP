@@ -1543,6 +1543,9 @@ body.escuro .empty-state { color: #9ca3af; }
 }
 
 @media (max-width: 640px) {
+    .preview-menu { width: 105px; 
+    }
+
     .topbar,
     .content {
         padding: 16px;
@@ -2068,6 +2071,10 @@ body.escuro select {
 ========================= */
 
 @media (max-width: 700px) {
+    .preview-menu {
+    width: 80px;
+    }
+    
     .sidebar {
         width: 70px;
         padding: 20px 8px;
@@ -2132,3 +2139,104 @@ body.escuro select {
         width: calc(100% - 72px);
     }
 }
+
+/* ============================ 
+            Preview
+   ============================ */
+
+.preview {
+    height: 220px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    background: #f8fafc;
+}
+
+.preview-menu {
+    width: 130px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.preview-menu strong {
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.preview-conteudo {
+    flex: 1;
+    padding: 20px;
+}
+
+.preview-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.preview-header div:first-child {
+    width: 40%;
+    height: 14px;
+    background: #334155;
+    border-radius: 5px;
+}
+
+.preview-header div:last-child {
+    width: 25%;
+    height: 8px;
+    background: #cbd5e1;
+    border-radius: 5px;
+}
+
+.preview-cards {
+    display: flex;
+    gap: 12px;
+}
+
+.preview-cards div {
+    height: 80px;
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+/*  ===============================
+            preview dark
+    ===============================*/
+
+body.escuro .preview-menu,
+body.escuro .preview-cards div {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+body.escuro .preview {
+    background: #111827;
+    border-color: #374151;
+}
+
+body.escuro .preview-header div:first-child {
+    background: #f8fafc;
+}
+
+/*  ===============================
+            btn-cancelar
+    ===============================*/
+
+.btn-cancelar {
+    padding: 13px 22px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #475569;
+}
+
