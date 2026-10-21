@@ -2240,3 +2240,174 @@ body.escuro .preview-header div:first-child {
     color: #475569;
 }
 
+.modal-exclusao {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-exclusao.aberto {
+    display: flex;
+}
+
+/* ===== Modal de confirmação de exclusão ===== */
+body.modal-exclusao-aberto {
+    overflow: hidden;
+}
+
+.modal-exclusao {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-exclusao.aberto {
+    display: flex;
+}
+
+.modal-exclusao-fundo {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-exclusao-conteudo {
+    position: relative;
+    width: min(100%, 420px);
+    padding: 32px 28px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+    text-align: center;
+    outline: none;
+}
+
+.modal-exclusao-icone {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border-radius: 14px;
+    background: var(--error-bg);
+    color: var(--error);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.modal-exclusao-conteudo h2 {
+    margin-bottom: 10px;
+    color: var(--text);
+    font-size: 1.25rem;
+}
+
+.modal-exclusao-conteudo p {
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.modal-exclusao-acoes {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.modal-btn-cancelar,
+.modal-btn-confirmar {
+    padding: 11px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.modal-btn-cancelar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.modal-btn-cancelar:hover {
+    background: #f1f5f9;
+}
+
+.modal-btn-confirmar {
+    background: var(--error);
+    border: 1px solid var(--error);
+    color: #fff;
+}
+
+.modal-btn-confirmar:hover {
+    background: #b91c1c;
+}
+
+
+/* ===== Modal de alteração de senha (reaproveita .logout-modal) ===== */
+.modal-senha .logout-modal-icon {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--cor-principal);
+}
+
+.modal-senha form {
+    margin: 0;
+}
+
+.modal-senha .campo {
+    margin-top: 22px;
+}
+
+.modal-senha .form-message {
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+}
+
+.modal-senha .form-message[hidden] {
+    display: none;
+}
+
+.modal-senha .btn[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.modal-senha .btn.carregando::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    vertical-align: -2px;
+    animation: modal-senha-giro 0.7s linear infinite;
+}
+
+@keyframes modal-senha-giro {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-senha .btn.carregando::before { animation-duration: 2s; }
+}
+
+body.escuro .modal-senha .form-message.error {
+    color: #fca5a5;
+}
+
+body.escuro .modal-senha .btn-secundario {
+    border-color: #4b5563;
+    background: #374151;
+    color: #f8fafc;
+}

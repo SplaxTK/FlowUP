@@ -1,5 +1,6 @@
 <?php
     require_once __DIR__ . '/includes/header.php';
+    require_once __DIR__ . '/helpers/senha_helper.php';
 ?>
 <body>
     <div class="app-shell">
@@ -60,7 +61,7 @@
 
                 <section class="card config-card">
                     <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/lock-icon.png" alt="Ícone de segurança"><img class="img-icon icone-escuro" src="assets/img/icons/lock-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
-                    <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha" href=email.php>Alterar senha</button>
+                    <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha" data-endpoint="functions/solicitar_alteracao_senha.php" data-csrf="<?php echo htmlspecialchars(flowup_csrf_senha((string) ($_COOKIE['auth_token'] ?? '')), ENT_QUOTES, 'UTF-8'); ?>">Alterar senha</button>
                     <button type="button" class="btn-sair" id="btnSair">Sair da conta</button></div>
                 </section>
             </main>

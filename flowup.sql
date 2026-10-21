@@ -198,6 +198,31 @@ CREATE TABLE IF NOT EXISTS `calendar_google_accounts` (
 
 COMMIT;
 
+CREATE TABLE IF NOT EXISTS `alteracao_senha_tokens` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `usuario_id` INT UNSIGNED NOT NULL,
+  `token_hash` CHAR(64) NOT NULL,
+  `expira_em` DATETIME NOT NULL,
+  `usado_em` DATETIME NULL DEFAULT NULL,
+  `criado_em` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_alt_senha_token_hash` (`token_hash`),
+  KEY `idx_alt_senha_tokens_usuario_criado` (`usuario_id`, `criado_em`),
+  CONSTRAINT `fk_alt_senha_tokens_usuario`
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Senhas atuais erradas (limita tentativas de adivinhar a senha atual).
+CREATE TABLE IF NOT EXISTS `alteracao_senha_tentativas` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `usuario_id` INT UNSIGNED NOT NULL,
+  `criado_em` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_alt_senha_tentativas_usuario_criado` (`usuario_id`, `criado_em`),
+  CONSTRAINT `fk_alt_senha_tentativas_usuario`
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

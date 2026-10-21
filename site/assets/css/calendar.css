@@ -173,3 +173,289 @@ body.calendar-page a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* =========================================
+   FLOWUP — MELHORIAS VISUAIS DO CALENDÁRIO
+   Cole este bloco no final de calendar.css
+   ========================================= */
+
+/* Botão de criar evento */
+.calendar-create-event {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 40px;
+    padding: 10px 16px;
+    border: 1px solid var(--cal-border);
+    border-radius: 10px;
+    background: var(--cal-blue);
+    color: #fff !important;
+    font-size: 0.85rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-create-event img {
+    display: block;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.calendar-create-event:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* Barra de ferramentas */
+.calendar-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.calendar-date-controls,
+.calendar-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+}
+
+.calendar-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--cal-border);
+    border-radius: 10px;
+    background: var(--cal-panel-solid);
+    color: var(--cal-text);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.calendar-icon-button:hover {
+    border-color: var(--cal-blue);
+    background: var(--cal-panel);
+}
+
+/* Painel principal */
+.calendar-card {
+    overflow: hidden;
+    padding: 10px;
+    border: 1px solid var(--cal-border);
+    border-radius: 16px;
+    background: var(--cal-panel);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+}
+
+/* Grade do calendário */
+.calendar-page .fc {
+    color: var(--cal-text);
+    font-size: 0.82rem;
+}
+
+.calendar-page .fc .fc-scrollgrid,
+.calendar-page .fc .fc-scrollgrid td,
+.calendar-page .fc .fc-scrollgrid th {
+    border-color: var(--cal-border);
+}
+
+.calendar-page .fc .fc-col-header-cell {
+    background: var(--cal-panel-solid);
+}
+
+.calendar-page .fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 12px 5px;
+    color: var(--cal-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.calendar-page .fc .fc-daygrid-day-number {
+    padding: 9px;
+    color: var(--cal-text);
+    text-decoration: none;
+}
+
+.calendar-page .fc .fc-day-other .fc-daygrid-day-number {
+    color: var(--cal-muted);
+    opacity: 0.65;
+}
+
+.calendar-page .fc .fc-day-today {
+    background: color-mix(in srgb, var(--cal-blue) 10%, transparent);
+}
+
+.calendar-page .fc .fc-day-today .fc-daygrid-day-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    background: var(--cal-blue);
+    color: #fff;
+    font-weight: 700;
+}
+
+.calendar-page .fc .fc-daygrid-day-frame {
+    min-height: 100px;
+    transition: background 0.15s ease;
+}
+
+.calendar-page .fc .fc-daygrid-day:hover {
+    background: color-mix(in srgb, var(--cal-blue) 5%, transparent);
+}
+
+/* Eventos */
+.calendar-page .fc .fc-daygrid-event {
+    margin: 3px 5px;
+    padding: 4px 6px;
+    border: 0;
+    border-radius: 5px;
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+
+.calendar-page .fc .fc-event-title {
+    font-weight: 600;
+}
+
+/* Pesquisa e filtros */
+.calendar-search,
+.calendar-select {
+    min-height: 38px;
+    border: 1px solid var(--cal-border);
+    border-radius: 10px;
+    background: var(--cal-panel-solid);
+    color: var(--cal-text);
+}
+
+.calendar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 11px;
+}
+
+.calendar-search input {
+    min-width: 0;
+    color: var(--cal-text);
+}
+
+.calendar-search input::placeholder {
+    color: var(--cal-muted);
+}
+
+.calendar-select {
+    padding: 0 12px;
+}
+
+.calendar-select option {
+    background: var(--cal-panel-solid);
+    color: var(--cal-text);
+}
+
+/* Seleção de mês, semana e dia */
+.calendar-views {
+    display: flex;
+    gap: 3px;
+    padding: 4px;
+    border: 1px solid var(--cal-border);
+    border-radius: 10px;
+    background: var(--cal-panel-solid);
+}
+
+.calendar-views button {
+    padding: 7px 11px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--cal-muted);
+    cursor: pointer;
+}
+
+.calendar-views button:hover,
+.calendar-views button.active {
+    background: var(--cal-blue);
+    color: #fff;
+}
+
+/* Acessibilidade */
+.calendar-page button:focus-visible,
+.calendar-page a:focus-visible,
+.calendar-page input:focus-visible,
+.calendar-page select:focus-visible {
+    outline: 2px solid var(--cal-blue);
+    outline-offset: 3px;
+}
+
+/* Telas menores */
+@media (max-width: 900px) {
+    .calendar-toolbar {
+        align-items: stretch;
+    }
+
+    .calendar-date-controls,
+    .calendar-tools {
+        width: 100%;
+    }
+
+    .calendar-tools {
+        flex-wrap: wrap;
+    }
+
+    .calendar-search {
+        flex: 1 1 180px;
+    }
+
+    .calendar-card {
+        padding: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    .calendar-page-actions {
+        margin-bottom: 14px;
+    }
+
+    .calendar-create-event {
+        width: 100%;
+    }
+
+    .calendar-date-controls {
+        gap: 6px;
+    }
+
+    .calendar-date-controls h2 {
+        min-width: 0;
+        flex: 1;
+        font-size: 0.95rem;
+    }
+
+    .calendar-page .fc .fc-daygrid-day-frame {
+        min-height: 62px;
+    }
+
+    .calendar-page .fc .fc-col-header-cell-cushion {
+        padding: 8px 1px;
+        font-size: 0.6rem;
+    }
+
+    .calendar-page .fc .fc-daygrid-day-number {
+        padding: 5px;
+    }
+}

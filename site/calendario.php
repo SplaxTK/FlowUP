@@ -173,15 +173,20 @@ require_once __DIR__ . '/includes/header.php';
             <main class="content">
                 <section class="calendar-workspace">
                     <div class="calendar-page-actions">
-                        <a
-                            class="calendar-button primary-button"
-                            href="#novo-evento"
-                            data-new-event>
-                            <img src=assets/img/icons/calendar-plus-icon.png>
-                        </a>
+                    <a
+                        class="calendar-button primary-button calendar-create-event"
+                        href="#novo-evento"
+                        data-new-event
+                        aria-label="Criar novo evento"
+                        title="Criar novo evento">
+                        <img
+                            src="assets/img/icons/calendar-plus-icon.png"
+                            alt=""
+                            aria-hidden="true">
+                        <span>Novo evento</span>
+                    </a>
                     </div>
 
-                    <!-- BARRA DE FERRAMENTAS DO CALENDÁRIO -->
                     <div class="calendar-toolbar">
 
                         <div class="calendar-date-controls">

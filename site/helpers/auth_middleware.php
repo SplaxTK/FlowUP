@@ -7,7 +7,7 @@ require_once __DIR__ . '/auth_helper.php';
 
 $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
 $isPublicPage = preg_match(
-    '~/(?:login/(?:login|cadastro)|politica/(?:politica|politica_cookies|termos))\.php$~',
+    '~/(?:login/(?:login|cadastro|redefinir_senha)|politica/(?:politica|politica_cookies|termos))\.php$~',
     $scriptName
 ) === 1;
 
