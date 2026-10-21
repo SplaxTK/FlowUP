@@ -1,3 +1,6 @@
+<?php
+$siteUrl = $siteUrl ?? '';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle ?? 'FlowUp', ENT_QUOTES, 'UTF-8'); ?></title>
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/img/flowUp.png">
+    
     <script>
         (function () {
             const storageKey = 'flowup_preferences';
@@ -127,20 +131,22 @@
                 apply: apply
             });
         })();
+
     </script>
+
+    <!-- Estilo Principal -->
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/style.css">
 
     <?php
         $calendarCssPath = __DIR__ . '/../assets/css/calendar.css';
 
         if (
-        basename($_SERVER['SCRIPT_NAME'] ?? '') === 'calendario.php'
-        && is_file($calendarCssPath)
-):
-?>
-    <link rel="stylesheet"
-          href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/calendar.css?v=<?php echo filemtime($calendarCssPath); ?>">
-<?php endif; ?>
+            basename($_SERVER['SCRIPT_NAME'] ?? '') === 'calendario.php'
+            && is_file($calendarCssPath)
+        ):
+    ?>
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/calendar.css?v=<?php echo filemtime($calendarCssPath); ?>">
+    <?php endif; ?>
 
     <script src="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/js/script.js" defer></script>
 </head>
