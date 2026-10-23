@@ -2411,3 +2411,83 @@ body.escuro .modal-senha .btn-secundario {
     background: #374151;
     color: #f8fafc;
 }
+
+/* =====================================================================
+   FLOWUP — RESPONSIVIDADE GLOBAL
+   ===================================================================== */
+html{-webkit-text-size-adjust:100%}
+img{max-width:100%}
+.main-panel{min-width:0}
+
+/* Topbar: "sticky" em vez de "fixed" -> cresce sozinha se o título quebrar linha */
+.topbar{position:sticky;top:0;left:auto;width:auto;gap:12px}
+.app-shell.sidebar-collapsed .topbar{left:auto;width:auto}
+.content{margin-top:0}
+.topbar > div:first-child{flex:1 1 auto;min-width:0}
+.topbar h1{overflow-wrap:anywhere}
+.points-actions{flex:0 0 auto;margin-right:0;margin-left:auto}
+.perfil-actions{flex:0 0 auto}
+.perfil-menu{width:min(270px,calc(100vw - 24px))}
+.card_clima{max-width:100%;overflow:hidden}
+select{max-width:100%}
+
+/* Tablet e celular (até 900px): a sidebar vira barra de navegação inferior */
+@media (max-width:900px){
+  .app-shell{flex-direction:column}
+  .sidebar{position:fixed;top:auto;right:0;bottom:0;left:0;z-index:15;width:100%;height:auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom));flex-direction:row;gap:0;overflow:visible;border-right:0;border-bottom:0;border-top:1px solid rgba(255,255,255,.18);box-shadow:0 -6px 18px rgba(15,23,42,.18)}
+  .sidebar-header,.sidebar > .logo,.sidebar-card,.calendar-sidebar-bottom{display:none}
+  .sidebar .side-nav{flex-direction:row;justify-content:space-between;width:100%;gap:2px}
+  .sidebar .side-nav a{flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:3px;padding:7px 2px;border-radius:10px;overflow:hidden;font-size:.62rem;line-height:1.15;text-align:center}
+  .sidebar .sidebar-icon{flex:0 0 22px;width:22px;height:22px;transform:none}
+  .sidebar ~ .main-panel{margin-left:0;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .topbar{padding:16px 20px}
+  .content{padding:20px}
+  .cookie-notice{right:16px;bottom:calc(82px + env(safe-area-inset-bottom));left:16px;width:auto}
+  .cadastro-page .cadastro-card{width:100%;max-width:560px}
+  .stat-box{text-align:center}
+  /* barra "Salvar / Restaurar" da página Personalizar */
+  .personalizar-content{padding-bottom:96px}
+  .acoes{right:16px;bottom:calc(82px + env(safe-area-inset-bottom));left:16px;padding:10px;gap:10px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.14)}
+  .acoes > *{flex:1 1 0}
+}
+
+/* Celular (até 640px) */
+@media (max-width:640px){
+  .topbar{flex-wrap:wrap;padding:12px 14px;gap:8px 10px}
+  .topbar > div:first-child{flex:1 1 0}
+  .topbar h1{margin-top:2px;font-size:1.05rem;line-height:1.25}
+  .topbar .small-label{font-size:.66rem}
+  .points-badge{min-width:0;padding:7px 11px;font-size:.75rem}
+  .points-badge::before{width:6px;height:6px;margin-right:6px}
+  .perfil-button{width:40px;height:40px}
+  .perfil-user-icon{width:26px;height:26px}
+  .content{padding:14px}
+  .hero-stats{flex-wrap:wrap;width:100%}
+  .stat-box{flex:1 1 120px}
+  .section-heading,.task-group-heading,.reward-footer{flex-wrap:wrap}
+  .opcao select,.opcao .densidade,.opcao .fonte,.opcao .cores{width:100%}
+  .preview-menu{width:72px;padding:12px}
+  .preview-conteudo{padding:14px}
+  .legal-card h1{font-size:1.45rem}
+}
+
+/* Celular pequeno (até 400px) */
+@media (max-width:400px){
+  .sidebar{padding-right:4px;padding-left:4px}
+  .sidebar .side-nav a{font-size:.56rem;letter-spacing:-.01em}
+  .sidebar .sidebar-icon{width:20px;height:20px;flex-basis:20px}
+  .topbar h1{font-size:.98rem}
+  .cookie-notice-actions{flex-wrap:wrap}
+}
+
+/* Até 360px: só o item ativo mostra o texto */
+@media (max-width:360px){
+  .sidebar .side-nav a:not(.active){gap:0;font-size:0}
+  .sidebar .side-nav a.active{flex-grow:1.9}
+  .sidebar .side-nav a:not(.active) .sidebar-icon{width:24px;height:24px;flex-basis:24px}
+  .points-badge{padding:6px 9px}
+}
+
+/* Contraste no tema escuro */
+body.escuro .acoes{border-color:#374151;background:#1f2937}
+body.escuro .reward-footer strong{color:#bfdbfe}
