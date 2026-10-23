@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/config/config.php';
 
@@ -133,10 +132,13 @@ require_once __DIR__ . '/includes/header.php';
                         <span>Verificando conexão...</span>
                     </span>
 
+                    <!-- Implementação futura -->
+                    <!-- id="google-connect" -->
                     <button
-                        class="calendar-button google-connect"
-                        id="google-connect"
+                        class="calendar-button google-connect" 
                         type="button"
+                        onclick="event.preventDefault(); event.stopImmediatePropagation(); alert('Implementação futura!');"
+                        id="google-connect";
                     >
                         ◉ <span>Conectar Google Agenda</span>
                     </button>
