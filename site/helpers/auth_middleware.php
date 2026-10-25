@@ -12,7 +12,17 @@ $isPublicPage = preg_match(
 ) === 1;
 
 if (!$isPublicPage) {
-    $usuarioLogado = validarTokenAutenticacao($_COOKIE['auth_token'] ?? null);
+    $usuarioLogado = false;
+    $sessionUserId = isset($_SESSION['user_id']) ? filter_var($_SESSION['user_id'], FILTER_VALIDATE_INT) : false;
+
+    if ($sessionUserId !== false && $sessionUserId > 0 && !empty($_SESSION['user_email'])) {
+        $usuarioLogado = [
+            'user_id' => $sessionUserId,
+            'email' => $_SESSION['user_email']
+        ];
+    } else {
+        $usuarioLogado = validarTokenAutenticacao($_COOKIE['auth_token'] ?? null);
+    }
 
     if ($usuarioLogado) {
         require_once __DIR__ . '/../config/config.php';

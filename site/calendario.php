@@ -1,15 +1,10 @@
 <?php
-require_once __DIR__ . '/config/config.php';
-
-if (session_status() !== PHP_SESSION_ACTIVE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (empty($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
+require_once __DIR__ . '/helpers/auth_middleware.php';
+require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/functions/flowup.php';
 
 $csrf = $_SESSION['calendar_csrf'] ??= bin2hex(random_bytes(32));

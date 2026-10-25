@@ -1,10 +1,33 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
 
 function flowup_user_id(): ?int
 {
     $userId = filter_var($_SESSION['user_id'] ?? null, FILTER_VALIDATE_INT);
-    return $userId !== false && $userId > 0 ? $userId : null;
+    if ($userId !== false && $userId > 0) {
+        return $userId;
+    }
+
+    $token = $_COOKIE['auth_token'] ?? null;
+    if (!$token) {
+        return null;
+    }
+
+    $payload = validarTokenAutenticacao($token);
+    if (!is_array($payload) || empty($payload['user_id'])) {
+        return null;
+    }
+
+    $userId = filter_var($payload['user_id'], FILTER_VALIDATE_INT);
+    if ($userId === false || $userId <= 0) {
+        return null;
+    }
+
+    $_SESSION['user_id'] = $userId;
+    $_SESSION['user_email'] = $payload['email'] ?? ($_SESSION['user_email'] ?? '');
+
+    return $userId;
 }
 
 function flowup_table_has_column(PDO $pdo, string $table, string $column): bool
