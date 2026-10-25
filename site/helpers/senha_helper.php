@@ -4,7 +4,7 @@
  *
  * Usado por:
  *  - site/configuracoes.php                      (gera o token CSRF do botão)
- *  - site/functions/solicitar_alteracao_senha.php (pede o e-mail)
+ *  - site/login/esqueci_senha.php                 (pede o e-mail)
  *  - site/login/redefinir_senha.php               (confirma a nova senha)
  *
  * IMPORTANTE: carregue site/helpers/auth_helper.php ANTES deste arquivo
@@ -12,7 +12,7 @@
  */
 
 const FLOWUP_SENHA_TOKEN_MINUTOS = 30;      // validade do link
-const FLOWUP_SENHA_MIN_CARACTERES = 8;      // tamanho mínimo da nova senha
+const FLOWUP_SENHA_MIN_CARACTERES = 6;      // tamanho mínimo da nova senha
 const FLOWUP_SENHA_MAX_BYTES = 72;          // limite do bcrypt (PASSWORD_DEFAULT)
 const FLOWUP_SENHA_MAX_PEDIDOS_HORA = 3;    // e-mails por hora, por usuário
 const FLOWUP_SENHA_INTERVALO_SEGUNDOS = 60; // espera entre dois pedidos

@@ -22,7 +22,6 @@ function abrirModalSenha() {
         <div class="logout-modal-backdrop" data-fechar-senha></div>
         <div class="logout-modal-card">
             <button class="logout-modal-close" type="button" aria-label="Fechar" data-fechar-senha>&times;</button>
-            <div class="logout-modal-icon" aria-hidden="true">🔒</div>
             <h2 id="modalSenhaTitulo">Alterar senha</h2>
             <p id="modalSenhaTexto">Confirme a senha atual e defina uma nova senha para sua conta.</p>
 
@@ -35,13 +34,13 @@ function abrirModalSenha() {
                 <div class="campo">
                     <label for="novaSenhaModal">Nova senha</label>
                     <input type="password" id="novaSenhaModal" name="nova_senha"
-                           autocomplete="new-password" minlength="6" maxlength="1024" required>
+                           autocomplete="new-password" minlength="6" maxlength="72" required>
                     <small class="campo-ajuda">Mínimo de 6 caracteres.</small>
                 </div>
                 <div class="campo">
                     <label for="confirmarSenhaModal">Confirmar nova senha</label>
                     <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
-                           autocomplete="new-password" minlength="6" maxlength="1024" required>
+                           autocomplete="new-password" minlength="6" maxlength="72" required>
                 </div>
 
                 <p class="form-message error" id="modalSenhaErro" role="alert" hidden></p>
@@ -101,6 +100,7 @@ function abrirModalSenha() {
         if (senhaAtual === "") return { campo: inputAtual, msg: "Informe a sua senha atual." };
         if (nova === "")          return { campo: inputNova,  msg: "Informe a nova senha." };
         if (nova.length < 6)      return { campo: inputNova,  msg: "A nova senha deve ter ao menos 6 caracteres." };
+        if (new TextEncoder().encode(nova).length > 72) return { campo: inputNova, msg: "A nova senha deve ter no máximo 72 bytes." };
         if (nova === senhaAtual)  return { campo: inputNova,  msg: "A nova senha deve ser diferente da atual." };
         if (confirmar !== nova)   return { campo: inputConfirm, msg: "A confirmação não confere com a nova senha." };
         return null;
@@ -110,7 +110,6 @@ function abrirModalSenha() {
         const card = overlay.querySelector(".logout-modal-card");
         card.innerHTML = `
             <button class="logout-modal-close" type="button" aria-label="Fechar" data-fechar-senha>&times;</button>
-            <div class="logout-modal-icon" aria-hidden="true">✅</div>
             <h2 id="modalSenhaTitulo">Senha alterada</h2>
             <p id="modalSenhaTexto">Sua senha foi atualizada com sucesso. Use a nova senha no próximo login.</p>
             <div class="logout-modal-actions">
@@ -175,7 +174,7 @@ function abrirModalSenha() {
             mostrarErro(
                 dados && typeof dados.mensagem === "string" && dados.mensagem !== ""
                     ? dados.mensagem
-                    : "Não foi possível alterar a senha. Tente novamente em instantes."
+                    : "Não foi possível alterar a senha. Tente novamente mais tarde."
             );
             inputAtual.focus();
         } catch (erroRede) {

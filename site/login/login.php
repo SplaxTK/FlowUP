@@ -8,7 +8,8 @@ require_once __DIR__ . '/../helpers/auth_helper.php';
 $error = '';
 $identificador = '';
 $success = $_SESSION['cadastro_sucesso'] ?? '';
-unset($_SESSION['cadastro_sucesso']);
+$senhaRedefinida = !empty($_SESSION['senha_redefinida']);
+unset($_SESSION['cadastro_sucesso'], $_SESSION['senha_redefinida']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identificador = trim($_POST['identificador'] ?? '');
@@ -72,6 +73,9 @@ require_once __DIR__ . '/../includes/header.php';
                         <?php if ($success): ?>
                             <p class="form-message success"><?php echo htmlspecialchars($success); ?></p>
                         <?php endif; ?>
+                        <?php if ($senhaRedefinida): ?>
+                            <p class="form-message success">Sua senha foi redefinida. Entre com a nova senha.</p>
+                        <?php endif; ?>
                         <?php if ($error): ?>
                             <p class="form-message error"><?php echo htmlspecialchars($error); ?></p>
                         <?php endif; ?>
@@ -89,6 +93,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <button class="pill" type="submit">Entrar</button>
                     </form>
+                    <p><a href="esqueci_senha.php">Esqueci minha senha</a></p>
                     <p>Não tem conta? <a href="cadastro.php">Cadastrar</a></p>
                     </div>
                 </section>
