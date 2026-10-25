@@ -1,15 +1,14 @@
 // ==========================
-// ALTERAR SENHA
+// ALTERAR SENHA (com senha atual)
 // ==========================
 
 const btnSenha = document.getElementById("btnSenha");
 
 function abrirModalSenha() {
-    // evita abrir duas vezes
     if (document.getElementById("modalSenha")) return;
 
     const endpoint = btnSenha ? btnSenha.dataset.endpoint : "";
-    const csrf = btnSenha ? btnSenha.dataset.csrf || "" : "";
+    const csrf = btnSenha ? (btnSenha.dataset.csrf || "") : "";
     let enviando = false;
 
     const overlay = document.createElement("div");
@@ -25,16 +24,31 @@ function abrirModalSenha() {
             <button class="logout-modal-close" type="button" aria-label="Fechar" data-fechar-senha>&times;</button>
             <div class="logout-modal-icon" aria-hidden="true">🔒</div>
             <h2 id="modalSenhaTitulo">Alterar senha</h2>
-            <p id="modalSenhaTexto">Para sua segurança, confirme a senha atual. Depois enviaremos um link de confirmação para o seu e-mail.</p>
+            <p id="modalSenhaTexto">Confirme a senha atual e defina uma nova senha para sua conta.</p>
+
             <form id="formModalSenha" novalidate>
                 <div class="campo">
                     <label for="senhaAtualModal">Senha atual</label>
-                    <input type="password" id="senhaAtualModal" autocomplete="current-password" maxlength="1024" required>
+                    <input type="password" id="senhaAtualModal" name="senha_atual"
+                           autocomplete="current-password" maxlength="1024" required>
                 </div>
+                <div class="campo">
+                    <label for="novaSenhaModal">Nova senha</label>
+                    <input type="password" id="novaSenhaModal" name="nova_senha"
+                           autocomplete="new-password" minlength="6" maxlength="1024" required>
+                    <small class="campo-ajuda">Mínimo de 6 caracteres.</small>
+                </div>
+                <div class="campo">
+                    <label for="confirmarSenhaModal">Confirmar nova senha</label>
+                    <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
+                           autocomplete="new-password" minlength="6" maxlength="1024" required>
+                </div>
+
                 <p class="form-message error" id="modalSenhaErro" role="alert" hidden></p>
+
                 <div class="logout-modal-actions">
                     <button type="button" class="btn-secundario" data-fechar-senha>Cancelar</button>
-                    <button type="submit" class="btn" id="modalSenhaEnviar">Enviar link</button>
+                    <button type="submit" class="btn" id="modalSenhaEnviar">Alterar senha</button>
                 </div>
             </form>
         </div>
@@ -43,13 +57,15 @@ function abrirModalSenha() {
     document.body.appendChild(overlay);
     document.body.classList.add("modal-aberto");
 
-    const form = overlay.querySelector("#formModalSenha");
-    const inputSenha = overlay.querySelector("#senhaAtualModal");
-    const botaoEnviar = overlay.querySelector("#modalSenhaEnviar");
-    const areaErro = overlay.querySelector("#modalSenhaErro");
+    const form          = overlay.querySelector("#formModalSenha");
+    const inputAtual    = overlay.querySelector("#senhaAtualModal");
+    const inputNova     = overlay.querySelector("#novaSenhaModal");
+    const inputConfirm  = overlay.querySelector("#confirmarSenhaModal");
+    const botaoEnviar   = overlay.querySelector("#modalSenhaEnviar");
+    const areaErro      = overlay.querySelector("#modalSenhaErro");
 
     function fechar() {
-        if (enviando) return; // não fecha no meio do envio
+        if (enviando) return;
         overlay.remove();
         document.body.classList.remove("modal-aberto");
         document.removeEventListener("keydown", aoPressionarTecla);
@@ -65,39 +81,42 @@ function abrirModalSenha() {
         areaErro.hidden = false;
     }
 
+    function limparErro() {
+        areaErro.hidden = true;
+        areaErro.textContent = "";
+    }
+
     function definirCarregando(ativo) {
         enviando = ativo;
         botaoEnviar.disabled = ativo;
-        inputSenha.disabled = ativo;
+        inputAtual.disabled = ativo;
+        inputNova.disabled = ativo;
+        inputConfirm.disabled = ativo;
         botaoEnviar.classList.toggle("carregando", ativo);
-        botaoEnviar.textContent = ativo ? "Enviando..." : "Enviar link";
+        botaoEnviar.textContent = ativo ? "Salvando..." : "Alterar senha";
         form.setAttribute("aria-busy", String(ativo));
     }
 
-    function mostrarSucesso(dados) {
+    function validarLocal(senhaAtual, nova, confirmar) {
+        if (senhaAtual === "") return { campo: inputAtual, msg: "Informe a sua senha atual." };
+        if (nova === "")          return { campo: inputNova,  msg: "Informe a nova senha." };
+        if (nova.length < 6)      return { campo: inputNova,  msg: "A nova senha deve ter ao menos 6 caracteres." };
+        if (nova === senhaAtual)  return { campo: inputNova,  msg: "A nova senha deve ser diferente da atual." };
+        if (confirmar !== nova)   return { campo: inputConfirm, msg: "A confirmação não confere com a nova senha." };
+        return null;
+    }
+
+    function mostrarSucesso() {
         const card = overlay.querySelector(".logout-modal-card");
         card.innerHTML = `
             <button class="logout-modal-close" type="button" aria-label="Fechar" data-fechar-senha>&times;</button>
-            <div class="logout-modal-icon" aria-hidden="true">✉️</div>
-            <h2 id="modalSenhaTitulo">Verifique seu e-mail</h2>
-            <p id="modalSenhaTexto"></p>
+            <div class="logout-modal-icon" aria-hidden="true">✅</div>
+            <h2 id="modalSenhaTitulo">Senha alterada</h2>
+            <p id="modalSenhaTexto">Sua senha foi atualizada com sucesso. Use a nova senha no próximo login.</p>
             <div class="logout-modal-actions">
                 <button type="button" class="btn" data-fechar-senha>Entendi</button>
             </div>
         `;
-
-        const texto = card.querySelector("#modalSenhaTexto");
-        texto.append("Enviamos um link de confirmação para ");
-        if (dados.email) {
-            const destino = document.createElement("strong");
-            destino.textContent = dados.email;
-            texto.append(destino, ". ");
-        } else {
-            texto.append("o seu e-mail. ");
-        }
-        const minutos = Number(dados.expira_em_minutos) || 30;
-        texto.append("O link vale por " + minutos + " minutos. Confira também a pasta de spam.");
-
         card.querySelectorAll("[data-fechar-senha]").forEach(function (el) {
             el.addEventListener("click", fechar);
         });
@@ -106,14 +125,18 @@ function abrirModalSenha() {
 
     form.addEventListener("submit", async function (evento) {
         evento.preventDefault();
-        if (enviando) return; // evita envio duplicado
+        if (enviando) return;
 
-        areaErro.hidden = true;
-        const senhaAtual = inputSenha.value;
+        limparErro();
 
-        if (senhaAtual === "") {
-            mostrarErro("Informe a sua senha atual.");
-            inputSenha.focus();
+        const senhaAtual = inputAtual.value;
+        const novaSenha  = inputNova.value;
+        const confirmar  = inputConfirm.value;
+
+        const erroLocal = validarLocal(senhaAtual, novaSenha, confirmar);
+        if (erroLocal) {
+            mostrarErro(erroLocal.msg);
+            erroLocal.campo.focus();
             return;
         }
 
@@ -128,21 +151,23 @@ function abrirModalSenha() {
                     "Accept": "application/json",
                     "X-CSRF-Token": csrf
                 },
-                body: JSON.stringify({ senha_atual: senhaAtual })
+                body: JSON.stringify({
+                    senha_atual: senhaAtual,
+                    nova_senha: novaSenha,
+                    confirmar_senha: confirmar
+                })
             });
 
             let dados = null;
-            try {
-                dados = await resposta.json();
-            } catch (erroJson) {
-                dados = null;
-            }
+            try { dados = await resposta.json(); } catch (_) { dados = null; }
 
-            inputSenha.value = "";
+            inputAtual.value = "";
+            inputNova.value = "";
+            inputConfirm.value = "";
 
             if (resposta.ok && dados && dados.ok === true) {
                 definirCarregando(false);
-                mostrarSucesso(dados);
+                mostrarSucesso();
                 return;
             }
 
@@ -150,13 +175,13 @@ function abrirModalSenha() {
             mostrarErro(
                 dados && typeof dados.mensagem === "string" && dados.mensagem !== ""
                     ? dados.mensagem
-                    : "Não foi possível processar sua solicitação. Tente novamente em instantes."
+                    : "Não foi possível alterar a senha. Tente novamente em instantes."
             );
-            inputSenha.focus();
+            inputAtual.focus();
         } catch (erroRede) {
             definirCarregando(false);
             mostrarErro("Sem conexão com o servidor. Verifique sua internet e tente novamente.");
-            inputSenha.focus();
+            inputAtual.focus();
         }
     });
 
@@ -165,13 +190,12 @@ function abrirModalSenha() {
     });
     document.addEventListener("keydown", aoPressionarTecla);
 
-    inputSenha.focus();
+    inputAtual.focus();
 }
 
 if (btnSenha) {
     btnSenha.addEventListener("click", abrirModalSenha);
 }
-
 // ==========================
 // SAIR DA CONTA
 // ==========================

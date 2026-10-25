@@ -60,9 +60,15 @@
                 </section>
 
                 <section class="card config-card">
-                    <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/lock-icon.png" alt="Ícone de segurança"><img class="img-icon icone-escuro" src="assets/img/icons/lock-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
-                    <div class="config-actions"><button type="button" class="btn-secundario" id="btnSenha" data-endpoint="functions/solicitar_alteracao_senha.php" data-csrf="<?php echo htmlspecialchars(flowup_csrf_senha((string) ($_COOKIE['auth_token'] ?? '')), ENT_QUOTES, 'UTF-8'); ?>">Alterar senha</button>
-                    <button type="button" class="btn-sair" id="btnSair">Sair da conta</button></div>
+                    <div class="titulo-card">
+                        <div class="icone icone-tema">
+                        <img class="img-icon icone-claro" src="assets/img/icons/lock-icon.png" alt="Ícone de segurança"><img class="img-icon icone-escuro" src="assets/img/icons/lock-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Segurança</h2><p>Proteja sua conta no FlowUp.</p></div></div>
+                        <button type="button" class="btn-secundario" id="btnSenha"
+                                data-endpoint="functions/alterar_senha_logado.php"
+                                data-csrf="<?php echo htmlspecialchars(flowup_csrf_senha((string) ($_COOKIE['auth_token'] ?? '')), ENT_QUOTES, 'UTF-8'); ?>">
+                            Alterar senha
+                        </button>              
+                <button type="button" class="btn-sair" id="btnSair">Sair da conta</button></div>
                 </section>
             </main>
         </div>
