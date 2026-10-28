@@ -740,6 +740,40 @@ body.escuro.legal-page .legal-updated {
     gap: 20px;
 }
 
+body.auth-shell-page .main-panel {
+    margin-left: 0;
+}
+
+body.auth-shell-page .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px);
+    margin-top: 0;
+    padding: 24px;
+}
+
+.hero-card-recuperar {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 24px;
+    width: min(100%, 550px);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 0 auto;
+}
+
+body.auth-shell-page .hero-card-recuperar,
+body.auth-shell-page .hero-card {
+    display: block;
+    width: min(100%, 550px);
+    margin: 0 auto;
+}
+
 .hero-card h2 {
     margin: 6px 0 0;
     font-size: 1.4rem;
@@ -863,6 +897,16 @@ body.escuro .form-link {
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
+}
+
+.link-actions {
+    color: #2563eb;
+    font-weight: 100;
+    text-decoration: none;
+}
+
+.link-actions:hover {
+    text-decoration: underline;
 }
 
 .form-help {
@@ -1179,6 +1223,7 @@ body.escuro { background: #111827; color: #f8fafc; }
 body.escuro .topbar,
 body.escuro .card,
 body.escuro .hero-card { background: #1f2937; border-color: #374151; }
+body.escuro .hero-card-recuperar { background: #1f2937; border-color: #374151; }
 body.escuro .perfil-menu { background: #1f2937; border-color: #374151; }
 body.escuro .perfil-menu-user { border-color: #374151; }
 body.escuro .perfil-menu-user-info span { color: #9ca3af; }
@@ -1556,6 +1601,11 @@ body.escuro .empty-state { color: #9ca3af; }
         align-items: flex-start;
     }
 
+    .hero-card-recuperar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .opcao, .switch-item { align-items: flex-start; }
     .opcao { flex-direction: column; }
     .reward-grid { grid-template-columns: 1fr; }
@@ -1736,7 +1786,8 @@ body.escuro {
 }
 
 body.escuro .card,
-body.escuro .hero-card {
+body.escuro .hero-card,
+body.escuro .hero-card-recuperar {
     background: #1f2937;
     border-color: #374151;
 }

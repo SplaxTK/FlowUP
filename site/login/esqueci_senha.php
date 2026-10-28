@@ -88,11 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<body>
+<body class="auth-shell-page">
     <div class="app-shell">
         <div class="main-panel">
             <main class="content">
-                <section class="hero-card">
+                <section class="hero-card-recuperar">
                     <div>
                         <p class="small-label">Recuperação de conta</p>
                         <h1>Esqueci minha senha</h1>
@@ -102,14 +102,14 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?>
                             </p>
                         <?php endif; ?>
-                        <form method="post" class="auth-form">
+                        <form method="post" class="auth-form" onsubmit="alert('Implementação futura!'); return false;">
                             <div class="form-field">
                                 <label for="email">E-mail</label>
                                 <input id="email" name="email" type="email" autocomplete="email" required>
                             </div>
                             <button class="pill" type="submit">Enviar instruções</button>
                         </form>
-                        <p><a href="login.php">Voltar para entrar</a></p>
+                        <p><a class="link-actions" href="login.php">Voltar para entrar</a></p>
                     </div>
                 </section>
             </main>

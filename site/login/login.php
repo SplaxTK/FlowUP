@@ -93,8 +93,8 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <button class="pill" type="submit">Entrar</button>
                     </form>
-                    <p><a href="esqueci_senha.php">Esqueci minha senha</a></p>
-                    <p>Não tem conta? <a href="cadastro.php">Cadastrar</a></p>
+                    <p><a class="link-actions" href="esqueci_senha.php">Esqueci minha senha</a></p>
+                    <p>Não tem conta? <a class="link-actions" href="cadastro.php">Cadastrar</a></p>
                     </div>
                 </section>
             </main>

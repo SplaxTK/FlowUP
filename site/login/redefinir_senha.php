@@ -43,7 +43,7 @@ if (!flowup_token_senha_formato_valido($token)) {
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<body>
+<body class="auth-shell-page">
     <div class="app-shell">
         <div class="main-panel">
             <main class="content">
