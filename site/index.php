@@ -82,3 +82,4 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
         </div>
     </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
