@@ -101,7 +101,7 @@ require_once __DIR__ . '/includes/header.php';
             <a class="nav-link" href="configuracoes.php"><img src="assets/img/icons/settings-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Configurações</a>
         </nav>
     </aside>
-    <div class="main-panel">
+    <div class="main-painel">
         <header class="topbar">
             <div><p class="small-label">Organização</p><h1>Suas tarefas</h1></div>
             <div class="topbar-actions points-actions"><span class="points-badge" aria-label="Pontos acumulados"><?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts</span></div>

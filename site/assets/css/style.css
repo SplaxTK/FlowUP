@@ -420,15 +420,139 @@ body.escuro .icone-tema .icone-escuro {
     .theme-btn-icon { transition: none; }
 }
 
-.main-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-left: 260px;
+/* =====================================================================
+   AJUSTES EXCLUSIVOS - TELA DE LOGIN (Usando suas classes originais)
+   ===================================================================== */
+
+/* 1. Remove as faixas brancas e trava a tela */
+body.tela-login-body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; 
 }
 
-.cadastro-page .main-panel {
-    margin-left: 0;
+/* 2. Container principal dividindo a tela 40/60 */
+.tela-login-body .tela-inteira {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 3. Lado Esquerdo (40% - Azul do seu tema) */
+.tela-login-body .lado-esquerdo {
+    flex: 0 0 40%;
+    background: linear-gradient(180deg, var(--cor-sidebar-a), var(--cor-sidebar-b));
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.tela-login-body .lado-esquerdo h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.tela-login-body .lado-esquerdo p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #dce7f8;
+}
+
+/* 4. Lado Direito (60% - Fundo Claro/Formulário) */
+.tela-login-body .card-login {
+    flex: 0 0 60%;
+    background-color: #f4f7fb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+    position: relative;
+    height: 100%;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+}
+
+/* Link de voltar no topo direito */
+.tela-login-body .card-login .back-link-login {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tela-login-body .card-login .back-link-login:hover {
+    color: var(--cor-principal);
+}
+
+/* 5. Ajusta o container do formulário para não esticar demais */
+.tela-login-body .card-login > div {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* 6. Botão usando as cores do seu tema */
+.tela-login-body .btn-entrar {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--cor-principal) !important;
+    color: var(--cor-texto-botao) !important;
+    border: none !important;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.tela-login-body .btn-entrar:hover {
+    background-color: var(--cor-principal-hover) !important;
+}
+
+/* Responsivo para celular */
+@media (max-width: 900px) {
+    .tela-login-body .tela-inteira {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+    .tela-login-body .lado-esquerdo,
+    .tela-login-body .card-login {
+        flex: 1 1 100%;
+        width: 100%;
+        height: auto;
+    }
+    .tela-login-body .lado-esquerdo {
+        padding: 30px;
+        text-align: center;
+    }
+    .tela-login-body .lado-esquerdo h1 { font-size: 2rem; }
+    .tela-login-body .card-login {
+        padding: 80px 20px 40px;
+    }
+    .tela-login-body .card-login .back-link-login {
+        top: 20px;
+        left: 20px;
+    }
 }
 
 .back-link {
@@ -468,6 +592,40 @@ body.escuro .icone-tema .icone-escuro {
     transform: translateX(-3px);
 }
 
+.back-link-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #3a4f74;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.back-link-login:hover {
+    color: #2563eb;
+}
+
+.back-link-login:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 2px;
+}
+
+.back-link-login svg {
+    transition: transform 0.2s ease;
+}
+
+.back-link-login:hover svg {
+    transform: translateX(-4px);
+}
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -510,6 +668,7 @@ body.escuro .icone-tema .icone-escuro {
     position: relative;
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .perfil-button {
@@ -658,7 +817,7 @@ body.escuro .icone-tema .icone-escuro {
     margin-top: 0;
 }
 
-.cadastro-page .back-link {
+.cadastro-page .back-link .back-link-login{
     grid-column: 1;
 }
 
@@ -740,7 +899,22 @@ body.escuro.legal-page .legal-updated {
     gap: 20px;
 }
 
-body.auth-shell-page .main-panel {
+.card-login {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 100px;
+    min-height: 100vh; 
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    padding-top: 80px;
+}
+
+body.auth-shell-page .main-painel {
     margin-left: 0;
 }
 
@@ -768,13 +942,14 @@ body.auth-shell-page .content {
 }
 
 body.auth-shell-page .hero-card-recuperar,
-body.auth-shell-page .hero-card {
+body.auth-shell-page .hero-card,
+body.auth-shell-page .card-login {
     display: block;
     width: min(100%, 550px);
     margin: 0 auto;
 }
 
-.hero-card h2 {
+.hero-card .card-login {
     margin: 6px 0 0;
     font-size: 1.4rem;
 }
@@ -1223,6 +1398,7 @@ body.escuro { background: #111827; color: #f8fafc; }
 body.escuro .topbar,
 body.escuro .card,
 body.escuro .hero-card { background: #1f2937; border-color: #374151; }
+body.escuro .card-login { background: #1f2937; border-color: #374151; }
 body.escuro .hero-card-recuperar { background: #1f2937; border-color: #374151; }
 body.escuro .perfil-menu { background: #1f2937; border-color: #374151; }
 body.escuro .perfil-menu-user { border-color: #374151; }
@@ -1555,7 +1731,7 @@ body.escuro .empty-state { color: #9ca3af; }
         border-bottom: 1px solid #e5e7eb;
     }
 
-    .main-panel {
+    .main-painel {
         margin-left: 0;
     }
 
@@ -1597,6 +1773,11 @@ body.escuro .empty-state { color: #9ca3af; }
     }
 
     .hero-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card-login {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -1787,12 +1968,17 @@ body.escuro {
 
 body.escuro .card,
 body.escuro .hero-card,
+body.escuro .card-login,
 body.escuro .hero-card-recuperar {
     background: #1f2937;
     border-color: #374151;
 }
 
 body.escuro .hero-card h2 {
+    color: #f8fafc;
+}
+
+body.escuro .card-login h2 {
     color: #f8fafc;
 }
 
@@ -1982,7 +2168,8 @@ html[data-cor] .complete-button:disabled {
 }
 
 html[data-cor] .form-link:hover,
-html[data-cor] .back-link:hover {
+html[data-cor] .form-link:hover,
+html[data-cor] .back-link-login:hover {
     color: var(--cor-principal);
 }
 
@@ -2181,7 +2368,7 @@ body.escuro select {
         padding-left: 8px;
     }
 
-    .app-shell.sidebar-collapsed .main-panel {
+    .app-shell.sidebar-collapsed .main-painel {
         margin-left: 72px;
     }
 
@@ -2468,7 +2655,7 @@ body.escuro .modal-senha .btn-secundario {
    ===================================================================== */
 html{-webkit-text-size-adjust:100%}
 img{max-width:100%}
-.main-panel{min-width:0}
+.main-painel{min-width:0}
 
 /* Topbar: "sticky" em vez de "fixed" -> cresce sozinha se o título quebrar linha */
 .topbar{position:sticky;top:0;left:auto;width:auto;gap:12px}
@@ -2490,7 +2677,7 @@ select{max-width:100%}
   .sidebar .side-nav{flex-direction:row;justify-content:space-between;width:100%;gap:2px}
   .sidebar .side-nav a{flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:3px;padding:7px 2px;border-radius:10px;overflow:hidden;font-size:.62rem;line-height:1.15;text-align:center}
   .sidebar .sidebar-icon{flex:0 0 22px;width:22px;height:22px;transform:none}
-  .sidebar ~ .main-panel{margin-left:0;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .sidebar ~ .main-painel{margin-left:0;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
   .topbar{padding:16px 20px}
   .content{padding:20px}
   .cookie-notice{right:16px;bottom:calc(82px + env(safe-area-inset-bottom));left:16px;width:auto}

@@ -46,27 +46,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<body>
-            <aside class="sidebar">
-            <div class="logo">FlowUp</div>
-            <nav class="side-nav">
-                <a class="active" href="../index.php"><img src="../assets/img/icons/dashboard-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Dashboard</a>
-                <a class="nav-link" href="../tarefa.php"><img src="../assets/img/icons/tasks-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Tarefas</a>
-                <a class="nav-link" href="../calendario.php"><img src="../assets/img/icons/calendar-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Calendário</a>
-                <a class="nav-link" href="../personalizar.php"><img src="../assets/img/icons/customize-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Personalizar</a>
-                <a class="nav-link" href="../resgatar.php"><img src="../assets/img/icons/redeem-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Resgatar</a>
-                <a class="nav-link" href="../configuracoes.php"><img src="../assets/img/icons/settings-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Configurações</a>
-            </nav>
-        </aside>
-        <div class="main-panel">
-            <header class="topbar">
-                <div>
-                    <p class="small-label">Login</p>
-                    <h1>Entrar</h1>
-                </div>
+<!-- ÚNICA MUDANÇA: Adicionada a classe tela-login-body no body -->
+<body class="tela-login-body">
+
+        <div class="painel-login">
+            <header>
             </header>
-           <main class="content">
-                <section class="hero-card">
+           <main>
+            <div class="tela-inteira">
+
+                <div class="lado-esquerdo">
+                    <h1>FlowUp</h1>
+                    <p>Comece agora a organizar sua rotina e finanças</p>
+                </div>
+
+                <section class="card-login">      
+                    <a class="back-link-login" href="../index.php" aria-label="Voltar para a página inicial">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m15 18-6-6 6-6"></path>
+                        </svg>
+                        <span>Continuar sem login</span>
+                    </a>
+
                     <div>
                         <p class="small-label">Login</p>
                         <h2>Preencha os campos abaixo para entrar</h2>
@@ -91,7 +92,8 @@ require_once __DIR__ . '/../includes/header.php';
                             <input id="password" name="password" type="password" autocomplete="current-password" required>
                         </div>
 
-                        <button class="pill" type="submit">Entrar</button>
+                        <!-- ÚNICA MUDANÇA: Adicionada a classe btn-entrar junto com a pill -->
+                        <button class="pill btn-entrar" type="submit">Entrar</button>
                     </form>
                     <p><a class="link-actions" href="esqueci_senha.php">Esqueci minha senha</a></p>
                     <p>Não tem conta? <a class="link-actions" href="cadastro.php">Cadastrar</a></p>

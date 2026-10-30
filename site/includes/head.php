@@ -134,7 +134,6 @@ $siteUrl = $siteUrl ?? '';
 
     </script>
 
-    <!-- Estilo Principal -->
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/style.css">
 
     <?php

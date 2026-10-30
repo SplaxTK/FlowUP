@@ -16,7 +16,6 @@ $forwardedProto = strtolower(trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'
 $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $forwardedProto === 'https';
 $scheme = $isHttps ? 'https' : 'http';
 
-// Tenta obter o APP_URL do ambiente
 $envAppUrl = flowup_env('APP_URL');
 
 // Valida se o APP_URL lido do .env pertence ao mesmo host atual.
@@ -28,7 +27,7 @@ $envHost = $envAppUrl ? (parse_url($envAppUrl, PHP_URL_HOST) ?: '') : '';
 if ($envAppUrl && !$isLocalHost && strtolower($envHost) === strtolower(explode(':', $host)[0])) {
     $siteUrl = $envAppUrl;
 } else {
-    // Cálculo dinâmico para ambiente local ou quando APP_URL não bate com o host
+
     $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
     $siteDir = str_replace('\\', '/', dirname(__DIR__)); // Diretório 'site'
 

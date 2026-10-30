@@ -113,7 +113,7 @@ require_once __DIR__ . '/includes/header.php';
 
         </aside>
 
-        <div class="main-panel">
+        <div class="main-painel">
             <header class="topbar">
                 <div>
                     <p class="small-label">Seu espaço, seu tempo</p>
