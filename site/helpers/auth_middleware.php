@@ -41,17 +41,16 @@ if (!$isPublicPage) {
         }
     }
 
-    if (!$usuarioLogado) {
-        $scriptDirectory = str_replace('\\', '/', dirname($scriptName ?: '/index.php'));
-        $sitePath = preg_replace('~/(?:login|politica|functions|crud)$~', '', $scriptDirectory);
-        $sitePath = rtrim($sitePath, '/');
+    if ($usuarioLogado && isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+        $user_name = $_SESSION['user_full_name'];
+        $user_username = $_SESSION['user_username'];
+        $user_email = $_SESSION['user_email'];
+    } else {
 
-        header('Location: ' . $sitePath . '/login/login.php');
-        exit;
+        $user_id = null;
+        $user_name = 'Visitante';
+        $user_username = null;
+        $user_email = null;
     }
-
-    $user_id = $_SESSION['user_id'];
-    $user_name = $_SESSION['user_full_name'];
-    $user_username = $_SESSION['user_username'];
-    $user_email = $_SESSION['user_email'];
 }

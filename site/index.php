@@ -29,7 +29,7 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
             </nav>
         </aside>
 
-        <div class="main-panel">
+        <div class="main-painel">
             <header class="topbar">
                 <div>
                     <p class="small-label">Dashboard</p>
@@ -82,3 +82,4 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
         </div>
     </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

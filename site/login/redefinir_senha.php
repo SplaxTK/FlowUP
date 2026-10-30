@@ -45,7 +45,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <body class="auth-shell-page">
     <div class="app-shell">
-        <div class="main-panel">
+        <div class="main-painel">
             <main class="content">
                 <section class="hero-card">
                     <div>

@@ -51,7 +51,7 @@ if ($userId !== null) {
             <a class="nav-link" href="configuracoes.php"><img src="assets/img/icons/settings-icon.png" alt="" aria-hidden="true" class="sidebar-icon">Configurações</a>
         </nav>
     </aside>
-    <div class="main-panel">
+    <div class="main-painel">
         <header class="topbar">
             <div><p class="small-label">Recompensas</p><h1>Troque seus pontos por recompensas</h1></div>
             <div class="topbar-actions points-actions"><span class="points-badge" aria-label="Pontos acumulados"><?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts</span></div>

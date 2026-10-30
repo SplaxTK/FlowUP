@@ -66,7 +66,7 @@ require_once __DIR__ . '/../includes/header.php';
 <body class="cadastro-page">
 
         <main class="content">
-            <a class="back-link" href="../index.php" aria-label="Voltar para a página inicial">
+            <a class="back-link" href="../login/login.php" aria-label="Voltar para a página inicial">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m12 19-7-7 7-7"></path>
                     <path d="M19 12H5"></path>
