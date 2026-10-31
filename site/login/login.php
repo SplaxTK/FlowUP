@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<!-- ÚNICA MUDANÇA: Adicionada a classe tela-login-body no body -->
+
 <body class="tela-login-body">
 
         <div class="painel-login">
@@ -92,7 +92,6 @@ require_once __DIR__ . '/../includes/header.php';
                             <input id="password" name="password" type="password" autocomplete="current-password" required>
                         </div>
 
-                        <!-- ÚNICA MUDANÇA: Adicionada a classe btn-entrar junto com a pill -->
                         <button class="pill btn-entrar" type="submit">Entrar</button>
                     </form>
                     <p><a class="link-actions" href="esqueci_senha.php">Esqueci minha senha</a></p>

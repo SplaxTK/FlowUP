@@ -164,11 +164,11 @@ html[data-fonte="pequena"] {
 }
 
 html[data-fonte="media"] {
-    font-size: 16px;
+    font-size: 17px;
 }
 
 html[data-fonte="grande"] {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 html[data-negrito="true"] body {
@@ -420,73 +420,7 @@ body.escuro .icone-tema .icone-escuro {
     .theme-btn-icon { transition: none; }
 }
 
-/* =====================================================================
-   AJUSTES EXCLUSIVOS - TELA DE LOGIN (Usando suas classes originais)
-   ===================================================================== */
-
-/* 1. Remove as faixas brancas e trava a tela */
-body.tela-login-body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden; 
-}
-
-/* 2. Container principal dividindo a tela 40/60 */
-.tela-login-body .tela-inteira {
-    display: flex;
-    flex-wrap: nowrap;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
-/* 3. Lado Esquerdo (40% - Azul do seu tema) */
-.tela-login-body .lado-esquerdo {
-    flex: 0 0 40%;
-    background: linear-gradient(180deg, var(--cor-sidebar-a), var(--cor-sidebar-b));
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40px;
-    box-sizing: border-box;
-    height: 100%;
-}
-
-.tela-login-body .lado-esquerdo h1 {
-    font-size: 2.8rem;
-    margin-bottom: 15px;
-    font-weight: 800;
-}
-
-.tela-login-body .lado-esquerdo p {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    color: #dce7f8;
-}
-
-/* 4. Lado Direito (60% - Fundo Claro/Formulário) */
-.tela-login-body .card-login {
-    flex: 0 0 60%;
-    background-color: #f4f7fb;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    box-sizing: border-box;
-    position: relative;
-    height: 100%;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-}
-
-/* Link de voltar no topo direito */
-.tela-login-body .card-login .back-link-login {
+body.tela-login-body .card-login .back-link-login {
     position: absolute;
     top: 40px;
     left: 40px;
@@ -498,24 +432,93 @@ body.tela-login-body {
     gap: 8px;
 }
 
-.tela-login-body .card-login .back-link-login:hover {
-    color: var(--cor-principal);
-}
-
-/* 5. Ajusta o container do formulário para não esticar demais */
-.tela-login-body .card-login > div {
+body.tela-login-body .card-login > div {
     width: 100%;
     max-width: 450px;
 }
 
-/* 6. Botão usando as cores do seu tema */
-.tela-login-body .btn-entrar {
-    width: 100%;
-    padding: 14px;
+body.tela-login-body .btn-entrar {
+    width: 100% !important;
+    padding: 14px !important;
     background-color: var(--cor-principal) !important;
     color: var(--cor-texto-botao) !important;
     border: none !important;
-    border-radius: 10px;
+    border-radius: 10px !important;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+body.tela-login-body .btn-entrar:hover { background-color: var(--cor-principal-hover) !important; }
+
+@media (max-width: 900px) {
+    body.tela-login-body .tela-inteira { flex-direction: column !important; height: auto !important; overflow-y: auto !important; }
+    body.tela-login-body .lado-esquerdo, body.tela-login-body .card-login { flex: 1 1 100% !important; width: 100% !important; height: auto !important; min-height: auto !important; }
+    body.tela-login-body .lado-esquerdo { padding: 30px !important; text-align: center; }
+    body.tela-login-body .card-login { padding: 80px 20px 40px !important; }
+}
+
+/* --- 2. CORREÇÃO DO DASHBOARD (Só afeta se body NÃO tiver .tela-login-body) --- */
+body:not(.tela-login-body) .content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    margin-top: 100px !important;
+    padding: 24px 28px !important;
+}
+
+body:not(.tela-login-body) .cards-grid {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr !important;
+    gap: 20px !important;
+}
+
+body:not(.tela-login-body) .bottom-grid {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 20px !important;
+}
+
+body:not(.tela-login-body) .topbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 260px !important;
+    width: calc(100% - 260px) !important;
+    z-index: 10 !important;
+}
+
+body.tela-login-body .card-login .back-link-login {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: none;
+}
+
+body.tela-login-body .card-login .back-link-login:hover {
+    color: var(--cor-principal);
+}
+
+body.tela-login-body .card-login > div {
+    width: 100%;
+    max-width: 450px;
+}
+
+body.tela-login-body .btn-entrar {
+    width: 100% !important;
+    padding: 14px !important;
+    background-color: var(--cor-principal) !important;
+    color: var(--cor-texto-botao) !important;
+    border: none !important;
+    border-radius: 10px !important;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -524,32 +527,32 @@ body.tela-login-body {
     justify-content: center;
 }
 
-.tela-login-body .btn-entrar:hover {
+body.tela-login-body .btn-entrar:hover {
     background-color: var(--cor-principal-hover) !important;
 }
 
-/* Responsivo para celular */
 @media (max-width: 900px) {
-    .tela-login-body .tela-inteira {
-        flex-direction: column;
-        height: auto;
-        overflow-y: auto;
+    body.tela-login-body .tela-inteira {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-y: auto !important;
     }
-    .tela-login-body .lado-esquerdo,
-    .tela-login-body .card-login {
-        flex: 1 1 100%;
-        width: 100%;
-        height: auto;
+    body.tela-login-body .lado-esquerdo,
+    body.tela-login-body .card-login {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
     }
-    .tela-login-body .lado-esquerdo {
-        padding: 30px;
+    body.tela-login-body .lado-esquerdo {
+        padding: 30px !important;
         text-align: center;
     }
-    .tela-login-body .lado-esquerdo h1 { font-size: 2rem; }
-    .tela-login-body .card-login {
-        padding: 80px 20px 40px;
+    body.tela-login-body .lado-esquerdo h1 { font-size: 2rem; }
+    body.tela-login-body .card-login {
+        padding: 80px 20px 40px !important;
     }
-    .tela-login-body .card-login .back-link-login {
+    body.tela-login-body .card-login .back-link-login {
         top: 20px;
         left: 20px;
     }
@@ -635,8 +638,8 @@ body.tela-login-body {
     border-bottom: 1px solid #e5e7eb;
     position: fixed;
     top: 0;
-    left: 260px;
-    width: calc(100% - 260px);
+    left: 0;
+    width: 100%;
     z-index: 10;
 }
 
@@ -899,6 +902,18 @@ body.escuro.legal-page .legal-updated {
     gap: 20px;
 }
 
+.hero-card_2 {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
 .card-login {
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.12);
@@ -943,13 +958,14 @@ body.auth-shell-page .content {
 
 body.auth-shell-page .hero-card-recuperar,
 body.auth-shell-page .hero-card,
+body.auth-shell-page .hero-card_2,
 body.auth-shell-page .card-login {
     display: block;
     width: min(100%, 550px);
     margin: 0 auto;
 }
 
-.hero-card .card-login {
+.hero-card .card-login .hero-card_2 {
     margin: 6px 0 0;
     font-size: 1.4rem;
 }
@@ -1056,9 +1072,6 @@ body.escuro .form-link-text {
     color: #cbd5e1;
 }
 
-body.escuro .form-link {
-    color: #c4b5fd;
-}
 
 .form-submit {
     justify-self: start;
@@ -1398,6 +1411,7 @@ body.escuro { background: #111827; color: #f8fafc; }
 body.escuro .topbar,
 body.escuro .card,
 body.escuro .hero-card { background: #1f2937; border-color: #374151; }
+body.escuro .hero-card_2 { background: #1f2937; border-color: #374151; }
 body.escuro .card-login { background: #1f2937; border-color: #374151; }
 body.escuro .hero-card-recuperar { background: #1f2937; border-color: #374151; }
 body.escuro .perfil-menu { background: #1f2937; border-color: #374151; }
@@ -1777,6 +1791,11 @@ body.escuro .empty-state { color: #9ca3af; }
         align-items: flex-start;
     }
 
+    .hero-card_2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .card-login {
         flex-direction: column;
         align-items: flex-start;
@@ -1968,13 +1987,15 @@ body.escuro {
 
 body.escuro .card,
 body.escuro .hero-card,
+body.escuro .hero-card_2,
 body.escuro .card-login,
 body.escuro .hero-card-recuperar {
     background: #1f2937;
     border-color: #374151;
 }
 
-body.escuro .hero-card h2 {
+body.escuro .hero-card h2,
+body.escuro .hero-card_2 h2 {
     color: #f8fafc;
 }
 
@@ -1982,7 +2003,7 @@ body.escuro .card-login h2 {
     color: #f8fafc;
 }
 
-body.escuro .hero-card .small-label {
+body.escuro .hero-card .hero-card_2 .small-label {
     color: #9ca3af;
 }
 
@@ -2167,8 +2188,6 @@ html[data-cor] .complete-button:disabled {
     cursor: not-allowed;
 }
 
-html[data-cor] .form-link:hover,
-html[data-cor] .form-link:hover,
 html[data-cor] .back-link-login:hover {
     color: var(--cor-principal);
 }
@@ -2590,8 +2609,6 @@ body.modal-exclusao-aberto {
     background: #b91c1c;
 }
 
-
-/* ===== Modal de alteração de senha (reaproveita .logout-modal) ===== */
 .modal-senha .logout-modal-icon {
     background: rgba(37, 99, 235, 0.1);
     color: var(--cor-principal);
@@ -2726,6 +2743,302 @@ select{max-width:100%}
   .points-badge{padding:6px 9px}
 }
 
-/* Contraste no tema escuro */
 body.escuro .acoes{border-color:#374151;background:#1f2937}
 body.escuro .reward-footer strong{color:#bfdbfe}
+
+body.tela-login-body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden !important;
+    background: #f4f7fb !important;
+}
+
+body.tela-login-body .tela-inteira {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: 100vw;
+    height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.tela-login-body .lado-esquerdo {
+    flex: 0 0 40% !important;
+    background: linear-gradient(180deg, var(--cor-sidebar-a), var(--cor-sidebar-b)) !important;
+    color: white !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px !important;
+    box-sizing: border-box;
+    height: 100vh !important;
+}
+
+body.tela-login-body .card-login {
+    flex: 0 0 60% !important;
+    background-color: #f4f7fb !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px !important;
+    box-sizing: border-box;
+    position: relative;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+
+body.tela-login-body .card-login .back-link-login {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body.tela-login-body .card-login > div {
+    width: 100%;
+    max-width: 450px;
+}
+
+body.tela-login-body .btn-entrar {
+    width: 100% !important;
+    padding: 14px !important;
+    background-color: var(--cor-principal) !important;
+    color: var(--cor-texto-botao) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+body.tela-login-body .btn-entrar:hover {
+    background-color: var(--cor-principal-hover) !important;
+}
+
+@media (max-width: 900px) {
+    body.tela-login-body .tela-inteira { flex-direction: column !important; height: auto !important; overflow-y: auto !important; }
+    body.tela-login-body .lado-esquerdo, body.tela-login-body .card-login { flex: 1 1 100% !important; width: 100% !important; height: auto !important; min-height: auto !important; }
+    body.tela-login-body .lado-esquerdo { padding: 30px !important; text-align: center; }
+    body.tela-login-body .card-login { padding: 80px 20px 40px !important; }
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body.escuro {
+    background-color: #111827 !important;
+}
+
+body.escuro .app-shell {
+    background-color: #111827;
+    min-height: 100vh;
+}
+
+.main-painel {
+    background-color: inherit;
+}
+
+html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body.escuro {
+    background-color: #111827 !important;
+    min-height: 100vh;
+}
+
+.app-shell {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    padding-left: 260px !important;
+}
+
+.main-painel {
+    flex: 1 !important;
+    min-width: 0 !important; 
+    width: 100% !important;
+    margin-left: 0 !important; 
+    box-sizing: border-box !important;
+}
+
+@media (min-width: 901px) {
+    .app-shell.sidebar-collapsed {
+        padding-left: 72px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .app-shell {
+        padding-left: 0 !important;
+    }
+}
+
+html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.app-shell {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.main-painel {
+    flex: 1;
+    min-width: 0; 
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px; 
+    transition: margin-left 0.2s ease;
+}
+
+@media (min-width: 901px) {
+    .app-shell.sidebar-collapsed .main-painel {
+        margin-left: 72px;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-painel {
+        margin-left: 0;
+    }
+}
+
+.main-painel .topbar {
+    position: sticky !important;
+    top: 0 !important;
+    left: auto !important;
+    width: 100% !important; 
+    max-width: 100% !important;
+    box-sizing: border-box !important; 
+    margin: 0 !important;
+    z-index: 10;
+}
+
+.topbar > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.topbar-actions, 
+.points-actions, 
+.perfil-actions {
+    flex-shrink: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (min-width: 901px) {
+    body:not(.tela-login-body) .app-shell.sidebar-collapsed .topbar {
+        left: 72px !important;
+        width: calc(100% - 72px) !important;
+    }
+}
+
+body.tela-login-body,
+body.tela-login-body.escuro {
+    background: #f4f7fb !important;
+    color: #1f2937 !important;
+}
+
+/* Fundo e textos da área de login */
+body.tela-login-body .card-login {
+    background: #f4f7fb !important;
+    color: #1f2937 !important;
+}
+
+body.tela-login-body .card-login h1,
+body.tela-login-body .card-login h2,
+body.tela-login-body .card-login h3,
+body.tela-login-body .card-login p,
+body.tela-login-body .card-login label {
+    color: #1f2937 !important;
+}
+
+/* Campos de preenchimento */
+body.tela-login-body .card-login .form-field label {
+    color: #374151 !important;
+}
+
+body.tela-login-body .card-login .form-field input {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
+
+body.tela-login-body .card-login .form-field input::placeholder {
+    color: #9ca3af !important;
+}
+
+/* Textos auxiliares */
+body.tela-login-body .card-login .form-help,
+body.tela-login-body .card-login .form-link-text {
+    color: #6b7280 !important;
+}
+
+body.tela-login-body .card-login .back-link-login {
+    color: #64748b !important;
+}
+/* Restaura o hover do botão de login */
+body.tela-login-body .card-login .btn-entrar:hover {
+    background-color: var(--cor-principal-hover) !important;
+    color: #ffffff !important;
+    cursor: pointer;
+}
+
+/* Hover do botão Continuar sem login */
+body.tela-login-body .card-login .back-link-login:hover {
+    color: #2563eb !important;
+}
+
+/* ==========================================
+   CADASTRO — CENTRALIZAR CONTEÚDO
+   ========================================== */
+
+body.cadastro-page .content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 30px !important;
+    box-sizing: border-box !important;
+}
+
+/* Link voltar alinhado à esquerda */
+body.cadastro-page .content > .back-link {
+    align-self: flex-start !important;
+}
+
+/* Formulário centralizado */
+body.cadastro-page .cadastro-card {
+    width: 100% !important;
+    max-width: 425px !important;
+    margin: 0 auto !important;
+    grid-column: auto !important;
+}

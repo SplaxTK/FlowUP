@@ -74,7 +74,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <span>Voltar</span>
             </a>
 
-            <section class="hero-card cadastro-card">
+            <section class="hero-card_2 cadastro-card">
                 <div class="cadastro-content">
                     <p class="small-label">Cadastro</p>
                     <h2>Preencha os campos abaixo para criar sua conta</h2>
