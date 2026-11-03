@@ -5,8 +5,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/functions/flowup.php';
 
+$continuarSemLogin = ($_GET['continuar_sem_login'] ?? '') === '1';
 $userId = flowup_user_id();
-if ($userId === null) {
+if ($userId === null && !$continuarSemLogin) {
     header('Location: login/login.php');
     exit;
 }
