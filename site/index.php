@@ -1,10 +1,18 @@
 <?php
-require_once __DIR__ . '/config/config.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/functions/flowup.php';
+
+$userId = flowup_user_id();
+if ($userId === null) {
+    header('Location: login/login.php');
+    exit;
+}
 
 require_once __DIR__ . '/includes/header.php';
 
-$userId = flowup_user_id();
 $tarefasHoje = flowup_tarefas_hoje($pdo, $userId);
 $metasHoje = flowup_metas_hoje($pdo, $userId);
 ?>
@@ -82,4 +90,3 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
         </div>
     </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

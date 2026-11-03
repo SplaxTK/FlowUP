@@ -134,7 +134,11 @@ $siteUrl = $siteUrl ?? '';
 
     </script>
 
-    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/layout.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/componentes.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/paginas.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/tema-escuro.css">
 
     <?php
         $calendarCssPath = __DIR__ . '/../assets/css/calendar.css';
@@ -146,6 +150,8 @@ $siteUrl = $siteUrl ?? '';
     ?>
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/calendar.css?v=<?php echo filemtime($calendarCssPath); ?>">
     <?php endif; ?>
+
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/responsivo.css">
 
     <script src="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/js/script.js" defer></script>
 </head>

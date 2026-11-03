@@ -2,8 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../helpers/auth_helper.php';
+require_once __DIR__ . '/../functions/flowup.php';
+
+if (flowup_user_id() !== null) {
+    header('Location: ../index.php');
+    exit;
+}
 
 $error = '';
 $identificador = '';
@@ -61,13 +65,6 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
 
                 <section class="card-login">      
-                    <a class="back-link-login" href="../index.php" aria-label="Voltar para a página inicial">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="m15 18-6-6 6-6"></path>
-                        </svg>
-                        <span>Continuar sem login</span>
-                    </a>
-
                     <div>
                         <p class="small-label">Login</p>
                         <h2>Preencha os campos abaixo para entrar</h2>

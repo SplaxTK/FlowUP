@@ -1,0 +1,64 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          RESPONSIVO - ATÉ 1200px
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+@media (max-width: 1200px) {
+    .calendar-top-actions {
+        flex-wrap: wrap;
+    }
+
+    .google-status {
+        flex: 1 1 150px;
+    }
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          RESPONSIVO - TABLET E CELULAR (ATÉ 900px)
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+@media (max-width: 900px) {
+    body:not(.tela-login-body) .main-painel .topbar {
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        flex-wrap: wrap;
+    }
+
+    body:not(.tela-login-body) .main-painel .content {
+        margin-top: 0 !important;
+        padding: 20px !important;
+    }
+
+    body:not(.tela-login-body) .cards-grid,
+    body:not(.tela-login-body) .bottom-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .perfil-actions {
+        margin-left: auto;
+    }
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          RESPONSIVO - CELULAR (ATÉ 640px)
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+@media (max-width: 640px) {
+    .acoes {
+        flex-wrap: wrap;
+    }
+
+    .acoes > * {
+        min-width: 0;
+    }
+
+    .btn-restaurar,
+    .btn-salvar,
+    .calendar-button {
+        max-width: 100%;
+        white-space: normal;
+    }
+}
