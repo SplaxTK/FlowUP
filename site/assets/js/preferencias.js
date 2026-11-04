@@ -151,6 +151,13 @@
     const confirmRestore = document.getElementById('confirmRestore');
     const message = document.getElementById('preferencesMessage');
     const manageCookies = document.getElementById('manageCookies');
+    const unsavedModal = document.getElementById('unsavedPreferencesModal');
+    const stayButton = document.getElementById('stayOnPreferences');
+    const leaveButton = document.getElementById('leavePreferences');
+    let savedValues = preferencesApi.get();
+    let pendingLeave = null;
+    let leaveTrigger = null;
+    let leavingPage = false;
 
     function formValues() {
         const selectedColor = form.querySelector('input[name="cor"]:checked');
@@ -197,6 +204,10 @@
         preferencesApi.apply(values);
     }
 
+    function preferencesAreDirty() {
+        return JSON.stringify(formValues()) !== JSON.stringify(savedValues);
+    }
+
     function showMessage(text, kind) {
         if (!message) return;
         message.textContent = text;
@@ -209,6 +220,7 @@
             const updated = preferencesApi.save(values);
             setFormValues(updated);
             applyHomePreferences(updated);
+            savedValues = updated;
             const feedback = preferencesApi.hasConsent() ? savedText : temporaryText;
             showMessage(feedback, 'success');
         } catch (error) {
@@ -222,6 +234,28 @@
         restoreModal.hidden = true;
         document.body.classList.remove('modal-aberto');
         if (restoreButton) restoreButton.focus();
+    }
+
+    function closeUnsavedModal() {
+        if (!unsavedModal) return;
+        unsavedModal.hidden = true;
+        document.body.classList.remove('modal-aberto');
+        pendingLeave = null;
+        if (leaveTrigger) leaveTrigger.focus();
+        leaveTrigger = null;
+    }
+
+    function requestLeave(action, trigger) {
+        if (!preferencesAreDirty()) {
+            action();
+            return;
+        }
+
+        pendingLeave = action;
+        leaveTrigger = trigger || document.activeElement;
+        unsavedModal.hidden = false;
+        document.body.classList.add('modal-aberto');
+        stayButton.focus();
     }
 
     setFormValues(saved);
@@ -272,19 +306,66 @@
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !restoreModal.hidden) {
                 closeRestoreModal();
+            } else if (event.key === 'Escape' && unsavedModal && !unsavedModal.hidden) {
+                closeUnsavedModal();
+            }
+        });
+    }
+
+    if (unsavedModal && stayButton && leaveButton) {
+        stayButton.addEventListener('click', function () {
+            closeUnsavedModal();
+            document.body.classList.remove('modal-aberto');
+        });
+
+        leaveButton.addEventListener('click', function () {
+            const action = pendingLeave;
+            closeUnsavedModal();
+            document.body.classList.remove('modal-aberto');
+            if (action) {
+                leavingPage = true;
+                preferencesApi.apply(savedValues);
+                action();
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            const link = event.target.closest('a[href]');
+            if (!link || event.defaultPrevented || event.button !== 0 ||
+                event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+                (link.target && link.target !== '_self') || link.hasAttribute('download')) {
+                return;
+            }
+
+            const destination = link.href;
+            if (destination === window.location.href || !preferencesAreDirty()) return;
+
+            event.preventDefault();
+            requestLeave(function () {
+                window.location.assign(destination);
+            }, link);
+        });
+
+        window.addEventListener('beforeunload', function (event) {
+            if (!leavingPage && preferencesAreDirty()) {
+                event.preventDefault();
+                event.returnValue = '';
             }
         });
     }
 
     if (manageCookies) {
         manageCookies.addEventListener('click', function () {
-            document.cookie = consentCookie + '=; Max-Age=0; Path=/; SameSite=Lax';
-            if (readConsent() !== null) {
-                console.error('Não foi possível reabrir as opções de cookies.');
-                window.alert('Não foi possível abrir as opções de cookies. Verifique as configurações do navegador e tente novamente.');
-                return;
-            }
-            window.location.reload();
+            requestLeave(function () {
+                document.cookie = consentCookie + '=; Max-Age=0; Path=/; SameSite=Lax';
+                if (readConsent() !== null) {
+                    console.error('Não foi possível reabrir as opções de cookies.');
+                    window.alert('Não foi possível abrir as opções de cookies. Verifique as configurações do navegador e tente novamente.');
+                    leavingPage = false;
+                    return;
+                }
+                window.location.reload();
+            }, manageCookies);
         });
     }
 })();

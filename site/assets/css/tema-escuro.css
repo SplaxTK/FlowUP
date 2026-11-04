@@ -224,6 +224,19 @@ body.escuro .task-form select {
     color: #fff;
 }
 
+body.escuro .task-edit-actions .btn-secundario,
+body.escuro .task-confirm-modal .btn-secundario {
+    border-color: #4b5563;
+    background: #374151;
+    color: #f8fafc;
+}
+
+body.escuro .task-edit-actions .task-delete-button {
+    border-color: #7f1d1d;
+    background: #450a0a;
+    color: #fecaca;
+}
+
 body.escuro .task-form label {
     color: #d1d5db;
 }
