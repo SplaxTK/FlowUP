@@ -116,6 +116,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php foreach ($grupos as $tipo => $titulo): ?>
                         <section class="card task-group">
                             <div class="task-group-heading"><div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div><span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span></div>
+                            <button class="task-group-toggle" type="button" aria-label="Expandir ou recolher tarefas"><img src="assets/img/icons/expand-icon.png" alt="" aria-hidden="true"></button>
                             <?php $temTarefa = false; foreach ($tarefas as $tarefa): if ($tarefa['tipo'] !== $tipo) continue; $temTarefa = true; $feito = isset($concluidas[(int) $tarefa['id_tarefas']]); ?>
                                 <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>">
                                     <div><strong><?php echo htmlspecialchars($tarefa['descricao']); ?></strong><span>+<?php echo (int) $tarefa['qtd_pon_ganho']; ?> pontos</span></div>
