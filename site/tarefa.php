@@ -122,6 +122,10 @@ require_once __DIR__ . '/includes/header.php';
                             </svg>
                             <input type="search" data-task-search placeholder="Pesquisar tarefas" aria-label="Pesquisar tarefas">
                         </label>
+                        <div class="maximize-space">
+                            <button class="maximize-button" type="button" aria-label="Recolher todas as categorias" aria-pressed="false" title="Recolher todas as categorias">
+                            </button>
+                        </div>
                         <div class="task-filter">
                             <button class="filter-button" type="button" aria-label="Filtrar tarefas" aria-expanded="false" aria-controls="taskFilterPanel">
                                 <span class="filter-icon-light" aria-hidden="true"></span>
@@ -164,8 +168,11 @@ require_once __DIR__ . '/includes/header.php';
                             ?>
                             <section class="card task-group" data-task-group data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-reset-days="<?php echo $diasAteReset; ?>">
                                 <div class="task-group-heading"><div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div><span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span>
-                                    <button class="task-group-toggle" type="button" aria-label="Expandir ou recolher tarefas"><img src="assets/img/icons/seta-cima-icon2.png" alt="" aria-hidden="true"></button>
+                                    <button class="task-group-toggle" type="button" aria-label="Recolher tarefas desta categoria" aria-expanded="true" title="Recolher tarefas desta categoria"><img src="assets/img/icons/seta-cima-icon2.png" alt="" aria-hidden="true"></button>
                                 </div>
+
+                                <?php if ($tipo !== 'meta'): ?><p class="task-group-reset">Recomeça em <?php echo $diasAteReset; ?> dia<?php echo $diasAteReset > 1 ? 's' : ''; ?>.</p><?php endif; ?>
+
                                 <?php $temTarefa = false; foreach ($tarefas as $tarefa): if ($tarefa['tipo'] !== $tipo) continue; $temTarefa = true; $feito = isset($concluidas[(int) $tarefa['id_tarefas']]); ?>
                                     <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>" data-task-row data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-task-completed="<?php echo $feito ? 'true' : 'false'; ?>">
                                         <div><strong><?php echo htmlspecialchars($tarefa['descricao']); ?></strong><span>+<?php echo (int) $tarefa['qtd_pon_ganho']; ?> pontos</span></div>

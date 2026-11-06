@@ -307,3 +307,106 @@ if (perfilActions && perfilButton && perfilMenu) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const groups = Array.from(document.querySelectorAll('.task-group'));
+    const minimizeAllButton = document.querySelector('.maximize-button');
+    const groupToggleButtons = document.querySelectorAll('.task-group-toggle');
+    const STORAGE_KEY = 'taskGroupsState';
+
+    function loadState() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (!saved) return {};
+
+            const state = JSON.parse(saved);
+            if (!state || typeof state !== 'object' || Array.isArray(state)) {
+                throw new TypeError('O estado salvo deve ser um objeto.');
+            }
+            return state;
+        } catch (error) {
+            console.error('Não foi possível carregar o estado das categorias de tarefas.', error);
+            return {};
+        }
+    }
+
+    function saveState() {
+        const state = {};
+        groups.forEach(function (group, index) {
+            const groupKey = group.dataset.taskType || group.id || 'group-' + index;
+            state[groupKey] = group.classList.contains('is-collapsed');
+        });
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+            console.error('Não foi possível salvar o estado das categorias de tarefas.', error);
+        }
+    }
+
+    function updateGroupToggle(group) {
+        const button = group.querySelector('.task-group-toggle');
+        if (!button) return;
+
+        const isExpanded = !group.classList.contains('is-collapsed');
+        button.setAttribute('aria-expanded', String(isExpanded));
+        button.setAttribute(
+            'aria-label',
+            isExpanded ? 'Recolher tarefas desta categoria' : 'Expandir tarefas desta categoria'
+        );
+        button.title = isExpanded ? 'Recolher tarefas desta categoria' : 'Expandir tarefas desta categoria';
+    }
+
+    function updateMinimizeAllButton() {
+        if (!minimizeAllButton) return;
+
+        const allCollapsed = groups.length > 0 && groups.every(function (group) {
+            return group.classList.contains('is-collapsed');
+        });
+        const label = allCollapsed ? 'Expandir todas as categorias' : 'Recolher todas as categorias';
+        minimizeAllButton.setAttribute('aria-pressed', String(allCollapsed));
+        minimizeAllButton.setAttribute('aria-label', label);
+        minimizeAllButton.title = label;
+    }
+
+    const savedState = groups.length > 0 ? loadState() : {};
+    groups.forEach(function (group, index) {
+        const groupKey = group.dataset.taskType || group.id || 'group-' + index;
+        const savedValue = savedState[groupKey] !== undefined
+            ? savedState[groupKey]
+            : savedState['group-' + index];
+        if (typeof savedValue === 'boolean') {
+            group.classList.toggle('is-collapsed', savedValue);
+        }
+    });
+
+    groupToggleButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const group = button.closest('.task-group');
+            if (!group) return;
+
+            group.classList.toggle('is-collapsed');
+            updateGroupToggle(group);
+            updateMinimizeAllButton();
+            saveState();
+        });
+    });
+
+    if (minimizeAllButton) {
+        minimizeAllButton.disabled = groups.length === 0;
+        minimizeAllButton.addEventListener('click', function () {
+            const allCollapsed = groups.length > 0 && groups.every(function (group) {
+                return group.classList.contains('is-collapsed');
+            });
+
+            groups.forEach(function (group) {
+                group.classList.toggle('is-collapsed', !allCollapsed);
+                updateGroupToggle(group);
+            });
+            updateMinimizeAllButton();
+            saveState();
+        });
+    }
+
+    groups.forEach(updateGroupToggle);
+    updateMinimizeAllButton();
+});
