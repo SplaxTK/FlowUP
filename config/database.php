@@ -18,7 +18,7 @@ if (getenv('JWT_SECRET_KEY') === false && !empty($env['JWT_SECRET_KEY'])) {
 // Produção (Vercel/Aiven) usa DB_*.
 // Localmente, se DB_HOST não existir, usa o XAMPP.
 $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
-$port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3306');
+$port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3307');
 $db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'flowup');
 $user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
 
