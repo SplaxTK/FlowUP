@@ -384,8 +384,42 @@ body.cadastro-page .cadastro-card {
     gap: 5px;
 }
 
+.task-row > .task-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-row > .task-actions form {
+    display: block;
+    margin: 0;
+}
+
+.btn-secondary,
+.task-edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 13px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
+    font: inherit;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.task-edit-button:hover {
+    background: var(--cor-principal-hover);
+}
+
 .complete-button,
 .btn.form-submit {
+    min-height: 40px;
     padding: 9px 13px;
     border: 0;
     border-radius: 9px;
@@ -442,6 +476,129 @@ body.cadastro-page .cadastro-card {
     border-color: #2563eb;
 }
 
+.task-edit-modal[hidden],
+.task-confirm-modal[hidden] {
+    display: none;
+}
+
+.task-edit-modal {
+    z-index: 20;
+}
+
+.task-confirm-modal {
+    z-index: 30;
+}
+
+.task-edit-card {
+    min-width: 0;
+    max-height: min(90vh, 720px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.reward-edit-modal .task-edit-card {
+    width: min(100%, 520px);
+}
+
+.task-edit-card .task-form {
+    min-width: 0;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.task-edit-card .task-form .form-submit {
+    justify-self: auto;
+    margin: 0;
+    width: auto;
+}
+
+.task-edit-actions {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.reward-edit-modal .task-edit-actions {
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+
+.task-edit-actions .task-delete-button {
+    margin-right: auto;
+    padding: 10px 12px;
+    border: 1px solid #fecaca;
+    border-radius: 9px;
+    background: #fff;
+    color: #b91c1c;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.task-edit-actions .task-delete-button:hover {
+    background: #fef2f2;
+}
+
+.reward-edit-modal .task-edit-actions > button {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.reward-edit-modal .task-edit-actions .task-delete-button {
+    margin-right: auto;
+}
+
+.reward-edit-modal .task-edit-actions .btn-secundario {
+    min-height: 40px;
+}
+
+.reward-edit-modal .task-edit-actions .form-submit {
+    min-height: 40px;
+}
+
+.task-confirm-danger {
+    border: 0;
+    background: #dc2626;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.task-confirm-accept {
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.task-confirm-accept:not(.task-confirm-danger):hover {
+    background: var(--cor-principal-hover);
+}
+
+.task-confirm-danger:hover {
+    background: #b91c1c;
+}
+
+.restore-modal[hidden],
+.unsaved-preferences-modal[hidden] {
+    display: none;
+}
+
+.unsaved-preferences-modal {
+    z-index: 30;
+}
+
 .reward-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -459,6 +616,22 @@ body.cadastro-page .cadastro-card {
 .reward-footer {
     margin-top: auto;
     padding-top: 14px;
+}
+
+.reward-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reward-actions form {
+    display: block;
+    margin: 0;
+}
+
+.reward-edit-button,
+.reward-actions .complete-button {
+    min-height: 40px;
 }
 
 .reward-footer strong {
@@ -488,6 +661,42 @@ html[data-cor] .complete-button:disabled {
     .task-row {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .task-row > .task-actions {
+        width: auto;
+        flex-wrap: nowrap;
+    }
+
+    .task-edit-actions {
+        flex-wrap: wrap;
+    }
+
+    .reward-edit-modal {
+        padding: 12px;
+    }
+
+    .reward-edit-modal .task-edit-card {
+        padding: 24px 20px;
+    }
+
+    .reward-edit-modal .task-edit-actions {
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .reward-edit-modal .task-edit-actions > button {
+        padding: 7px 8px;
+        font-size: 0.82rem;
+    }
+
+    .reward-footer {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .reward-actions {
+        flex-wrap: wrap;
     }
 
     .section-heading,

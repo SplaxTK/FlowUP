@@ -477,7 +477,7 @@ body.modal-exclusao-aberto {
 
 .logout-modal-close:hover,
 .modal-btn-cancelar:hover {
-    background: #f1f5f9;
+    background: #74747448;
 }
 
 .logout-modal-actions {

@@ -92,6 +92,22 @@ function flowup_prepare_schema(PDO $pdo): void
     );
 }
 
+function flowup_prepare_rewards_schema(PDO $pdo): void
+{
+    if (flowup_table_has_column($pdo, 'recompensas', 'user_id')) {
+        return;
+    }
+
+    $pdo->exec(
+        'ALTER TABLE recompensas
+         ADD COLUMN user_id INT(10) UNSIGNED NULL,
+         ADD KEY idx_recompensas_user (user_id),
+         ADD CONSTRAINT fk_recompensas_user
+             FOREIGN KEY (user_id) REFERENCES usuarios (id)
+             ON DELETE CASCADE ON UPDATE CASCADE'
+    );
+}
+
 function flowup_periodo(string $tipo): string
 {
     if ($tipo === 'diaria') {
@@ -276,8 +292,14 @@ function flowup_resgatar(PDO $pdo, int $userId, int $id): string
 {
     $pdo->beginTransaction();
     try {
-        $reward = $pdo->prepare('SELECT * FROM recompensas WHERE id_recompensa = :id AND status = \'disponivel\' FOR UPDATE');
-        $reward->execute(['id' => $id]);
+        $reward = $pdo->prepare(
+            'SELECT * FROM recompensas
+             WHERE id_recompensa = :id
+               AND status = \'disponivel\'
+               AND (user_id IS NULL OR user_id = :user_id)
+             FOR UPDATE'
+        );
+        $reward->execute(['id' => $id, 'user_id' => $userId]);
         $recompensa = $reward->fetch();
         if (!$recompensa) {
             $pdo->rollBack();
