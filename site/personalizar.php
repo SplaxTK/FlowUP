@@ -159,4 +159,15 @@
             </div>
         </div>
     </div>
+    <div class="logout-modal unsaved-preferences-modal" id="unsavedPreferencesModal" role="alertdialog" aria-modal="true" aria-labelledby="unsavedPreferencesTitle" aria-describedby="unsavedPreferencesText" hidden>
+        <div class="logout-modal-backdrop"></div>
+        <div class="logout-modal-card">
+            <h2 id="unsavedPreferencesTitle">Sair sem salvar?</h2>
+            <p id="unsavedPreferencesText">As alterações de personalização não foram salvas. Deseja sair mesmo assim?</p>
+            <div class="logout-modal-actions">
+                <button class="btn-secundario" type="button" id="stayOnPreferences">Continuar editando</button>
+                <button class="btn-sair" type="button" id="leavePreferences">Sair sem salvar</button>
+            </div>
+        </div>
+    </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

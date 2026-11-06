@@ -47,11 +47,14 @@ CREATE TABLE IF NOT EXISTS `tarefas` (
 -- Recompensas Padrão do Sistema (Globais)
 CREATE TABLE IF NOT EXISTS `recompensas` (
   `id_recompensa` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(10) UNSIGNED DEFAULT NULL,
   `descricao` TEXT NOT NULL,
   `qtd_pon_neces` INT(11) NOT NULL,
   `status` ENUM('disponivel','indisponivel') NOT NULL DEFAULT 'disponivel',
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_recompensa`)
+  PRIMARY KEY (`id_recompensa`),
+  KEY `idx_recompensas_user` (`user_id`),
+  CONSTRAINT `fk_recompensas_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tarefas Criadas pelo Usuário
