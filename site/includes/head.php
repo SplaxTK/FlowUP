@@ -7,7 +7,7 @@ $siteUrl = $siteUrl ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle ?? 'FlowUp', ENT_QUOTES, 'UTF-8'); ?></title>
-    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/img/flowUp.png">
+    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/img/flowUp02.png">
     
     <script>
         (function () {
