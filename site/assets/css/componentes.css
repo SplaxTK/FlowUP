@@ -831,3 +831,36 @@ body.modal-exclusao-aberto {
         flex-wrap: wrap;
     }
 }
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          BOTTOM OCUTAR SENHA
+    -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.toggle-password {
+    position: absolute;
+    top: 55%;
+    right: 190px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+}
+
+.toggle-password:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.toggle-password:hover svg {
+    color: #2563eb;
+}
