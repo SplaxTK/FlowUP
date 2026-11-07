@@ -201,11 +201,66 @@ require_once __DIR__ . '/includes/header.php';
             <?php if ($message): ?><p class="form-message <?php echo $messageType; ?>"><?php echo htmlspecialchars($message); ?></p><?php endif; ?>
             <section class="task-layout">
                 <div class="task-list-column">
+                    <div class="task-toolbar">
+                        <label class="task-search">
+                            <svg class="task-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="2"></circle>
+                                <path d="m16 16 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                            <input type="search" data-task-search placeholder="Pesquisar tarefas" aria-label="Pesquisar tarefas">
+                        </label>
+                        <div class="maximize-space">
+                            <button class="maximize-button" type="button" aria-label="Recolher todas as categorias" aria-pressed="false" title="Recolher todas as categorias"></button>
+                        </div>
+                        <div class="task-filter">
+                            <button class="filter-button" type="button" aria-label="Filtrar tarefas" aria-expanded="false" aria-controls="taskFilterPanel">
+                                <span class="filter-icon-light" aria-hidden="true"></span>
+                                <span class="filter-icon-dark" aria-hidden="true"></span>Filtrar
+                            </button>
+                            <div class="card task-filter-panel" id="taskFilterPanel" aria-label="Filtros de tarefas" hidden>
+                                <fieldset>
+                                    <legend>Status</legend>
+                                    <label><input type="checkbox" data-task-completion-filter="complete" checked> Concluídas</label>
+                                    <label><input type="checkbox" data-task-completion-filter="incomplete" checked> Não concluídas</label>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Tipo de tarefa</legend>
+                                    <?php foreach ($grupos as $tipo => $titulo): ?>
+                                        <label><input type="checkbox" data-task-type-filter="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" checked> <?php echo htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8'); ?></label>
+                                    <?php endforeach; ?>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Ordenação</legend>
+                                    <label><input type="radio" name="task-sort-order" data-task-sort-filter="near" value="near"> Mais perto de acabar</label>
+                                    <label><input type="radio" name="task-sort-order" data-task-sort-filter="far" value="far"> Mais longe de acabar</label>
+                                </fieldset>
+                                <button class="task-filter-reset" type="button">Limpar filtros</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php if ($userId !== null && !empty($tarefas)): ?><p class="empty-state task-filter-empty" data-task-filter-empty hidden>Nenhuma tarefa corresponde à pesquisa ou aos filtros selecionados.</p><?php endif; ?>
+                    <div class="task-groups">
                     <?php foreach ($grupos as $tipo => $titulo): ?>
-                        <section class="card task-group">
-                            <div class="task-group-heading"><div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div><span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span></div>
+                        <?php
+                        $diasAteReset = 1;
+                        if ($tipo === 'semanal') {
+                            $diasAteReset = 8 - (int) date('N');
+                        } elseif ($tipo === 'mensal') {
+                            $diasAteReset = (int) date('t') - (int) date('j') + 1;
+                        } elseif ($tipo === 'meta') {
+                            $diasAteReset = PHP_INT_MAX;
+                        }
+                        ?>
+                        <section class="card task-group" data-task-group data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-reset-days="<?php echo $diasAteReset; ?>">
+                            <div class="task-group-heading">
+                                <div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div>
+                                <span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span>
+                                <button class="task-group-toggle" type="button" aria-label="Recolher tarefas desta categoria" aria-expanded="true" title="Recolher tarefas desta categoria"><img src="assets/img/icons/seta-cima-icon2.png" alt="" aria-hidden="true"></button>
+                            </div>
+                            <?php if ($tipo !== 'meta'): ?><p class="task-group-reset">Recomeça em <?php echo $diasAteReset; ?> dia<?php echo $diasAteReset > 1 ? 's' : ''; ?>.</p><?php endif; ?>
                             <?php $temTarefa = false; foreach ($tarefas as $tarefa): if ($tarefa['tipo'] !== $tipo) continue; $temTarefa = true; $feito = isset($concluidas[(int) $tarefa['id_tarefas']]); ?>
-                                <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>">
+                                <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>" data-task-row data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-task-completed="<?php echo $feito ? 'true' : 'false'; ?>">
                                     <div><strong><?php echo htmlspecialchars($tarefa['descricao']); ?></strong><span>+<?php echo (int) $tarefa['qtd_pon_ganho']; ?> pontos</span></div>
                                     <div class="task-actions">
                                         <button class="btn btn-secondary task-edit-button" type="button"
@@ -227,6 +282,7 @@ require_once __DIR__ . '/includes/header.php';
                             <?php endforeach; if (!$temTarefa): ?><p class="empty-state">Nenhuma tarefa nesta categoria ainda.</p><?php endif; ?>
                         </section>
                     <?php endforeach; ?>
+                    </div>
                 </div>
                 <aside class="card add-task-card">
                     <p class="small-label">Novo objetivo</p><h2>Adicionar tarefa</h2><p>Crie uma missão e defina quantos pontos ela vale.</p>
@@ -282,6 +338,6 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
     </div>
-    <script src="assets/js/tarefas.js" defer></script>
 <?php endif; ?>
+<script src="assets/js/tarefas.js" defer></script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

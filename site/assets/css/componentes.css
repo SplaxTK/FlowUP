@@ -831,3 +831,110 @@ body.modal-exclusao-aberto {
         flex-wrap: wrap;
     }
 }
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          AJUSTES DE CARDS E CADASTRO
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.hero-card h2 {
+    margin: 6px 0 0;
+    font-size: 1.4rem;
+}
+
+.cadastro-page .back-link {
+    grid-column: 1;
+}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          ESTADOS E CORES DOS LINKS
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+html[data-cor] .back-link:hover {
+    color: var(--cor-principal);
+}
+
+html[data-cor] .form-link:hover {
+    color: var(--cor-principal);
+}
+
+body.escuro .form-link {
+    color: #c4b5fd;
+}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          TEMA ESCURO - CONTROLES DE TAREFAS
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+body.escuro .maximize-button {
+    border-color: color-mix(in srgb, var(--cor-principal) 45%, #374151);
+    background: color-mix(in srgb, var(--cor-principal) 18%, #1f2937);
+    color: color-mix(in srgb, var(--cor-principal) 72%, white);
+}
+
+body.escuro .task-group-toggle {
+    border-color: color-mix(in srgb, var(--cor-principal) 45%, #374151);
+    background: color-mix(in srgb, var(--cor-principal) 18%, #1f2937);
+    color: color-mix(in srgb, var(--cor-principal) 72%, white);
+}
+
+body.escuro .maximize-button:hover {
+    border-color: color-mix(in srgb, var(--cor-principal) 65%, #4b5563);
+    background: color-mix(in srgb, var(--cor-principal) 28%, #1f2937);
+}
+
+body.escuro .task-group-toggle:hover {
+    border-color: color-mix(in srgb, var(--cor-principal) 65%, #4b5563);
+    background: color-mix(in srgb, var(--cor-principal) 28%, #1f2937);
+}
+
+body.escuro .filter-button {
+    border-color: color-mix(in srgb, var(--cor-principal) 50%, #263b61);
+    background: color-mix(in srgb, var(--cor-principal) 18%, #263b61);
+    color: color-mix(in srgb, var(--cor-principal) 72%, white);
+}
+
+body.escuro .task-filter-reset {
+    border-color: color-mix(in srgb, var(--cor-principal) 50%, #263b61);
+    background: color-mix(in srgb, var(--cor-principal) 18%, #263b61);
+    color: color-mix(in srgb, var(--cor-principal) 72%, white);
+}
+
+body.escuro .filter-button:hover {
+    background: color-mix(in srgb, var(--cor-principal) 28%, #263b61);
+}
+
+body.escuro .task-filter-reset:hover {
+    background: color-mix(in srgb, var(--cor-principal) 28%, #263b61);
+}
+
+body.escuro .task-filter-panel legend {
+    color: #f3f4f6;
+}
+
+body.escuro .task-filter-panel label {
+    color: #d1d5db;
+}
+
+body.escuro .filter-button .filter-icon-light {
+    display: none;
+}
+
+body.escuro .filter-button .filter-icon-dark {
+    display: inline-block;
+}
+
+body.escuro .task-search input {
+    border-color: color-mix(in srgb, var(--cor-principal) 32%, #4b5563);
+    background: #1f2937;
+    color: #f9fafb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+body.escuro .task-search input::placeholder {
+    color: #9ca3af;
+}
+
+body.escuro .task-search input:focus {
+    border-color: var(--cor-principal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor-principal) 24%, transparent);
+}
