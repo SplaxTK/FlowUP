@@ -1,0 +1,247 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          TEMA ESCURO - GERAL E ESTRUTURA
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+body.escuro .topbar,
+body.escuro .card,
+body.escuro .hero-card,
+body.escuro .perfil-menu,
+body.escuro .hero-card_2,
+body.escuro .card-login,
+body.escuro .hero-card-recuperar {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+body.escuro .perfil-menu-user,
+body.escuro .opcao,
+body.escuro .switch-item,
+body.escuro .task-row,
+body.escuro .sidebar {
+    border-color: #374151;
+}
+
+body.escuro .perfil-menu-links .perfil-menu-logout {
+    border-color: transparent;
+    border-top-color: #374151;
+    color: #fca5a5;
+}
+
+body.escuro .points-badge,
+body.escuro .task-count {
+    background: #263b61;
+    color: #dbeafe;
+    border-color: #3b5c91;
+}
+
+body.escuro .points-badge {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.escuro .points-badge::before {
+    background: #93c5fd;
+    box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.14);
+}
+
+body.escuro {
+    background: #111827;
+    color: #f8fafc;
+    background-color: #111827 !important;
+    min-height: 100vh;
+}
+
+html[data-cor] .points-badge,
+html[data-cor] .topbar .pill.active {
+    border-color: var(--cor-principal);
+    background: var(--cor-principal);
+    color: var(--cor-texto-botao);
+}
+
+html[data-cor] .points-badge::before {
+    background: var(--cor-texto-botao);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
+}
+
+body.escuro select {
+    background: #374151;
+    color: #ffffff;
+    border-color: #4b5563;
+}
+
+body.escuro .app-shell {
+    background-color: #111827;
+    min-height: 100vh;
+}
+
+body.tela-login-body,
+body.tela-login-body.escuro {
+    background: #f4f7fb !important;
+    color: #1f2937 !important;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          TEMA ESCURO - COMPONENTES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+body.escuro .icone-tema {
+    background: #263b61;
+}
+
+body.escuro .form-field input {
+    border-color: #64748b;
+    background: #374151;
+    color: #f8fafc;
+}
+
+body.escuro .form-field input::placeholder {
+    color: #d1d5db;
+    opacity: 1;
+}
+
+body.escuro .form-field input:focus {
+    border-color: #93c5fd;
+    background: #1f2937;
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.2);
+}
+
+body.escuro .form-help,
+body.escuro .form-link-text {
+    color: #cbd5e1;
+}
+
+html[data-cor] .form-field input:focus,
+html[data-cor] .campo input:focus,
+html[data-cor] .task-form input:focus,
+html[data-cor] .task-form select:focus,
+html[data-cor] .cores input:checked + .cor {
+    border-color: var(--cor-principal);
+}
+
+html[data-tema="escuro"] .cookie-notice {
+    border-color: #374151;
+    background: #1f2937;
+    color: #f8fafc;
+}
+
+body.escuro .preferences-message.success {
+    border-color: #166534;
+    background: #052e16;
+    color: #bbf7d0;
+}
+
+body.escuro .preferences-message.error {
+    border-color: #991b1b;
+    background: #450a0a;
+    color: #fecaca;
+}
+
+body.escuro .logout-modal-card {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f8fafc;
+}
+
+body.escuro .modal-senha .form-message.error {
+    color: #fca5a5;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          TEMA ESCURO - PÁGINAS
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+body.escuro.legal-page .legal-card {
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+body.escuro.legal-page .legal-card h1,
+body.escuro .form-field label,
+body.escuro .perfil-menu-links a,
+body.escuro .hero-card h2,
+body.escuro .hero-card_2 h2,
+body.escuro .card-login h2 {
+    color: #f8fafc;
+}
+
+body.escuro.legal-page .legal-card h2,
+body.escuro .reward-footer strong {
+    color: #bfdbfe;
+}
+
+body.escuro.legal-page .legal-updated,
+body.escuro .perfil-menu-user-info span,
+body.escuro .config-intro p,
+body.escuro .config-card .titulo-card p,
+body.escuro .config-card .opcao p,
+body.escuro .campo label,
+body.escuro .task-row span,
+body.escuro .add-task-card > p,
+body.escuro .reward-card > p,
+body.escuro .muted-text,
+body.escuro .empty-state,
+html[data-tema="escuro"] .cookie-notice p,
+html[data-tema="escuro"] .weather-status,
+body.escuro .logout-modal-card > p:not(.small-label),
+body.escuro .logout-modal-close,
+body.escuro .titulo-card p,
+body.escuro .opcao p,
+body.escuro .switch-item span:not(.switch) {
+    color: #9ca3af;
+}
+
+body.escuro .densidade label span,
+body.escuro .fonte label span,
+html[data-tema="escuro"] .btn-cookie-reject,
+body.escuro .btn-restaurar,
+body.escuro .modal-senha .btn-secundario {
+    border-color: #4b5563;
+    background: #374151;
+    color: #f8fafc;
+}
+
+body.escuro .densidade input:checked + span,
+body.escuro .fonte input:checked + span {
+    border-color: var(--cor-principal, #6c5ce7);
+    background: var(--cor-principal, #6c5ce7);
+    color: #fff;
+}
+
+body.escuro .opcao select {
+    background: #374151;
+    color: #fff;
+    border-color: #4b5563;
+}
+
+body.escuro .campo input,
+body.escuro .config-card select,
+body.escuro .task-form input,
+body.escuro .task-form select {
+    border-color: #4b5563;
+    background: #374151;
+    color: #fff;
+}
+
+body.escuro .task-edit-actions .btn-secundario,
+body.escuro .task-confirm-modal .btn-secundario {
+    border-color: #4b5563;
+    background: #374151;
+    color: #f8fafc;
+}
+
+body.escuro .task-edit-actions .task-delete-button {
+    border-color: #7f1d1d;
+    background: #450a0a;
+    color: #fecaca;
+}
+
+body.escuro .task-form label {
+    color: #d1d5db;
+}
+
+body.escuro .acoes {
+    border-color: #374151;
+    background: #1f2937;
+}

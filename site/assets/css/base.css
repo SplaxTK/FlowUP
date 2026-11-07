@@ -1,0 +1,250 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          TEMAS DE COR
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+:root {
+    --cor-principal: #2563eb;
+    --cor-principal-hover: #1d4ed8;
+    --cor-texto-botao: #ffffff;
+    --cor-sidebar-a: #1f3b6d;
+    --cor-sidebar-b: #264a86;
+}
+
+html[data-cor="indigo"] {
+    --cor-principal: #4f46e5;
+    --cor-principal-hover: #4338ca;
+    --cor-sidebar-a: #312e81;
+    --cor-sidebar-b: #4338ca;
+}
+
+html[data-cor="roxo"] {
+    --cor-principal: #7c3aed;
+    --cor-principal-hover: #6d28d9;
+    --cor-sidebar-a: #4c1d95;
+    --cor-sidebar-b: #6d28d9;
+}
+
+html[data-cor="fucsia"] {
+    --cor-principal: #c026d3;
+    --cor-principal-hover: #a21caf;
+    --cor-sidebar-a: #701a75;
+    --cor-sidebar-b: #a21caf;
+}
+
+html[data-cor="pink"] {
+    --cor-principal: #db2777;
+    --cor-principal-hover: #be185d;
+    --cor-sidebar-a: #831843;
+    --cor-sidebar-b: #be185d;
+}
+
+html[data-cor="rosa"] {
+    --cor-principal: #e11d48;
+    --cor-principal-hover: #be123c;
+    --cor-sidebar-a: #881337;
+    --cor-sidebar-b: #be123c;
+}
+
+html[data-cor="vermelho"] {
+    --cor-principal: #dc2626;
+    --cor-principal-hover: #b91c1c;
+    --cor-sidebar-a: #7f1d1d;
+    --cor-sidebar-b: #b91c1c;
+}
+
+html[data-cor="laranja"] {
+    --cor-principal: #ea580c;
+    --cor-principal-hover: #c2410c;
+    --cor-sidebar-a: #9a3412;
+    --cor-sidebar-b: #ea580c;
+}
+
+html[data-cor="ambar"] {
+    --cor-principal: #d97706;
+    --cor-principal-hover: #b45309;
+    --cor-sidebar-a: #78350f;
+    --cor-sidebar-b: #b45309;
+}
+
+html[data-cor="amarelo"] {
+    --cor-principal: #ca8a04;
+    --cor-principal-hover: #a16207;
+    --cor-sidebar-a: #713f12;
+    --cor-sidebar-b: #a16207;
+}
+
+html[data-cor="lima"] {
+    --cor-principal: #65a30d;
+    --cor-principal-hover: #4d7c0f;
+    --cor-sidebar-a: #365314;
+    --cor-sidebar-b: #4d7c0f;
+}
+
+html[data-cor="verde"] {
+    --cor-principal: #16a34a;
+    --cor-principal-hover: #15803d;
+    --cor-sidebar-a: #14532d;
+    --cor-sidebar-b: #15803d;
+}
+
+html[data-cor="esmeralda"] {
+    --cor-principal: #059669;
+    --cor-principal-hover: #047857;
+    --cor-sidebar-a: #064e3b;
+    --cor-sidebar-b: #047857;
+}
+
+html[data-cor="turquesa"] {
+    --cor-principal: #0d9488;
+    --cor-principal-hover: #0f766e;
+    --cor-sidebar-a: #134e4a;
+    --cor-sidebar-b: #0f766e;
+}
+
+html[data-cor="ciano"] {
+    --cor-principal: #0891b2;
+    --cor-principal-hover: #0e7490;
+    --cor-sidebar-a: #164e63;
+    --cor-sidebar-b: #0e7490;
+}
+
+html[data-cor="ceu"] {
+    --cor-principal: #0284c7;
+    --cor-principal-hover: #0369a1;
+    --cor-sidebar-a: #0c4a6e;
+    --cor-sidebar-b: #0369a1;
+}
+
+html[data-cor="branco"] {
+    --cor-principal: #a1a1a1;
+    --cor-principal-hover: #929599;
+    --cor-sidebar-a: #6e6f72;
+    --cor-sidebar-b: #979a9e;
+}
+
+html[data-cor="prata"] {
+    --cor-principal: #9ca3af;
+    --cor-principal-hover: #6b7280;
+    --cor-sidebar-a: #374151;
+    --cor-sidebar-b: #6b7280;
+}
+
+html[data-cor="grafite"] {
+    --cor-principal: #4b5563;
+    --cor-principal-hover: #374151;
+    --cor-sidebar-a: #1f2937;
+    --cor-sidebar-b: #374151;
+}
+
+html[data-cor="preto"] {
+    --cor-principal: #4d515a;
+    --cor-principal-hover: #4a4e57;
+    --cor-sidebar-a: #111827;
+    --cor-sidebar-b: #1f2937;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          PREFERÊNCIAS DE FONTE, NEGRITO E DENSIDADE
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+html[data-fonte="pequena"] {
+    font-size: 14px;
+}
+
+html[data-fonte="media"] {
+    font-size: 17px;
+}
+
+html[data-fonte="grande"] {
+    font-size: 20px;
+}
+
+html[data-negrito="true"] body {
+    font-weight: 700;
+}
+
+html[data-densidade="compacta"] .content,
+html[data-densidade="compacta"] .personalizar-content form {
+    gap: 8px;
+}
+
+html[data-densidade="compacta"] .cards-grid,
+html[data-densidade="compacta"] .bottom-grid {
+    gap: 12px;
+}
+
+html[data-densidade="compacta"] .card {
+    padding: 12px;
+}
+
+html[data-densidade="normal"] .content,
+html[data-densidade="normal"] .personalizar-content form,
+html[data-densidade="normal"] .cards-grid,
+html[data-densidade="normal"] .bottom-grid,
+.opcao,
+.switch-item {
+    gap: 20px;
+}
+
+html[data-densidade="normal"] .card {
+    padding: 20px;
+}
+
+html[data-densidade="espacosa"] .content,
+html[data-densidade="espacosa"] .personalizar-content form,
+html[data-densidade="espacosa"] .cards-grid,
+html[data-densidade="espacosa"] .bottom-grid {
+    gap: 36px;
+}
+
+html[data-densidade="espacosa"] .card {
+    padding: 32px;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+          RESET E ESTILOS GLOBAIS
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+    min-height: 100%;
+    overflow-x: hidden !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+img {
+    max-width: 100%;
+}
+
+select {
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 14px;
+    max-width: 100%;
+}
+
+[hidden] {
+    display: none !important;
+}
