@@ -307,3 +307,28 @@ if (perfilActions && perfilButton && perfilMenu) {
         }
     });
 }
+
+document.querySelectorAll(".toggle-password").forEach(function (botao) {
+    botao.addEventListener("click", function () {
+        const grupoCampo = botao.closest(".form-field");
+        const campo = botao.getAttribute("aria-controls")
+            ? document.getElementById(botao.getAttribute("aria-controls"))
+            : grupoCampo
+                ? grupoCampo.querySelector('input[type="password"], input[type="text"]')
+                : null;
+
+        if (!campo) return;
+
+        const mostrarSenha = campo.type === "password";
+        campo.type = mostrarSenha ? "text" : "password";
+        botao.setAttribute("aria-pressed", String(mostrarSenha));
+        botao.setAttribute("aria-label", mostrarSenha ? "Ocultar senha" : "Mostrar senha");
+
+        const iconeMostrar = botao.querySelector('[data-password-icon="show"]');
+        const iconeOcultar = botao.querySelector('[data-password-icon="hide"]');
+        if (iconeMostrar && iconeOcultar) {
+            iconeMostrar.hidden = mostrarSenha;
+            iconeOcultar.hidden = !mostrarSenha;
+        }
+    });
+});

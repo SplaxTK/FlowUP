@@ -212,6 +212,97 @@ body.cadastro-page .cadastro-card {
     grid-column: auto !important;
 }
 
+body.cadastro-page .cadastro-card {
+    padding: clamp(24px, 5vw, 36px);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 20px;
+    box-shadow: 0 20px 55px rgba(15, 23, 42, 0.12);
+}
+
+body.cadastro-page .cadastro-content {
+    width: 100%;
+}
+
+body.cadastro-page .cadastro-content h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: clamp(1.35rem, 4vw, 1.65rem);
+    line-height: 1.35;
+}
+
+body.cadastro-page .cadastro-content .small-label {
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+body.cadastro-page .auth-form {
+    gap: 18px;
+    margin-top: 24px;
+}
+
+body.cadastro-page .password-input-wrap {
+    position: relative;
+    min-width: 0;
+}
+
+body.cadastro-page .password-input-wrap input {
+    box-sizing: border-box;
+    min-height: 48px;
+    padding-right: 52px;
+}
+
+body.cadastro-page .password-input-wrap .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    place-items: center;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+}
+
+body.cadastro-page .password-input-wrap .toggle-password:hover {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+body.cadastro-page .password-input-wrap .toggle-password:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 1px;
+}
+
+body.cadastro-page .password-input-wrap .toggle-password svg[hidden] {
+    display: none;
+}
+
+body.cadastro-page .cadastro-actions {
+    display: grid;
+    gap: 12px;
+}
+
+body.cadastro-page .cadastro-actions .form-submit {
+    min-height: 48px;
+    margin: 0;
+    justify-self: stretch;
+}
+
+body.cadastro-page .form-help,
+body.cadastro-page .form-link-text {
+    text-align: center;
+    line-height: 1.6;
+}
+
 @media (max-width: 900px) {
     body.tela-login-body .lado-esquerdo h1 {
         font-size: 2rem;
@@ -254,6 +345,14 @@ body.cadastro-page .cadastro-card {
     .hero-card-recuperar {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    body.cadastro-page .content {
+        padding: 20px 14px !important;
+    }
+
+    body.cadastro-page .cadastro-card {
+        padding: 24px 20px;
     }
 }
 
