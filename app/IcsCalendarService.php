@@ -40,8 +40,8 @@ final class IcsCalendarService
         $find = $pdo->prepare('SELECT id FROM calendar_events WHERE user_id = ? AND ics_uid = ?');
         $insert = $pdo->prepare(
             'INSERT INTO calendar_events
-                (user_id, title, description, starts_at, ends_at, all_day, location, guests, repeat_rule, event_type, is_completed, ics_uid)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                (user_id, title, description, starts_at, ends_at, all_day, location, color, guests, repeat_rule, event_type, is_completed, ics_uid)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $update = $pdo->prepare(
             'UPDATE calendar_events
@@ -70,7 +70,13 @@ final class IcsCalendarService
                     $update->execute(array_merge($values, [$existingId, $userId]));
                     continue;
                 }
-                $insert->execute(array_merge([$userId], $values, [$event['ics_uid']]));
+                $insert->execute(array_merge(
+                    [$userId],
+                    array_slice($values, 0, 6),
+                    ['#5688ff'],
+                    array_slice($values, 6),
+                    [$event['ics_uid']]
+                ));
             }
             $pdo->commit();
         } catch (Throwable $error) {

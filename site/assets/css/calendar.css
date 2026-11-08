@@ -382,6 +382,21 @@ html[data-cor="amarelo"] .calendar-create-event img{filter:brightness(0)}
   min-width: 150px;
 }
 
+.calendar-page .calendar-action-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.calendar-page .calendar-action-icon-dark,
+body.escuro .calendar-page .calendar-action-icon-light {
+  display: none;
+}
+
+body.escuro .calendar-page .calendar-action-icon-dark {
+  display: block;
+}
+
 /* Alinhamento dos controles e tamanho dos alvos */
 .calendar-page .calendar-top-actions,
 .calendar-page .calendar-date-controls,

@@ -210,6 +210,7 @@
             weekends: document.getElementById("show-weekends").checked,
             height: "auto",
             headerToolbar: false,
+            eventDisplay: "block",
             dayMaxEvents: 3,
             nowIndicator: true,
             navLinks: true,

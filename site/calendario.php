@@ -125,10 +125,14 @@ require_once __DIR__ . '/includes/header.php';
                         >⋯</button>
                         <div class="calendar-dropdown calendar-actions-dropdown" id="calendar-actions-dropdown" role="menu" hidden>
                             <button class="calendar-action-button" type="button" id="import-calendar" role="menuitem">
-                                ↓ <span>Importar</span>
+                                <img class="calendar-action-icon calendar-action-icon-light" src="assets/img/icons/import-icon.png" alt="" aria-hidden="true">
+                                <img class="calendar-action-icon calendar-action-icon-dark" src="assets/img/icons/import-icon2.png" alt="" aria-hidden="true">
+                                <span>Importar</span>
                             </button>
                             <button class="calendar-action-button" type="button" id="export-calendar" role="menuitem">
-                                ↑ <span>Exportar</span>
+                                <img class="calendar-action-icon calendar-action-icon-light" src="assets/img/icons/export-icon.png" alt="" aria-hidden="true">
+                                <img class="calendar-action-icon calendar-action-icon-dark" src="assets/img/icons/export-icon2.png" alt="" aria-hidden="true">
+                                <span>Exportar</span>
                             </button>
                         </div>
                     </div>
