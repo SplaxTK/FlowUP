@@ -47,14 +47,11 @@ CREATE TABLE IF NOT EXISTS `tarefas` (
 -- Recompensas Padrão do Sistema (Globais)
 CREATE TABLE IF NOT EXISTS `recompensas` (
   `id_recompensa` INT(11) NOT NULL AUTO_INCREMENT,
-  `user_id` INT(10) UNSIGNED DEFAULT NULL,
   `descricao` TEXT NOT NULL,
   `qtd_pon_neces` INT(11) NOT NULL,
   `status` ENUM('disponivel','indisponivel') NOT NULL DEFAULT 'disponivel',
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_recompensa`),
-  KEY `idx_recompensas_user` (`user_id`),
-  CONSTRAINT `fk_recompensas_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id_recompensa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tarefas Criadas pelo Usuário
@@ -178,9 +175,14 @@ CREATE TABLE IF NOT EXISTS `calendar_events` (
   `google_event_id` VARCHAR(255) DEFAULT NULL,
   `google_calendar_id` VARCHAR(255) DEFAULT NULL,
   `google_etag` VARCHAR(255) DEFAULT NULL,
+  `ics_uid` CHAR(64) DEFAULT NULL,
+  `event_type` VARCHAR(20) NOT NULL DEFAULT 'event',
+  `is_completed` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_declined` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY `uq_calendar_google_event` (`user_id`, `google_calendar_id`, `google_event_id`),
+  UNIQUE KEY `uq_calendar_ics_uid` (`user_id`, `ics_uid`),
   KEY `idx_calendar_event_dates` (`user_id`, `starts_at`, `ends_at`),
   KEY `idx_calendar_event_category` (`user_id`, `category_id`),
   CONSTRAINT `fk_calendar_event_user` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,

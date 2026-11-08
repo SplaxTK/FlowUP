@@ -18,7 +18,7 @@ $pontosUsuario = flowup_pontos($pdo, $userId);
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<body>
+<body class="calendar-page">
     <div class="app-shell">
 
         <aside class="sidebar" id="primarySidebar">
@@ -102,18 +102,9 @@ require_once __DIR__ . '/includes/header.php';
                 </a>
             </nav>
 
-            <div class="calendar-sidebar-bottom">
-                <div class="google-mini-status">
-                    <span class="status-dot"></span>
-                    <span id="google-sidebar-status">
-                        Google Agenda desconectado
-                    </span>
-                </div>
-            </div>
-
         </aside>
 
-        <div class="main-painel">
+        <div class="main-panel">
             <header class="topbar">
                 <div>
                     <p class="small-label">Seu espaço, seu tempo</p>
@@ -122,30 +113,26 @@ require_once __DIR__ . '/includes/header.php';
 
                 <div class="calendar-top-actions">
 
-                    <span class="google-status" id="google-status">
-                        <span class="status-dot"></span>
-                        <span>Verificando conexão...</span>
-                    </span>
-
-                    <!-- Implementação futura -->
-                    <!-- id="google-connect" -->
-                    <button
-                        class="calendar-button google-connect" 
-                        type="button"
-                        onclick="event.preventDefault(); event.stopImmediatePropagation(); alert('Implementação futura!');"
-                        id="google-connect";
-                    >
-                        ◉ <span>Conectar Google Agenda</span>
-                    </button>
-
-                    <button
-                        class="calendar-button sync-now"
-                        id="sync-now"
-                        type="button"
-                        hidden
-                    >
-                        ↻ <span>Sincronizar agora</span>
-                    </button>
+                    <div class="calendar-actions-menu">
+                        <button
+                            class="calendar-button calendar-actions-toggle"
+                            type="button"
+                            id="calendar-actions-toggle"
+                            aria-label="Ações do calendário"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="calendar-actions-dropdown"
+                        >⋯</button>
+                        <div class="calendar-dropdown calendar-actions-dropdown" id="calendar-actions-dropdown" role="menu" hidden>
+                            <button class="calendar-action-button" type="button" id="import-calendar" role="menuitem">
+                                ↓ <span>Importar</span>
+                            </button>
+                            <button class="calendar-action-button" type="button" id="export-calendar" role="menuitem">
+                                ↑ <span>Exportar</span>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="calendar-import-file" accept=".zip,.ics,application/zip,text/calendar" hidden>
 
                 </div>
                 <div
@@ -170,18 +157,25 @@ require_once __DIR__ . '/includes/header.php';
             <main class="content">
                 <section class="calendar-workspace">
                     <div class="calendar-page-actions">
-                    <a
-                        class="calendar-button primary-button calendar-create-event"
-                        href="#novo-evento"
-                        data-new-event
-                        aria-label="Criar novo evento"
-                        title="Criar novo evento">
-                        <img
-                            src="assets/img/icons/calendar-plus-icon.png"
-                            alt=""
-                            aria-hidden="true">
-                        <span>Novo evento</span>
-                    </a>
+                        <div class="calendar-create-menu">
+                            <button
+                                class="calendar-button primary-button calendar-create-event"
+                                id="create-menu-toggle"
+                                type="button"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                aria-controls="create-menu"
+                            >
+                                <span aria-hidden="true">＋</span>
+                                <span>Criar</span>
+                                <span aria-hidden="true">▾</span>
+                            </button>
+                            <div class="calendar-dropdown create-dropdown" id="create-menu" role="menu" hidden>
+                                <button type="button" role="menuitem" data-create-type="event">Evento</button>
+                                <button type="button" role="menuitem" data-create-type="task">Tarefa</button>
+                                <button type="button" role="menuitem" data-create-type="appointment">Agendamento de horários</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="calendar-toolbar">
@@ -243,65 +237,36 @@ require_once __DIR__ . '/includes/header.php';
                                 </option>
                             </select>
 
-                            <!-- VISUALIZAÇÃO -->
-                            <div
-                                class="calendar-views"
-                                role="group"
-                                aria-label="Visualização do calendário"
-                            >
+                            <div class="calendar-view-menu">
                                 <button
+                                    class="calendar-button view-menu-toggle"
+                                    id="view-menu-toggle"
                                     type="button"
-                                    data-view="dayGridMonth"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    aria-controls="view-menu"
                                 >
-                                    Mês
+                                    <span id="current-view-label">Semana</span>
+                                    <span aria-hidden="true">▾</span>
                                 </button>
-
-                                <button
-                                    type="button"
-                                    data-view="timeGridWeek"
-                                >
-                                    Semana
-                                </button>
-
-                                <button
-                                    type="button"
-                                    data-view="timeGridDay"
-                                >
-                                    Dia
-                                </button>
+                                <div class="calendar-dropdown view-dropdown" id="view-menu" hidden>
+                                    <div class="view-options" role="group" aria-label="Visualização do calendário">
+                                        <button type="button" data-view="timeGridDay">Dia <kbd>D</kbd></button>
+                                        <button type="button" data-view="timeGridWeek">Semana <kbd>W</kbd></button>
+                                        <button type="button" data-view="dayGridMonth">Mês <kbd>M</kbd></button>
+                                        <button type="button" data-view="multiMonthYear">Ano <kbd>Y</kbd></button>
+                                        <button type="button" data-view="listWeek">Programação <kbd>A</kbd></button>
+                                        <button type="button" data-view="timeGridFourDay">4 dias <kbd>X</kbd></button>
+                                    </div>
+                                    <div class="view-filters">
+                                        <label><input id="show-weekends" type="checkbox" checked> Mostrar fins de semana</label>
+                                        <label><input id="show-declined" type="checkbox" checked> Mostrar eventos recusados</label>
+                                        <label><input id="show-completed-tasks" type="checkbox" checked> Mostrar tarefas concluídas</label>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
-                    </div>
-
-                    <!-- LEGENDA E ESTADO DA SINCRONIZAÇÃO -->
-                    <div class="calendar-legend">
-
-                        <span>
-                            <i class="legend-dot work"></i>
-                            Trabalho
-                        </span>
-
-                        <span>
-                            <i class="legend-dot personal"></i>
-                            Pessoal
-                        </span>
-
-                        <span>
-                            <i class="legend-dot health"></i>
-                            Saúde
-                        </span>
-
-                        <span>
-                            <i class="legend-dot other"></i>
-                            Outros
-                        </span>
-
-                        <span id="sync-indicator" class="sync-indicator">
-                            <i></i>
-                            Agenda atualizada
-                        </span>
-
                     </div>
 
                     <!-- CALENDÁRIO -->
@@ -357,6 +322,7 @@ require_once __DIR__ . '/includes/header.php';
 
                 <input type="hidden" name="id">
                 <input type="hidden" name="location">
+                <input type="hidden" name="event_type" value="event">
 
                 <div class="event-form-field full-width">
                     <label for="event-title">Título</label>
@@ -391,6 +357,11 @@ require_once __DIR__ . '/includes/header.php';
                     Dia inteiro
                 </label>
 
+                <label class="all-day-toggle task-completed-toggle" id="task-completed-field" hidden>
+                    <input type="checkbox" name="is_completed" id="event-completed">
+                    Tarefa concluída
+                </label>
+
                 <div class="event-form-field">
                     <label for="event-start">Início</label>
 
@@ -410,17 +381,6 @@ require_once __DIR__ . '/includes/header.php';
                         name="end"
                         type="datetime-local"
                         required
-                    >
-                </div>
-
-                <div class="event-form-field">
-                    <label for="event-time">Horário</label>
-
-                    <input
-                        id="event-time"
-                        name="time"
-                        type="time"
-                        step="60"
                     >
                 </div>
 
@@ -558,13 +518,8 @@ require_once __DIR__ . '/includes/header.php';
     <!-- CONFIGURAÇÃO DA API DO CALENDÁRIO -->
     <script>
         window.FLOWUP_CALENDAR = {
-            api: 'api/calendar.php',
+            api: <?php echo json_encode($siteUrl . '/api/calendar.php', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
             csrf: <?php echo json_encode($csrf); ?>,
-            oauthConfigured: <?php
-                echo json_encode(
-                    (bool) (getenv('GOOGLE_CLIENT_ID') ?: '')
-                );
-            ?>,
             flashError: <?php
                 echo json_encode(
                     $calendarFlashError,
@@ -581,6 +536,6 @@ require_once __DIR__ . '/includes/header.php';
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales-all.global.min.js"></script>
 
-    <script src="assets/js/calendar.js" defer></script>
+    <script src="assets/js/calendar.js?v=<?php echo filemtime(__DIR__ . '/assets/js/calendar.js'); ?>" defer></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -1,5 +1,16 @@
 <?php
 
+final class GoogleCalendarApiException extends RuntimeException
+{
+    public int $httpStatus;
+
+    public function __construct(string $message, int $httpStatus)
+    {
+        parent::__construct($message);
+        $this->httpStatus = $httpStatus;
+    }
+}
+
 final class GoogleCalendarService
 {
     private const AUTHORIZE_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -47,6 +58,7 @@ final class GoogleCalendarService
                 google_event_id VARCHAR(255) DEFAULT NULL,
                 google_calendar_id VARCHAR(255) DEFAULT NULL,
                 google_etag VARCHAR(255) DEFAULT NULL,
+                ics_uid CHAR(64) DEFAULT NULL,
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 UNIQUE KEY uq_calendar_google_event (user_id, google_calendar_id, google_event_id),
@@ -69,15 +81,36 @@ final class GoogleCalendarService
                 CONSTRAINT fk_calendar_google_user FOREIGN KEY (user_id) REFERENCES usuarios (id) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
         );
+        $columns = [
+            'event_type' => "VARCHAR(20) NOT NULL DEFAULT 'event'",
+            'is_completed' => 'TINYINT(1) NOT NULL DEFAULT 0',
+            'is_declined' => 'TINYINT(1) NOT NULL DEFAULT 0',
+            'ics_uid' => 'CHAR(64) DEFAULT NULL',
+        ];
+        foreach ($columns as $column => $definition) {
+            $existing = $pdo->query('SHOW COLUMNS FROM calendar_events LIKE ' . $pdo->quote($column));
+            if (!$existing->fetch()) {
+                $pdo->exec('ALTER TABLE calendar_events ADD COLUMN ' . $column . ' ' . $definition);
+            }
+        }
+        $icsIndex = $pdo->query("SHOW INDEX FROM calendar_events WHERE Key_name = 'uq_calendar_ics_uid'");
+        if (!$icsIndex->fetch()) {
+            $pdo->exec('ALTER TABLE calendar_events ADD UNIQUE KEY uq_calendar_ics_uid (user_id, ics_uid)');
+        }
     }
 
     public static function configured(): bool
     {
         $key = base64_decode(getenv('APP_ENCRYPTION_KEY') ?: '', true);
+        $redirectUri = getenv('GOOGLE_REDIRECT_URI') ?: '';
+        $redirectScheme = parse_url($redirectUri, PHP_URL_SCHEME);
+        $redirectHost = parse_url($redirectUri, PHP_URL_HOST);
         return (bool) (
             getenv('GOOGLE_CLIENT_ID')
             && getenv('GOOGLE_CLIENT_SECRET')
-            && getenv('GOOGLE_REDIRECT_URI')
+            && filter_var($redirectUri, FILTER_VALIDATE_URL)
+            && in_array(strtolower((string) $redirectScheme), ['http', 'https'], true)
+            && $redirectHost
             && $key !== false
             && strlen($key) === 32
         );
@@ -124,7 +157,15 @@ final class GoogleCalendarService
         return $this->get(self::API_URL . '/users/me/calendarList')['items'] ?? [];
     }
 
-    public function sync(PDO $pdo): int
+    public function sync(PDO $pdo): array
+    {
+        $imported = $this->importEvents($pdo);
+        $exported = $this->exportEvents($pdo);
+        $this->markSynced($pdo);
+        return ['imported' => $imported, 'exported' => $exported];
+    }
+
+    public function importEvents(PDO $pdo): int
     {
         $account = $this->account();
         $calendarId = rawurlencode($account['calendar_id']);
@@ -143,13 +184,14 @@ final class GoogleCalendarService
             $query['pageToken'] = $page['nextPageToken'] ?? null;
         } while (!empty($query['pageToken']));
 
+        $imported = 0;
         $pdo->beginTransaction();
         try {
             foreach ($items as $item) {
                 if (empty($item['id'])) {
                     continue;
                 }
-                if (($item['status'] ?? '') === 'cancelled') {
+                if (($item['status'] ?? '') === 'cancelled' && (!$this->isDeclined($item) || empty($item['start']) || empty($item['end']))) {
                     $delete = $pdo->prepare('DELETE FROM calendar_events WHERE user_id = ? AND google_calendar_id = ? AND google_event_id = ?');
                     $delete->execute([$this->userId, $account['calendar_id'], $item['id']]);
                     continue;
@@ -163,6 +205,7 @@ final class GoogleCalendarService
                 }
                 $event = $this->fromGoogle($item);
                 $this->upsertImported($pdo, $account['calendar_id'], $item, $event);
+                $imported++;
             }
             $pdo->commit();
         } catch (Throwable $e) {
@@ -170,18 +213,42 @@ final class GoogleCalendarService
             throw $e;
         }
 
+        $this->markSynced($pdo);
+        return $imported;
+    }
+
+    public function exportEvents(PDO $pdo): int
+    {
+        $account = $this->account();
+        $calendarId = rawurlencode($account['calendar_id']);
         $stmt = $pdo->prepare('SELECT * FROM calendar_events WHERE user_id = ? AND google_event_id IS NULL');
         $stmt->execute([$this->userId]);
+        $exported = 0;
         foreach ($stmt->fetchAll() as $event) {
             $googleEvent = $this->toGoogle($event);
-            $created = $this->post(self::API_URL . '/calendars/' . $calendarId . '/events', $googleEvent);
+            $googleEventId = md5('flowup:' . $this->userId . ':' . $event['id']);
+            $googleEvent['id'] = $googleEventId;
+            $eventUrl = self::API_URL . '/calendars/' . $calendarId . '/events/' . rawurlencode($googleEventId);
+            try {
+                $created = $this->post(self::API_URL . '/calendars/' . $calendarId . '/events', $googleEvent);
+            } catch (GoogleCalendarApiException $error) {
+                if ($error->httpStatus !== 409) {
+                    throw $error;
+                }
+                $created = $this->get($eventUrl);
+            }
             $save = $pdo->prepare('UPDATE calendar_events SET google_event_id = ?, google_calendar_id = ?, google_etag = ? WHERE id = ? AND user_id = ?');
             $save->execute([$created['id'], $account['calendar_id'], $created['etag'] ?? null, $event['id'], $this->userId]);
+            $exported++;
         }
+        $this->markSynced($pdo);
+        return $exported;
+    }
+
+    private function markSynced(PDO $pdo): void
+    {
         $updated = $pdo->prepare('UPDATE calendar_google_accounts SET last_synced_at = NOW() WHERE user_id = ?');
         $updated->execute([$this->userId]);
-
-        return count($items);
     }
 
     public function createEvent(array $event): array
@@ -240,12 +307,12 @@ final class GoogleCalendarService
         $id = $stmt->fetchColumn();
         $values = [$categoryId, $event['title'], $event['description'], $event['starts_at'], $event['ends_at'], $event['all_day'], $event['location'], $event['color'], $event['guests'], $event['repeat_rule'], $event['reminder_minutes'], $event['notes']];
         if ($id) {
-            $update = $pdo->prepare('UPDATE calendar_events SET category_id=?, title=?, description=?, starts_at=?, ends_at=?, all_day=?, location=?, color=?, guests=?, repeat_rule=?, reminder_minutes=?, notes=?, google_etag=? WHERE id=? AND user_id=?');
-            $update->execute(array_merge($values, [$item['etag'] ?? null, $id, $this->userId]));
+            $update = $pdo->prepare('UPDATE calendar_events SET category_id=?, title=?, description=?, starts_at=?, ends_at=?, all_day=?, location=?, color=?, guests=?, repeat_rule=?, reminder_minutes=?, notes=?, is_declined=?, google_etag=? WHERE id=? AND user_id=?');
+            $update->execute(array_merge($values, [$event['is_declined'], $item['etag'] ?? null, $id, $this->userId]));
             return;
         }
-        $insert = $pdo->prepare('INSERT INTO calendar_events (user_id, category_id, title, description, starts_at, ends_at, all_day, location, color, guests, repeat_rule, reminder_minutes, notes, google_event_id, google_calendar_id, google_etag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-        $insert->execute(array_merge([$this->userId], $values, [$item['id'], $calendarId, $item['etag'] ?? null]));
+        $insert = $pdo->prepare('INSERT INTO calendar_events (user_id, category_id, title, description, starts_at, ends_at, all_day, location, color, guests, repeat_rule, reminder_minutes, notes, is_declined, google_event_id, google_calendar_id, google_etag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array_merge([$this->userId], $values, [$event['is_declined'], $item['id'], $calendarId, $item['etag'] ?? null]));
     }
 
     private function categoryForColor(string $color): ?int
@@ -265,7 +332,17 @@ final class GoogleCalendarService
         $reminder = $item['reminders']['overrides'][0]['minutes'] ?? null;
         $repeat = $item['recurrence'][0] ?? '';
         $repeat = preg_match('/^RRULE:FREQ=(DAILY|WEEKLY|MONTHLY|YEARLY)/', $repeat, $match) ? $match[1] : '';
-        return ['title' => $item['summary'] ?? '(Sem título)', 'description' => $item['description'] ?? '', 'starts_at' => $start, 'ends_at' => $end, 'all_day' => $allDay ? 1 : 0, 'location' => $item['location'] ?? '', 'color' => '#5688ff', 'guests' => implode(', ', $guests), 'repeat_rule' => $repeat, 'reminder_minutes' => $reminder, 'notes' => ''];
+        return ['title' => $item['summary'] ?? '(Sem título)', 'description' => $item['description'] ?? '', 'starts_at' => $start, 'ends_at' => $end, 'all_day' => $allDay ? 1 : 0, 'location' => $item['location'] ?? '', 'color' => '#5688ff', 'guests' => implode(', ', $guests), 'repeat_rule' => $repeat, 'reminder_minutes' => $reminder, 'notes' => '', 'is_declined' => $this->isDeclined($item) ? 1 : 0];
+    }
+
+    private function isDeclined(array $item): bool
+    {
+        foreach ($item['attendees'] ?? [] as $attendee) {
+            if (!empty($attendee['self']) && ($attendee['responseStatus'] ?? '') === 'declined') {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function toGoogle(array $event): array
@@ -339,7 +416,7 @@ final class GoogleCalendarService
     private static function requireConfiguration(): void
     {
         if (!self::configured()) {
-            throw new RuntimeException('Configure GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI e uma APP_ENCRYPTION_KEY válida no arquivo Site/.env.');
+            throw new RuntimeException('Configure GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, uma GOOGLE_REDIRECT_URI absoluta e uma APP_ENCRYPTION_KEY base64 válida de 32 bytes no arquivo .env.');
         }
     }
 
@@ -399,7 +476,7 @@ final class GoogleCalendarService
         $data = json_decode($body, true);
         if ($status < 200 || $status >= 300) {
             $message = $data['error']['message'] ?? $data['error_description'] ?? 'resposta HTTP ' . $status;
-            throw new RuntimeException('Google Agenda: ' . $message);
+            throw new GoogleCalendarApiException('Google Agenda: ' . $message, $status);
         }
         return is_array($data) ? $data : [];
     }

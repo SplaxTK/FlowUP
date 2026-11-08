@@ -5,11 +5,10 @@
     const modal = document.getElementById("event-modal");
     const form = document.getElementById("event-form");
     const calendarTitle = document.getElementById("calendar-title");
-    const syncIndicator = document.getElementById("sync-indicator");
     const allDayInput = document.getElementById("event-all-day");
     const startInput = document.getElementById("event-start");
     const endInput = document.getElementById("event-end");
-    const timeInput = document.getElementById("event-time");
+    const importFileInput = document.getElementById("calendar-import-file");
     let calendar;
     let categories = [];
     let currentEvent = null;
@@ -35,41 +34,17 @@
             options.body = JSON.stringify(body);
         }
         const response = await fetch(config.api + "?action=" + encodeURIComponent(action), options);
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Não foi possível concluir a solicitação.");
-        return data;
-    }
-
-    function setGoogleStatus(status) {
-        const statusElement = document.getElementById("google-status");
-        const sidebarElement = document.getElementById("google-sidebar-status");
-        const connectButton = document.getElementById("google-connect");
-        const syncButton = document.getElementById("sync-now");
-        statusElement.classList.toggle("is-connected", !!status.connected);
-        sidebarElement.parentElement.classList.toggle("is-connected", !!status.connected);
-        if (status.connected) {
-            statusElement.querySelector("span:last-child").textContent = status.account && status.account.email ? "Conectado: " + status.account.email : "Google Agenda conectado";
-            sidebarElement.textContent = "Google Agenda conectado";
-            connectButton.hidden = true;
-            syncButton.hidden = false;
-        } else {
-            statusElement.querySelector("span:last-child").textContent = status.configured ? "Google Agenda desconectado" : "Google Agenda não configurado";
-            sidebarElement.textContent = status.configured ? "Google Agenda desconectado" : "Google Agenda não configurado";
-            connectButton.hidden = false;
-            connectButton.disabled = !status.configured;
-            connectButton.title = status.configured ? "" : "Configure as credenciais OAuth e a chave APP_ENCRYPTION_KEY no arquivo Site/.env";
-            syncButton.hidden = true;
-        }
-    }
-
-    async function loadStatus() {
+        const responseText = await response.text();
+        let data;
         try {
-            const data = await request("status");
-            setGoogleStatus(data);
+            data = JSON.parse(responseText);
         } catch (error) {
-            document.getElementById("google-status").querySelector("span:last-child").textContent = "Status indisponível";
-            toast(error.message, true);
+            throw new Error("A API do calendário não respondeu em JSON (HTTP " + response.status + "). Verifique a publicação do endpoint.");
         }
+        if (!response.ok) {
+            throw new Error(data && typeof data.error === "string" ? data.error : "Não foi possível concluir a solicitação.");
+        }
+        return data;
     }
 
     async function loadCategories() {
@@ -99,6 +74,8 @@
             location: properties.location || "",
             category_id: properties.categoryId || "",
             color: properties.color || event.backgroundColor || "#5688ff",
+            event_type: properties.eventType || "event",
+            is_completed: !!properties.isCompleted,
             guests: properties.guests || "",
             repeat_rule: properties.repeatRule || "",
             reminder_minutes: properties.reminderMinutes === null ? "" : (properties.reminderMinutes || ""),
@@ -123,15 +100,21 @@
         return allDay ? dateOnly(date) : localDateTime(date);
     }
 
-    function modalOpen(eventData, start, end, defaultAllDay) {
+    function modalOpen(eventData, start, end, defaultAllDay, createType) {
         currentEvent = eventData || null;
         form.reset();
         document.getElementById("event-error").hidden = true;
-        document.getElementById("event-modal-title").textContent = eventData ? "Editar evento" : "Novo evento";
-        document.getElementById("modal-eyebrow").textContent = eventData ? "DETALHES DO EVENTO" : "ORGANIZE SEU TEMPO";
+        const eventType = eventData ? (eventData.extendedProps.eventType || "event") : (createType || "event");
+        const typeLabels = { event: "evento", task: "tarefa", appointment: "agendamento" };
+        document.getElementById("event-modal-title").textContent = eventData ? "Editar " + typeLabels[eventType] : "Novo " + typeLabels[eventType];
+        document.getElementById("modal-eyebrow").textContent = eventData ? "DETALHES DO COMPROMISSO" : "ORGANIZE SEU TEMPO";
         document.getElementById("delete-event").hidden = !eventData;
         document.getElementById("duplicate-event").hidden = !eventData;
         document.getElementById("event-source-note").hidden = true;
+        form.elements.event_type.value = eventType;
+        document.getElementById("task-completed-field").hidden = eventType !== "task";
+        document.getElementById("event-completed").checked = false;
+        document.getElementById("save-event").textContent = eventType === "task" ? "Salvar tarefa" : (eventType === "appointment" ? "Salvar agendamento" : "Salvar evento");
         const allDay = eventData ? eventData.allDay : !!defaultAllDay;
         allDayInput.checked = allDay;
         startInput.type = allDay ? "date" : "datetime-local";
@@ -146,15 +129,11 @@
             form.elements.location.value = data.location;
             form.elements.category_id.value = data.category_id;
             form.elements.color.value = data.color;
+            document.getElementById("event-completed").checked = data.is_completed;
             form.elements.guests.value = data.guests;
             form.elements.repeat_rule.value = data.repeat_rule;
             form.elements.reminder_minutes.value = data.reminder_minutes;
             form.elements.notes.value = data.notes;
-            if (eventData.extendedProps.googleSynced) {
-                const source = document.getElementById("event-source-note");
-                source.textContent = "Este evento está sincronizado com o Google Agenda.";
-                source.hidden = false;
-            }
         } else {
             const initialStart = start || new Date();
             const initialEnd = end || new Date(initialStart.getTime() + 3600000);
@@ -162,8 +141,6 @@
             form.elements.end.value = formDateTime(initialEnd, allDay);
             form.elements.color.value = "#5688ff";
         }
-        timeInput.value = allDay ? "" : startInput.value.slice(11, 16);
-
         modal.hidden = false;
         document.body.classList.add("modal-aberto");
         document.getElementById("event-title").focus();
@@ -186,6 +163,8 @@
             location: form.elements.location.value.trim(),
             category_id: form.elements.category_id.value || null,
             color: form.elements.color.value,
+            event_type: form.elements.event_type.value,
+            is_completed: document.getElementById("event-completed").checked,
             guests: form.elements.guests.value.trim(),
             repeat_rule: form.elements.repeat_rule.value,
             reminder_minutes: form.elements.reminder_minutes.value,
@@ -201,6 +180,8 @@
         });
         const categoryId = document.getElementById("category-filter").value;
         const search = document.getElementById("event-search").value.trim();
+        params.set("show_declined", document.getElementById("show-declined").checked ? "1" : "0");
+        params.set("show_completed_tasks", document.getElementById("show-completed-tasks").checked ? "1" : "0");
         if (categoryId) params.set("category_id", categoryId);
         if (search) params.set("search", search);
         return config.api + "?" + params.toString();
@@ -220,9 +201,13 @@
     function renderCalendar() {
         const calendarElement = document.getElementById("calendar");
         calendar = new FullCalendar.Calendar(calendarElement, {
-            initialView: "dayGridMonth",
+            initialView: "timeGridWeek",
+            views: {
+                timeGridFourDay: { type: "timeGrid", duration: { days: 4 } }
+            },
             locale: "pt-br",
             firstDay: 0,
+            weekends: document.getElementById("show-weekends").checked,
             height: "auto",
             headerToolbar: false,
             dayMaxEvents: 3,
@@ -240,9 +225,11 @@
             },
             datesSet: function (info) {
                 calendarTitle.textContent = info.view.title;
-                document.querySelectorAll(".calendar-views button").forEach(function (button) {
+                document.querySelectorAll(".view-options button").forEach(function (button) {
                     button.classList.toggle("active", button.dataset.view === info.view.type);
                 });
+                const activeView = document.querySelector(".view-options button.active");
+                if (activeView) document.getElementById("current-view-label").textContent = activeView.textContent.replace(/\s+[A-Z]$/, "").trim();
             },
             dateClick: function (info) {
                 const start = info.date;
@@ -256,9 +243,43 @@
             eventClick: function (info) { modalOpen(info.event); },
             eventDrop: function (info) { updateEvent(info.event); },
             eventResize: function (info) { updateEvent(info.event); },
+            eventContent: function (info) {
+                if (!info.view.type.startsWith("timeGrid") && !info.view.type.startsWith("dayGrid")) {
+                    return;
+                }
+
+                const content = document.createElement("div");
+                content.className = "calendar-event-content";
+
+                const title = document.createElement("span");
+                title.className = "calendar-event-title";
+                title.textContent = info.event.title;
+                content.appendChild(title);
+
+                if (!info.event.allDay && info.event.start) {
+                    const time = document.createElement("span");
+                    time.className = "calendar-event-time";
+                    time.textContent = new Intl.DateTimeFormat("pt-BR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hourCycle: "h23"
+                    }).format(info.event.start);
+                    content.appendChild(time);
+                }
+
+                return { domNodes: [content] };
+            },
+            eventClassNames: function (info) {
+                const classes = [];
+                if (info.event.extendedProps.isCompleted) classes.push("is-completed");
+                if (info.event.extendedProps.isDeclined) classes.push("is-declined");
+                return classes;
+            },
             eventDidMount: function (info) {
-                const description = info.event.extendedProps.description;
-                if (description) info.el.title = info.event.title + " — " + description;
+                const details = [info.event.extendedProps.description];
+                if (info.event.extendedProps.isCompleted) details.push("Tarefa concluída");
+                if (info.event.extendedProps.isDeclined) details.push("Evento recusado");
+                if (details.some(Boolean)) info.el.title = [info.event.title].concat(details.filter(Boolean)).join(" — ");
             }
         });
         calendar.render();
@@ -267,17 +288,60 @@
     document.getElementById("calendar-prev").addEventListener("click", function () { calendar.prev(); });
     document.getElementById("calendar-next").addEventListener("click", function () { calendar.next(); });
     document.getElementById("calendar-today").addEventListener("click", function () { calendar.today(); });
-    document.querySelectorAll(".calendar-views button").forEach(function (button) {
-        button.addEventListener("click", function () { calendar.changeView(button.dataset.view); });
+    const viewToggle = document.getElementById("view-menu-toggle");
+    const viewMenu = document.getElementById("view-menu");
+    viewToggle.addEventListener("click", function () {
+        viewMenu.hidden = !viewMenu.hidden;
+        viewToggle.setAttribute("aria-expanded", String(!viewMenu.hidden));
     });
-    document.querySelectorAll("[data-new-event]").forEach(function (button) {
-        button.addEventListener("click", function (event) { event.preventDefault(); modalOpen(); });
+    document.querySelectorAll(".view-options button").forEach(function (button) {
+        button.addEventListener("click", function () {
+            calendar.changeView(button.dataset.view);
+            viewMenu.hidden = true;
+            viewToggle.setAttribute("aria-expanded", "false");
+        });
+    });
+    document.getElementById("show-weekends").addEventListener("change", function (event) {
+        calendar.setOption("weekends", event.target.checked);
+    });
+    document.getElementById("show-declined").addEventListener("change", function () { calendar.refetchEvents(); });
+    document.getElementById("show-completed-tasks").addEventListener("change", function () { calendar.refetchEvents(); });
+
+    const createToggle = document.getElementById("create-menu-toggle");
+    const createMenu = document.getElementById("create-menu");
+    createToggle.addEventListener("click", function () {
+        createMenu.hidden = !createMenu.hidden;
+        createToggle.setAttribute("aria-expanded", String(!createMenu.hidden));
+    });
+    document.querySelectorAll("[data-create-type]").forEach(function (button) {
+        button.addEventListener("click", function () {
+            createMenu.hidden = true;
+            createToggle.setAttribute("aria-expanded", "false");
+            modalOpen(null, null, null, false, button.dataset.createType);
+        });
     });
     document.querySelectorAll("[data-close-modal]").forEach(function (button) {
         button.addEventListener("click", modalClose);
     });
     modal.addEventListener("click", function (event) { if (event.target === modal) modalClose(); });
-    document.addEventListener("keydown", function (event) { if (event.key === "Escape" && !modal.hidden) modalClose(); });
+    document.addEventListener("click", function (event) {
+        if (!viewMenu.contains(event.target) && !viewToggle.contains(event.target)) {
+            viewMenu.hidden = true;
+            viewToggle.setAttribute("aria-expanded", "false");
+        }
+        if (!createMenu.contains(event.target) && !createToggle.contains(event.target)) {
+            createMenu.hidden = true;
+            createToggle.setAttribute("aria-expanded", "false");
+        }
+    });
+    document.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape") return;
+        if (!modal.hidden) modalClose();
+        viewMenu.hidden = true;
+        viewToggle.setAttribute("aria-expanded", "false");
+        createMenu.hidden = true;
+        createToggle.setAttribute("aria-expanded", "false");
+    });
 
     allDayInput.addEventListener("change", function () {
         const oldStart = startInput.value;
@@ -285,7 +349,6 @@
         startInput.type = allDayInput.checked ? "date" : "datetime-local";
         endInput.type = allDayInput.checked ? "date" : "datetime-local";
         if (allDayInput.checked) {
-            timeInput.value = "";
             startInput.value = oldStart.slice(0, 10);
             endInput.value = oldEnd.slice(0, 10);
             if (endInput.value <= startInput.value) {
@@ -296,32 +359,6 @@
         } else {
             startInput.value = oldStart.length === 10 ? oldStart + "T09:00" : oldStart;
             endInput.value = oldEnd.length === 10 ? oldEnd + "T10:00" : oldEnd;
-            timeInput.value = startInput.value.slice(11, 16);
-        }
-    });
-
-    timeInput.addEventListener("change", function () {
-        if (!timeInput.value) return;
-        if (allDayInput.checked) {
-            const eventDate = startInput.value;
-            allDayInput.checked = false;
-            startInput.type = "datetime-local";
-            endInput.type = "datetime-local";
-            const start = new Date(eventDate + "T" + timeInput.value + ":00");
-            startInput.value = localDateTime(start);
-            endInput.value = localDateTime(new Date(start.getTime() + 3600000));
-        } else {
-            const start = new Date(startInput.value.slice(0, 10) + "T" + timeInput.value + ":00");
-            startInput.value = localDateTime(start);
-            if (!endInput.value || endInput.value <= startInput.value) {
-                endInput.value = localDateTime(new Date(start.getTime() + 3600000));
-            }
-        }
-    });
-
-    startInput.addEventListener("change", function () {
-        if (!allDayInput.checked && startInput.value.length > 10) {
-            timeInput.value = startInput.value.slice(11, 16);
         }
     });
 
@@ -364,28 +401,102 @@
         } catch (error) { toast(error.message, true); }
     });
 
-    document.getElementById("google-connect").addEventListener("click", function () {
-        window.location.href = "google-oauth.php";
-    });
-
-    document.getElementById("sync-now").addEventListener("click", async function () {
-        const button = document.getElementById("sync-now");
-        syncIndicator.classList.add("syncing");
-        syncIndicator.lastChild.textContent = "Sincronizando...";
+    async function importCalendarFile(file) {
+        const button = document.getElementById("import-calendar");
+        const body = new FormData();
+        body.append("calendar_file", file);
         button.disabled = true;
         try {
-            const result = await request("sync", "POST", {});
-            setGoogleStatus({ connected: true, account: result.status, configured: true });
-            calendar.refetchEvents();
-            syncIndicator.lastChild.textContent = "Sincronizado agora";
-            toast("Sincronização concluída: " + result.googleEvents + " eventos do Google.");
+            const response = await fetch(config.api + "?action=import-file", {
+                method: "POST",
+                headers: { "Accept": "application/json", "X-CSRF-Token": config.csrf },
+                body: body
+            });
+            const result = await response.json().catch(function () {
+                throw new Error("O servidor não respondeu corretamente ao importar o arquivo.");
+            });
+            if (!response.ok) throw new Error(result.error || "Não foi possível importar o arquivo.");
+            document.getElementById("category-filter").value = "";
+            document.getElementById("event-search").value = "";
+            if (result.first_date) {
+                calendar.gotoDate(result.first_date);
+            } else {
+                calendar.refetchEvents();
+            }
+            const eventLabel = result.imported === 1 ? "evento" : "eventos";
+            toast("Importação concluída: " + result.imported + " " + eventLabel + ".");
         } catch (error) {
-            syncIndicator.lastChild.textContent = "Falha na sincronização";
             toast(error.message, true);
         } finally {
-            syncIndicator.classList.remove("syncing");
+            button.disabled = false;
+            importFileInput.value = "";
+        }
+    }
+
+    async function exportCalendarFile() {
+        const button = document.getElementById("export-calendar");
+        button.disabled = true;
+        try {
+            const response = await fetch(config.api + "?action=export-file", {
+                headers: { "Accept": "text/calendar" }
+            });
+            if (!response.ok) {
+                const result = await response.json().catch(function () {
+                    throw new Error("O servidor não respondeu corretamente ao exportar o calendário.");
+                });
+                throw new Error(result.error || "Não foi possível exportar o calendário.");
+            }
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "flowup-calendar.ics";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+            toast("Exportação concluída: " + (response.headers.get("X-Exported-Events") || "0") + " eventos.");
+        } catch (error) {
+            toast(error.message, true);
+        } finally {
             button.disabled = false;
         }
+    }
+
+    function openCalendarImport() {
+        closeCalendarActionsMenu();
+        importFileInput.click();
+    }
+
+    const calendarActionsToggle = document.getElementById("calendar-actions-toggle");
+    const calendarActionsDropdown = document.getElementById("calendar-actions-dropdown");
+
+    function closeCalendarActionsMenu() {
+        calendarActionsDropdown.hidden = true;
+        calendarActionsToggle.setAttribute("aria-expanded", "false");
+    }
+
+    calendarActionsToggle.addEventListener("click", function () {
+        const isExpanded = calendarActionsToggle.getAttribute("aria-expanded") === "true";
+        calendarActionsDropdown.hidden = isExpanded;
+        calendarActionsToggle.setAttribute("aria-expanded", String(!isExpanded));
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".calendar-actions-menu")) closeCalendarActionsMenu();
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !calendarActionsDropdown.hidden) {
+            closeCalendarActionsMenu();
+            calendarActionsToggle.focus();
+        }
+    });
+
+    document.getElementById("import-calendar").addEventListener("click", openCalendarImport);
+    document.getElementById("export-calendar").addEventListener("click", exportCalendarFile);
+    importFileInput.addEventListener("change", function () {
+        if (importFileInput.files && importFileInput.files[0]) importCalendarFile(importFileInput.files[0]);
     });
 
     document.getElementById("category-filter").addEventListener("change", function () { calendar.refetchEvents(); });
@@ -397,7 +508,6 @@
 
     loadCategories().then(function () {
         renderCalendar();
-        loadStatus();
     }).catch(function (error) {
         toast(error.message, true);
         renderCalendar();
