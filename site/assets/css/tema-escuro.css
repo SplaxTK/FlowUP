@@ -245,3 +245,40 @@ body.escuro .acoes {
     border-color: #374151;
     background: #1f2937;
 }
+
+html.tema-claro-fixo,
+html.tema-claro-fixo body,
+html.tema-claro-fixo body.escuro {
+    color-scheme: light;
+    background: #f4f7fb !important;
+    background-color: #f4f7fb !important;
+    color: #1f2937 !important;
+}
+
+html.tema-claro-fixo body.escuro .cadastro-card {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html.tema-claro-fixo body.escuro .cadastro-card h2,
+html.tema-claro-fixo body.escuro .cadastro-card label {
+    color: #1f2937 !important;
+}
+
+html.tema-claro-fixo body.escuro .cadastro-card input {
+    border-color: #d1d5db !important;
+    background: #f9fafb !important;
+    color: #1f2937 !important;
+}
+
+html.tema-claro-fixo body.escuro .cadastro-card input:focus {
+    border-color: #2563eb !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+}
+
+html.tema-claro-fixo body.escuro .cadastro-card .form-help,
+html.tema-claro-fixo body.escuro .cadastro-card .form-link-text {
+    color: #6b7280 !important;
+}
