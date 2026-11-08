@@ -850,10 +850,42 @@ body.modal-exclusao-aberto {
     justify-content: center;
 }
 
+.password-input-wrap {
+    position: relative;
+    min-width: 0;
+}
+
+.password-input-wrap input {
+    box-sizing: border-box;
+    padding-right: 52px;
+}
+
+.password-input-wrap .toggle-password {
+    top: 50%;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #64748b;
+}
+
+.password-input-wrap .toggle-password:hover {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
 .toggle-password svg {
     width: 20px;
     height: 20px;
     color: #6b7280;
+}
+
+.password-input-wrap .toggle-password svg[hidden] {
+    display: none;
 }
 
 .toggle-password:focus-visible {
