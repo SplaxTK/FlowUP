@@ -237,6 +237,35 @@ function abrirModalSenha() {
 if (btnSenha) {
     btnSenha.addEventListener("click", abrirModalSenha);
 }
+
+document.addEventListener("click", function (evento) {
+    const botao = evento.target instanceof Element
+        ? evento.target.closest(".toggle-password")
+        : null;
+    if (!botao) return;
+
+    const inputId = botao.getAttribute("aria-controls");
+    const grupoCampo = botao.closest(".password-input-wrap");
+    const campo = inputId
+        ? document.getElementById(inputId)
+        : grupoCampo
+            ? grupoCampo.querySelector("input")
+            : null;
+    if (!campo) return;
+
+    const mostrarSenha = campo.type === "password";
+    campo.type = mostrarSenha ? "text" : "password";
+    botao.setAttribute("aria-pressed", String(mostrarSenha));
+    botao.setAttribute("aria-label", mostrarSenha ? "Ocultar senha" : "Mostrar senha");
+
+    const iconeMostrar = botao.querySelector('[data-password-icon="show"]');
+    const iconeOcultar = botao.querySelector('[data-password-icon="hide"]');
+    if (iconeMostrar && iconeOcultar) {
+        iconeMostrar.hidden = mostrarSenha;
+        iconeOcultar.hidden = !mostrarSenha;
+    }
+});
+
 // ==========================
 // SAIR DA CONTA
 // ==========================
