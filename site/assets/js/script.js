@@ -28,19 +28,61 @@ function abrirModalSenha() {
             <form id="formModalSenha" novalidate>
                 <div class="campo">
                     <label for="senhaAtualModal">Senha atual</label>
-                    <input type="password" id="senhaAtualModal" name="senha_atual"
-                           autocomplete="current-password" maxlength="1024" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="senhaAtualModal" name="senha_atual"
+                               autocomplete="current-password" maxlength="1024" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="senhaAtualModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="campo">
                     <label for="novaSenhaModal">Nova senha</label>
-                    <input type="password" id="novaSenhaModal" name="nova_senha"
-                           autocomplete="new-password" minlength="6" maxlength="72" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="novaSenhaModal" name="nova_senha"
+                               autocomplete="new-password" minlength="6" maxlength="72" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="novaSenhaModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <small class="campo-ajuda">Mínimo de 6 caracteres.</small>
                 </div>
                 <div class="campo">
                     <label for="confirmarSenhaModal">Confirmar nova senha</label>
-                    <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
-                           autocomplete="new-password" minlength="6" maxlength="72" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
+                               autocomplete="new-password" minlength="6" maxlength="72" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="confirmarSenhaModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <p class="form-message error" id="modalSenhaErro" role="alert" hidden></p>
@@ -307,106 +349,3 @@ if (perfilActions && perfilButton && perfilMenu) {
         }
     });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    const groups = Array.from(document.querySelectorAll('.task-group'));
-    const minimizeAllButton = document.querySelector('.maximize-button');
-    const groupToggleButtons = document.querySelectorAll('.task-group-toggle');
-    const STORAGE_KEY = 'taskGroupsState';
-
-    function loadState() {
-        try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (!saved) return {};
-
-            const state = JSON.parse(saved);
-            if (!state || typeof state !== 'object' || Array.isArray(state)) {
-                throw new TypeError('O estado salvo deve ser um objeto.');
-            }
-            return state;
-        } catch (error) {
-            console.error('Não foi possível carregar o estado das categorias de tarefas.', error);
-            return {};
-        }
-    }
-
-    function saveState() {
-        const state = {};
-        groups.forEach(function (group, index) {
-            const groupKey = group.dataset.taskType || group.id || 'group-' + index;
-            state[groupKey] = group.classList.contains('is-collapsed');
-        });
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (error) {
-            console.error('Não foi possível salvar o estado das categorias de tarefas.', error);
-        }
-    }
-
-    function updateGroupToggle(group) {
-        const button = group.querySelector('.task-group-toggle');
-        if (!button) return;
-
-        const isExpanded = !group.classList.contains('is-collapsed');
-        button.setAttribute('aria-expanded', String(isExpanded));
-        button.setAttribute(
-            'aria-label',
-            isExpanded ? 'Recolher tarefas desta categoria' : 'Expandir tarefas desta categoria'
-        );
-        button.title = isExpanded ? 'Recolher tarefas desta categoria' : 'Expandir tarefas desta categoria';
-    }
-
-    function updateMinimizeAllButton() {
-        if (!minimizeAllButton) return;
-
-        const allCollapsed = groups.length > 0 && groups.every(function (group) {
-            return group.classList.contains('is-collapsed');
-        });
-        const label = allCollapsed ? 'Expandir todas as categorias' : 'Recolher todas as categorias';
-        minimizeAllButton.setAttribute('aria-pressed', String(allCollapsed));
-        minimizeAllButton.setAttribute('aria-label', label);
-        minimizeAllButton.title = label;
-    }
-
-    const savedState = groups.length > 0 ? loadState() : {};
-    groups.forEach(function (group, index) {
-        const groupKey = group.dataset.taskType || group.id || 'group-' + index;
-        const savedValue = savedState[groupKey] !== undefined
-            ? savedState[groupKey]
-            : savedState['group-' + index];
-        if (typeof savedValue === 'boolean') {
-            group.classList.toggle('is-collapsed', savedValue);
-        }
-    });
-
-    groupToggleButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const group = button.closest('.task-group');
-            if (!group) return;
-
-            group.classList.toggle('is-collapsed');
-            updateGroupToggle(group);
-            updateMinimizeAllButton();
-            saveState();
-        });
-    });
-
-    if (minimizeAllButton) {
-        minimizeAllButton.disabled = groups.length === 0;
-        minimizeAllButton.addEventListener('click', function () {
-            const allCollapsed = groups.length > 0 && groups.every(function (group) {
-                return group.classList.contains('is-collapsed');
-            });
-
-            groups.forEach(function (group) {
-                group.classList.toggle('is-collapsed', !allCollapsed);
-                updateGroupToggle(group);
-            });
-            updateMinimizeAllButton();
-            saveState();
-        });
-    }
-
-    groups.forEach(updateGroupToggle);
-    updateMinimizeAllButton();
-});

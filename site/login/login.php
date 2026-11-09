@@ -94,6 +94,12 @@ require_once __DIR__ . '/../includes/header.php';
                         <div class="form-field">
                             <label for="password">Senha</label>
                             <input id="password" name="password" type="password" autocomplete="current-password" required>
+                            <button type="button" class="toggle-password" aria-label="Mostrar senha">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
                         </div>
 
                         <button class="pill btn-entrar" type="submit">Entrar</button>
