@@ -165,7 +165,7 @@ require_once __DIR__ . '/includes/header.php';
             </nav>
         </aside>
         <div class="main-painel">
-            <header class="topbar">
+            <header class="topbar reward-topbar">
                 <div><p class="small-label">Recompensas</p><h1>Troque seus pontos por recompensas</h1></div>
                 <div class="topbar-actions points-actions"><span class="points-badge" aria-label="Pontos acumulados"><?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts</span></div>
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>

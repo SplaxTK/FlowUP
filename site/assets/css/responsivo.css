@@ -61,4 +61,106 @@
         max-width: 100%;
         white-space: normal;
     }
+
+    .main-painel .reward-topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 8px 10px;
+    }
+
+    .main-painel .reward-topbar > div:first-child {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .main-painel .reward-topbar .points-actions {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+        margin: 0;
+    }
+
+    .main-painel .reward-topbar .perfil-actions {
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+    }
+
+    .main-painel .content.reward-page {
+        gap: 16px;
+        padding: 16px 14px calc(92px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .reward-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .reward-search,
+    .reward-filter,
+    .reward-filter .filter-button {
+        width: 100%;
+    }
+
+    .reward-filter .filter-button {
+        justify-content: center;
+    }
+
+    .reward-filter .task-filter-panel {
+        right: 0;
+        left: 0;
+        width: auto;
+    }
+
+    .reward-page .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .reward-page .section-heading > :nth-child(2) {
+        margin-left: 0;
+    }
+
+    .reward-page .reward-card {
+        min-width: 0;
+        padding: 16px;
+    }
+
+    .reward-page .reward-card h3,
+    .reward-page .reward-card > p {
+        overflow-wrap: anywhere;
+    }
+
+    .reward-page .reward-footer {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .reward-page .reward-footer > :nth-child(2) {
+        margin-left: 0;
+    }
+
+    .reward-page .reward-actions {
+        width: 100%;
+    }
+
+    .reward-page .reward-actions > *,
+    .reward-page .reward-actions form {
+        flex: 1 1 110px;
+        min-width: 0;
+    }
+
+    .reward-page .reward-actions button {
+        width: 100%;
+        white-space: normal;
+    }
+
+    .reward-page .task-form .form-submit {
+        width: 100%;
+    }
 }

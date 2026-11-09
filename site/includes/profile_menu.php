@@ -12,11 +12,9 @@
                 </div>
             </div>
             <nav class="perfil-menu-links" aria-label="Ações do perfil">
-                <a href="perfil.php">Perfil</a>
                 <?php if (($_SESSION['is_admin'] ?? false) === true): ?>
                     <a href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/crud/painel.php" target="_blank">Painel de administrador</a>
                 <?php endif; ?>
-                <a href="acessibilidade.php">Acessibilidade</a>
                 <button class="perfil-menu-logout" type="button" data-open-logout>Sair</button>
             </nav>
         </div>

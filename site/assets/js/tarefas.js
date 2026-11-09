@@ -273,3 +273,54 @@
 
     applyFilters();
 }());
+
+(function () {
+    const groupsContainer = document.querySelector('.task-groups');
+    const maximizeButton = document.querySelector('.maximize-button');
+    if (!groupsContainer || !maximizeButton) return;
+
+    const groups = Array.from(groupsContainer.querySelectorAll('[data-task-group]'));
+    if (groups.length === 0) return;
+
+    function setGroupCollapsed(group, collapsed) {
+        const toggle = group.querySelector('.task-group-toggle');
+        group.classList.toggle('is-collapsed', collapsed);
+        if (toggle) {
+            const label = collapsed ? 'Expandir tarefas desta categoria' : 'Recolher tarefas desta categoria';
+            toggle.setAttribute('aria-expanded', String(!collapsed));
+            toggle.setAttribute('aria-label', label);
+            toggle.title = label;
+        }
+    }
+
+    function syncMaximizeButton() {
+        const allCollapsed = groups.every(function (group) {
+            return group.classList.contains('is-collapsed');
+        });
+        const label = allCollapsed ? 'Expandir todas as categorias' : 'Recolher todas as categorias';
+        maximizeButton.setAttribute('aria-pressed', String(allCollapsed));
+        maximizeButton.setAttribute('aria-label', label);
+        maximizeButton.title = label;
+        return allCollapsed;
+    }
+
+    groupsContainer.addEventListener('click', function (event) {
+        const toggle = event.target.closest('.task-group-toggle');
+        if (!toggle || !groupsContainer.contains(toggle)) return;
+
+        const group = toggle.closest('[data-task-group]');
+        if (!group) return;
+        setGroupCollapsed(group, !group.classList.contains('is-collapsed'));
+        syncMaximizeButton();
+    });
+
+    maximizeButton.addEventListener('click', function () {
+        const shouldCollapse = !syncMaximizeButton();
+        groups.forEach(function (group) {
+            setGroupCollapsed(group, shouldCollapse);
+        });
+        syncMaximizeButton();
+    });
+
+    syncMaximizeButton();
+}());
