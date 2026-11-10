@@ -228,10 +228,6 @@ require_once __DIR__ . '/includes/header.php';
                         </section>
                     <?php endforeach; ?>
                 </div>
-                <aside class="card add-task-card">
-                    <p class="small-label">Novo objetivo</p><h2>Adicionar tarefa</h2><p>Crie uma missão e defina quantos pontos ela vale.</p>
-                    <?php if ($userId !== null): ?><form method="post" class="task-form"><input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>"><label for="descricao">Tarefa</label><input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Caminhar por 20 minutos"><label for="tipo">Frequência</label><select id="tipo" name="tipo"><option value="diaria">Diária</option><option value="semanal">Semanal</option><option value="mensal">Mensal</option><option value="meta">Meta</option></select><label for="pontos">Pontos</label><input id="pontos" name="pontos" type="number" min="1" max="10000" required placeholder="10"><button class="btn form-submit" name="adicionar" type="submit">Adicionar tarefa</button></form><?php else: ?><a class="pill active" href="login/login.php">Entrar para adicionar</a><?php endif; ?>
-                </aside>
             </section>
         </main>
     </div>
