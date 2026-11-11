@@ -88,7 +88,7 @@ function deletarCadastro($pdo, $email) {
 
 function criarTarefa($pdo, $descricao, $qtdPontos) {
     try {
-        $sql = "INSERT INTO Tarefas (descricao, QtdPon_Ganho) VALUES (:descricao, :qtdPontos)";
+        $sql = "INSERT INTO tarefas (descricao, qtd_pon_ganho) VALUES (:descricao, :qtdPontos)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':descricao' => $descricao,
@@ -102,14 +102,14 @@ function criarTarefa($pdo, $descricao, $qtdPontos) {
 }
 
 function obterTodasTarefas($pdo) {
-    $sql = "SELECT * FROM Tarefas ORDER BY data_criacao DESC";
+    $sql = "SELECT * FROM tarefas ORDER BY data_criacao DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
 function obterTarefaPorId($pdo, $id) {
-    $sql = "SELECT * FROM Tarefas WHERE id_Tarefas = :id";
+    $sql = "SELECT * FROM tarefas WHERE id_tarefas = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => (int) $id]);
     $resultado = $stmt->fetch();
@@ -118,7 +118,7 @@ function obterTarefaPorId($pdo, $id) {
 
 function atualizarTarefa($pdo, $id, $descricao, $qtdPontos) {
     try {
-        $sql = "UPDATE Tarefas SET descricao = :descricao, QtdPon_Ganho = :qtdPontos WHERE id_Tarefas = :id";
+        $sql = "UPDATE tarefas SET descricao = :descricao, qtd_pon_ganho = :qtdPontos WHERE id_tarefas = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':descricao' => $descricao,
@@ -134,7 +134,7 @@ function atualizarTarefa($pdo, $id, $descricao, $qtdPontos) {
 
 function deletarTarefa($pdo, $id) {
     try {
-        $sql = "DELETE FROM Tarefas WHERE id_Tarefas = :id";
+        $sql = "DELETE FROM tarefas WHERE id_tarefas = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id' => (int) $id]);
 
