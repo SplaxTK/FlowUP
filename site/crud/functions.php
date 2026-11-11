@@ -108,6 +108,25 @@ function obterTodasTarefas($pdo) {
     return $stmt->fetchAll();
 }
 
+function obterTodasTarefasDosUsuarios($pdo) {
+    $stmt = $pdo->query(
+        "SELECT COUNT(*)
+         FROM information_schema.columns
+         WHERE table_schema = DATABASE()
+           AND table_name = 'novas_tarefas'
+           AND column_name = 'user_id'"
+    );
+    $usaUserId = (bool) $stmt->fetchColumn();
+    $joinUsuario = $usaUserId ? 'u.id = t.user_id' : 'u.email = t.email';
+
+    $sql = "SELECT t.*, u.nome_completo, u.email
+            FROM novas_tarefas AS t
+            LEFT JOIN usuarios AS u ON $joinUsuario
+            ORDER BY t.data_criacao DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
 function obterTarefaPorId($pdo, $id) {
     $sql = "SELECT * FROM tarefas WHERE id_tarefas = :id";
     $stmt = $pdo->prepare($sql);
