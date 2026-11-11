@@ -16,7 +16,7 @@ $erro_email = $erro_email ?? '';
     <div class="search-actions">
         <form method="get" class="search-form">
             <input type="hidden" name="secao" value="cadastro">
-            <input type="text" name="busca" placeholder="Buscar email ou nome" value="<?php echo e($busca); ?>">
+            <input type="text" name="busca" maxlength="150" placeholder="Buscar email ou nome" value="<?php echo e($busca); ?>">
             <button type="submit" class="btn-secundario">Buscar</button>
         </form>
     </div>
@@ -38,7 +38,7 @@ $erro_email = $erro_email ?? '';
             
             <div class="form-group">
                 <label for="email">Email: <?php echo ($acao == 'editar') ? '(chave primária)' : ''; ?></label>
-                <input type="email" id="email" name="email" required <?php echo ($acao == 'editar') ? 'readonly' : ''; ?> value="<?php echo ($registro) ? e($registro['email']) : ''; ?>">
+                <input type="email" id="email" name="email" maxlength="150" required <?php echo ($acao == 'editar') ? 'readonly' : ''; ?> value="<?php echo ($registro) ? e($registro['email']) : ''; ?>">
                 <?php if (!empty($erro_email)): ?>
                     <div class="field-error"><?php echo e($erro_email); ?></div>
                 <?php endif; ?>
@@ -46,12 +46,12 @@ $erro_email = $erro_email ?? '';
             
             <div class="form-group">
                 <label for="usuario">Usuário:</label>
-                <input type="text" id="usuario" name="usuario" required value="<?php echo ($registro) ? e($registro['usuario']) : ''; ?>">
+                <input type="text" id="usuario" name="usuario" maxlength="50" required value="<?php echo ($registro) ? e($registro['usuario']) : ''; ?>">
             </div>
 
             <div class="form-group">
                 <label for="nome_completo">Nome completo:</label>
-                <input type="text" id="nome_completo" name="nome_completo" required value="<?php echo ($registro) ? e($registro['nome_completo']) : ''; ?>">
+                <input type="text" id="nome_completo" name="nome_completo" maxlength="150" required value="<?php echo ($registro) ? e($registro['nome_completo']) : ''; ?>">
             </div>
             
             <?php if ($acao == 'editar'): ?>
@@ -59,7 +59,7 @@ $erro_email = $erro_email ?? '';
             <?php else: ?>
                 <div class="form-group">
                     <label for="senha">Senha:</label>
-                    <input type="password" id="senha" name="senha" required value="">
+                    <input type="password" id="senha" name="senha" minlength="6" maxlength="72" required value="">
                 </div>
             <?php endif; ?>
             

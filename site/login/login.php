@@ -12,8 +12,8 @@ $senhaRedefinida = !empty($_SESSION['senha_redefinida']);
 unset($_SESSION['cadastro_sucesso'], $_SESSION['senha_redefinida']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $identificador = trim($_POST['identificador'] ?? '');
-    $senha = $_POST['password'] ?? '';
+    $identificador = is_string($_POST['identificador'] ?? null) ? trim($_POST['identificador']) : '';
+    $senha = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
 
     if ($identificador === '' || $senha === '') {
         $error = 'Preencha usuário ou e-mail e senha.';

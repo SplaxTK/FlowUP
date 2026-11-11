@@ -23,12 +23,12 @@
             
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <textarea id="descricao" name="descricao" required><?php echo ($registro) ? e($registro['descricao']) : ''; ?></textarea>
+                <textarea id="descricao" name="descricao" maxlength="180" required><?php echo ($registro) ? e($registro['descricao']) : ''; ?></textarea>
             </div>
             
             <div class="form-group">
                 <label for="qtdpontos">Pontos Necessários:</label>
-                <input type="number" id="qtdpontos" name="qtdpontos" min="1" required value="<?php echo ($registro) ? e($registro['qtd_pon_neces']) : ''; ?>">
+                <input type="number" id="qtdpontos" name="qtdpontos" min="1" max="100000" required value="<?php echo ($registro) ? e($registro['qtd_pon_neces']) : ''; ?>">
             </div>
             
             <div class="botoes">

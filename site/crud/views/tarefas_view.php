@@ -19,16 +19,17 @@
             
             <?php if ($acao == 'editar' && $registro): ?>
                 <input type="hidden" name="id" value="<?php echo e($registro['id_Tarefas']); ?>">
+                <input type="hidden" name="origem" value="<?php echo e($registro['origem']); ?>">
             <?php endif; ?>
             
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <textarea id="descricao" name="descricao" required><?php echo ($registro) ? e($registro['descricao']) : ''; ?></textarea>
+                <textarea id="descricao" name="descricao" maxlength="180" required><?php echo ($registro) ? e($registro['descricao']) : ''; ?></textarea>
             </div>
             
             <div class="form-group">
                 <label for="qtdpontos">Quantidade de Pontos:</label>
-                <input type="number" id="qtdpontos" name="qtdpontos" min="1" required value="<?php echo ($registro) ? e($registro['QtdPon_Ganho']) : ''; ?>">
+                <input type="number" id="qtdpontos" name="qtdpontos" min="1" max="10000" required value="<?php echo ($registro) ? e($registro['QtdPon_Ganho']) : ''; ?>">
             </div>
             
             <div class="botoes">
@@ -52,6 +53,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Descrição</th>
+                        <th>Cadastro</th>
+                        <th>Usuário</th>
                         <th>Pontos</th>
                         <th>Status</th>
                         <th>Criação</th>
@@ -63,15 +66,18 @@
                         <tr>
                             <td><?php echo e($item['id_Tarefas']); ?></td>
                             <td><?php echo e(substr($item['descricao'], 0, 50)); ?></td>
+                            <td><?php echo $item['origem'] === 'usuario' ? 'Usuário' : 'Sistema'; ?></td>
+                            <td><?php echo e($item['criado_por'] ?? '—'); ?></td>
                             <td><strong><?php echo e($item['QtdPon_Ganho']); ?></strong></td>
                             <td><?php echo e(ucfirst($item['status'] ?? 'Pendente')); ?></td>
                             <td><?php echo e(date('d/m/Y', strtotime($item['data_criacao']))); ?></td>
                             <td>
                                 <div class="acoes">
-                                    <a href="painel.php?secao=tarefas&acao=editar&id=<?php echo e($item['id_Tarefas']); ?>" class="btn-editar">Editar</a>
+                                    <a href="painel.php?secao=tarefas&acao=editar&id=<?php echo e($item['id_Tarefas']); ?>&origem=<?php echo e($item['origem']); ?>" class="btn-editar">Editar</a>
                                     <form method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza?');">
                                         <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION['csrf_token']); ?>">
                                         <input type="hidden" name="id" value="<?php echo e($item['id_Tarefas']); ?>">
+                                        <input type="hidden" name="origem" value="<?php echo e($item['origem']); ?>">
                                         <button type="submit" name="deletar" class="btn-deletar">Excluir</button>
                                     </form>
                                 </div>

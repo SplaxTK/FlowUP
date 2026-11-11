@@ -13,20 +13,33 @@ $formUsuario = '';
 $formEmail = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = trim($_POST['nome'] ?? '');
-    $usuario = trim($_POST['usuario'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $senha = $_POST['password'] ?? '';
-    $confirmacao = $_POST['re-password'] ?? '';
+    $nome = is_string($_POST['nome'] ?? null) ? trim($_POST['nome']) : '';
+    $usuario = is_string($_POST['usuario'] ?? null) ? trim($_POST['usuario']) : '';
+    $email = is_string($_POST['email'] ?? null) ? strtolower(trim($_POST['email'])) : '';
+    $senha = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
+    $confirmacao = is_string($_POST['re-password'] ?? null) ? $_POST['re-password'] : '';
     $formNome = $nome;
     $formUsuario = $usuario;
     $formEmail = $email;
+    $comprimentoNome = function_exists('mb_strlen') ? mb_strlen($nome, 'UTF-8') : strlen($nome);
+    $comprimentoUsuario = function_exists('mb_strlen') ? mb_strlen($usuario, 'UTF-8') : strlen($usuario);
+    $comprimentoEmail = function_exists('mb_strlen') ? mb_strlen($email, 'UTF-8') : strlen($email);
+    $comprimentoSenha = function_exists('mb_strlen') ? mb_strlen($senha, 'UTF-8') : strlen($senha);
 
     if ($nome === '' || $usuario === '' || $email === '' || $senha === '' || $confirmacao === '') {
         $message = 'Preencha todos os campos.';
         $messageType = 'error';
-    } elseif (strlen($senha) < 6) {
+    } elseif ($comprimentoNome > 150 || $comprimentoUsuario > 50 || $comprimentoEmail > 150) {
+        $message = 'Nome, usuário ou e-mail excede o tamanho permitido.';
+        $messageType = 'error';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = 'Informe um endereço de e-mail válido.';
+        $messageType = 'error';
+    } elseif ($comprimentoSenha < 6) {
         $senhaError = 'A senha deve ter pelo menos 6 caracteres.';
+        $messageType = 'error';
+    } elseif (strlen($senha) > 72) {
+        $senhaError = 'A senha deve ter no máximo 72 bytes.';
         $messageType = 'error';
     } elseif ($senha !== $confirmacao) {
         $confirmacaoError = 'As senhas não coincidem.';
@@ -37,26 +50,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $existing = $check->fetch();
         if ($existing) {
-            if ($existing['usuario'] === $usuario) {
+            if (strcasecmp($existing['usuario'], $usuario) === 0) {
                 $usuarioError = 'Este usuário já foi cadastrado.';
             } else {
                 $emailError = 'Este e-mail já foi cadastrado.';
             }
             $messageType = 'error';
         } else {
-            $stmt = $pdo->prepare(
-                'INSERT INTO usuarios (nome_completo, usuario, email, senha) VALUES (:nome_completo, :usuario, :email, :senha)'
-            );
-            $stmt->execute([
-                'nome_completo' => $nome,
-                'usuario' => $usuario,
-                'email' => $email,
-                'senha' => password_hash($senha, PASSWORD_DEFAULT),
-            ]);
+            try {
+                $stmt = $pdo->prepare(
+                    'INSERT INTO usuarios (nome_completo, usuario, email, senha) VALUES (:nome_completo, :usuario, :email, :senha)'
+                );
+                $stmt->execute([
+                    'nome_completo' => $nome,
+                    'usuario' => $usuario,
+                    'email' => $email,
+                    'senha' => password_hash($senha, PASSWORD_DEFAULT),
+                ]);
 
-            $_SESSION['cadastro_sucesso'] = 'Cadastro realizado com sucesso!';
-            header('Location: login.php');
-            exit;
+                $_SESSION['cadastro_sucesso'] = 'Cadastro realizado com sucesso!';
+                header('Location: login.php');
+                exit;
+            } catch (PDOException $exception) {
+                if ($exception->getCode() === '23000') {
+                    $check->execute(['email' => $email, 'usuario' => $usuario]);
+                    $existing = $check->fetch();
+                    if ($existing && strcasecmp($existing['usuario'], $usuario) === 0) {
+                        $usuarioError = 'Este usuário já foi cadastrado.';
+                    } else {
+                        $emailError = 'Este e-mail já foi cadastrado.';
+                    }
+                    $messageType = 'error';
+                } else {
+                    error_log('[FlowUp] Falha ao criar conta: ' . $exception->getMessage());
+                    $message = 'Não foi possível concluir o cadastro. Tente novamente.';
+                    $messageType = 'error';
+                }
+            }
         }
     }
 }
@@ -88,12 +118,12 @@ require_once __DIR__ . '/../includes/header.php';
                     
                     <div class="form-field">
                             <label for="nome">Nome completo</label>
-                            <input id="nome" name="nome" type="text" autocomplete="name" required value="<?php echo htmlspecialchars($formNome); ?>">
+                            <input id="nome" name="nome" type="text" autocomplete="name" maxlength="150" required value="<?php echo htmlspecialchars($formNome, ENT_QUOTES, 'UTF-8'); ?>">
                         </div>
 
                         <div class="form-field">
                             <label for="usuario">Usuário</label>
-                            <input id="usuario" name="usuario" type="text" autocomplete="username" required value="<?php echo htmlspecialchars($formUsuario); ?>">
+                            <input id="usuario" name="usuario" type="text" autocomplete="username" maxlength="50" required value="<?php echo htmlspecialchars($formUsuario, ENT_QUOTES, 'UTF-8'); ?>">
                             <?php if ($usuarioError): ?>
                                 <p class="field-error"><?php echo htmlspecialchars($usuarioError); ?></p>
                             <?php endif; ?>
@@ -101,7 +131,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <div class="form-field">
                             <label for="email">E-mail</label>
-                            <input id="email" name="email" type="email" autocomplete="email" required value="<?php echo htmlspecialchars($formEmail); ?>">
+                            <input id="email" name="email" type="email" autocomplete="email" maxlength="150" required value="<?php echo htmlspecialchars($formEmail, ENT_QUOTES, 'UTF-8'); ?>">
                             <?php if ($emailError): ?>
                                 <p class="field-error"><?php echo htmlspecialchars($emailError); ?></p>
                             <?php endif; ?>
@@ -109,7 +139,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <div class="form-field">
                             <label for="password">Senha</label>
-                            <input id="password" name="password" type="password" autocomplete="new-password" required>
+                            <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
                             <?php if ($senhaError): ?>
                                 <p class="field-error"><?php echo htmlspecialchars($senhaError); ?></p>
                             <?php endif; ?>
@@ -117,7 +147,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <div class="form-field">
                             <label for="re-password">Confirmar senha</label>
-                            <input id="re-password" name="re-password" type="password" autocomplete="new-password" required>
+                            <input id="re-password" name="re-password" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
                             <?php if ($confirmacaoError): ?>
                                 <p class="field-error"><?php echo htmlspecialchars($confirmacaoError); ?></p>
                             <?php endif; ?>

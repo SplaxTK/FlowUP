@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "site/**/*.php": {
+      "runtime": "vercel-php@0.8.0"
+    },
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.8.0"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/site/index.php"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/site/$1"
+    }
+  ]
+}

@@ -37,15 +37,40 @@
             <main class="content configuracoes-content">
                 <div class="config-intro"><h2>Configurações</h2><p>Gerencie sua conta e as preferências do FlowUp.</p></div>
 
+                <?php
+                    $configMensagem = '';
+                    $configTipoMensagem = '';
+                    if (($_GET['sucesso'] ?? '') === '1') {
+                        $configMensagem = 'Informações atualizadas com sucesso.';
+                        $configTipoMensagem = 'success';
+                    } elseif (($_GET['erro'] ?? '') === 'email') {
+                        $configMensagem = 'Informe um endereço de e-mail válido.';
+                        $configTipoMensagem = 'error';
+                    } elseif (($_GET['erro'] ?? '') === 'duplicado') {
+                        $configMensagem = 'Este usuário ou e-mail já está sendo usado por outra conta.';
+                        $configTipoMensagem = 'error';
+                    } elseif (($_GET['erro'] ?? '') === '1') {
+                        $configMensagem = 'Não foi possível atualizar as informações. Confira os campos e tente novamente.';
+                        $configTipoMensagem = 'error';
+                    }
+                ?>
+                <?php if ($configMensagem !== ''): ?>
+                    <p class="form-message <?php echo htmlspecialchars($configTipoMensagem, ENT_QUOTES, 'UTF-8'); ?>" role="status">
+                        <?php echo htmlspecialchars($configMensagem, ENT_QUOTES, 'UTF-8'); ?>
+                    </p>
+                <?php endif; ?>
+
                 <section class="card config-card">
                     <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/user-icon.png" alt="Ícone de perfil"><img class="img-icon icone-escuro" src="assets/img/icons/user-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Minha conta</h2><p>Gerencie suas informações pessoais.</p></div></div>
                     <form action="functions/salvar_configuracoes.php" method="post" class="config-form">
-                        <div class="campo"><label for="usuario">Usuário</label><input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required value="<?php echo htmlspecialchars($_SESSION['user_username'] ?? ''); ?>"></div>
-                        <div class="campo"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="Digite seu e-mail" required value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>"></div>
+                        <div class="campo"><label for="usuario">Usuário</label><input type="text" id="usuario" name="usuario" maxlength="50" placeholder="Digite seu usuário" required value="<?php echo htmlspecialchars($_SESSION['user_username'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></div>
+                        <div class="campo"><label for="email">E-mail</label><input type="email" id="email" name="email" maxlength="150" placeholder="Digite seu e-mail" required value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></div>
                         <button type="submit" class="btn">Salvar informações</button>
                     </form>
                 </section>
 
+                <!-- Em desenvolvimento: ocultar até que estas opções sejam persistidas e aplicadas. -->
+                <!--
                 <section class="card config-card">
                     <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/bell-icon.png" alt="Ícone de notificações"><img class="img-icon icone-escuro" src="assets/img/icons/bell-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Notificações</h2><p>Escolha quais avisos deseja receber.</p></div></div>
                     <label class="switch-item"><div><strong>Lembretes de tarefas</strong><span>Receba lembretes sobre suas tarefas.</span></div><input type="checkbox" id="notificacaoTarefas" checked><span class="switch"></span></label>
@@ -58,6 +83,7 @@
                     <div class="opcao"><div><strong>Idioma</strong><p>Idioma utilizado pelo FlowUp.</p></div><select id="idioma"><option value="pt-br">Português (Brasil)</option><option value="en">English</option></select></div>
                     <div class="opcao"><div><strong>Formato de data</strong><p>Escolha como as datas serão exibidas.</p></div><select id="formatoData"><option value="br">DD/MM/AAAA</option><option value="us">MM/DD/AAAA</option></select></div>
                 </section>
+                -->
 
                 <section class="card config-card">
                     <div class="titulo-card">

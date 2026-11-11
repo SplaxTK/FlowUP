@@ -16,13 +16,14 @@ if ($userId !== null) {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['adicionar'])) {
-            $descricao = trim($_POST['descricao'] ?? '');
-            $tipo = $_POST['tipo'] ?? 'diaria';
-            $pontos = (int) ($_POST['pontos'] ?? 0);
+            $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
+            $tipo = is_string($_POST['tipo'] ?? null) ? $_POST['tipo'] : '';
+            $pontos = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
             $tipos = ['diaria', 'semanal', 'mensal', 'meta'];
+            $tamanhoDescricao = function_exists('mb_strlen') ? mb_strlen($descricao, 'UTF-8') : strlen($descricao);
             
-            if ($descricao === '' || $pontos < 1 || !in_array($tipo, $tipos, true)) {
-                $_SESSION['form_message'] = 'Preencha a tarefa, o tipo e uma pontuação válida.';
+            if ($descricao === '' || $tamanhoDescricao > 180 || $pontos === false || $pontos < 1 || $pontos > 10000 || !in_array($tipo, $tipos, true)) {
+                $_SESSION['form_message'] = 'Preencha a tarefa (até 180 caracteres), o tipo e uma pontuação entre 1 e 10.000.';
                 $_SESSION['form_message_type'] = 'error';
             } else {
                 if (flowup_table_has_column($pdo, 'novas_tarefas', 'user_id')) {
@@ -47,10 +48,13 @@ if ($userId !== null) {
             exit;
             
         } elseif (isset($_POST['concluir'])) {
-            $msgResult = flowup_concluir($pdo, $userId, (int) $_POST['id_tarefa']);
+            $idTarefa = filter_var($_POST['id_tarefa'] ?? null, FILTER_VALIDATE_INT);
+            $msgResult = $idTarefa !== false && $idTarefa > 0
+                ? flowup_concluir($pdo, $userId, $idTarefa)
+                : 'Tarefa inválida.';
             
             $_SESSION['form_message'] = $msgResult;
-            $_SESSION['form_message_type'] = 'success';
+            $_SESSION['form_message_type'] = str_starts_with($msgResult, 'Tarefa concluída!') ? 'success' : 'error';
 
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;

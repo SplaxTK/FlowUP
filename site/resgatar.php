@@ -8,10 +8,11 @@ if ($userId !== null) {
     flowup_prepare_schema($pdo);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['adicionar_recompensa'])) {
-            $descricao = trim($_POST['descricao'] ?? '');
-            $pontos = (int) ($_POST['pontos'] ?? 0);
-            if ($descricao === '' || $pontos < 1) {
-                $message = 'Informe uma recompensa e uma quantidade válida de pontos.';
+            $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
+            $pontos = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
+            $tamanhoDescricao = function_exists('mb_strlen') ? mb_strlen($descricao, 'UTF-8') : strlen($descricao);
+            if ($descricao === '' || $tamanhoDescricao > 180 || $pontos === false || $pontos < 1 || $pontos > 100000) {
+                $message = 'Informe uma recompensa (até 180 caracteres) e uma quantidade de pontos entre 1 e 100.000.';
                 $messageType = 'error';
             } else {
                 $stmt = $pdo->prepare('INSERT INTO recompensas (descricao, qtd_pon_neces) VALUES (:descricao, :pontos)');
@@ -19,7 +20,10 @@ if ($userId !== null) {
                 $message = 'Recompensa adicionada.';
             }
         } elseif (isset($_POST['resgatar'])) {
-            $message = flowup_resgatar($pdo, $userId, (int) $_POST['id_recompensa']);
+            $idRecompensa = filter_var($_POST['id_recompensa'] ?? null, FILTER_VALIDATE_INT);
+            $message = $idRecompensa !== false && $idRecompensa > 0
+                ? flowup_resgatar($pdo, $userId, $idRecompensa)
+                : 'Recompensa inválida.';
             $messageType = str_contains($message, 'sucesso') ? 'success' : 'error';
         }
     }

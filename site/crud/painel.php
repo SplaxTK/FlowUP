@@ -13,11 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     validarCSRF();
 }
 
-$secao = $_GET['secao'] ?? 'cadastro';
-$acao = $_GET['acao'] ?? '';
-$id = $_GET['id'] ?? '';
-$email = $_GET['email'] ?? '';
-$busca = trim($_GET['busca'] ?? '');
+$secao = is_string($_GET['secao'] ?? null) ? $_GET['secao'] : 'cadastro';
+$acao = is_string($_GET['acao'] ?? null) ? $_GET['acao'] : '';
+$id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+$email = is_string($_GET['email'] ?? null) ? $_GET['email'] : '';
+$busca = is_string($_GET['busca'] ?? null) ? trim($_GET['busca']) : '';
 
 $mensagem = '';
 $tipo_mensagem = '';
