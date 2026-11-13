@@ -106,6 +106,12 @@
             submitButton.textContent = 'Adicionar tarefa';
             deleteButton.hidden = true;
         }
+
+        originalValues = currentValues();
+        closingEdit = false;
+        modal.hidden = false;
+        document.body.classList.add('modal-aberto');
+        description.focus();
     }
 
     editButtons.forEach(function (button) {

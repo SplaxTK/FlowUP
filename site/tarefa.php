@@ -34,7 +34,7 @@ if ($userId !== null) {
             $_SESSION['form_message_type'] = 'error';
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
-        } elseif (isset($_POST['adicionar'])) {
+        } elseif (isset($_POST['adicionar']) || isset($_POST['adicionar_tarefa'])) {
             $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
             $tipo = is_string($_POST['tipo'] ?? null) ? $_POST['tipo'] : '';
             $pontos = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);

@@ -63,7 +63,6 @@
             deleteButton.hidden = false;
         } else {
             rewardId.value = '';
-            rewardId.value = '';
             deleteRewardId.value = '';
             description.value = '';
             points.value = '';
@@ -73,6 +72,12 @@
             submitButton.textContent = 'Adicionar recompensa';
             deleteButton.hidden = true;
         }
+
+        originalValues = currentValues();
+        closingEdit = false;
+        modal.hidden = false;
+        document.body.classList.add('modal-aberto');
+        description.focus();
     }
 
     function closeConfirm() {
@@ -193,4 +198,4 @@
             event.returnValue = '';
         }
     });
-});
+})();
