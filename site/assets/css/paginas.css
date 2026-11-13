@@ -431,9 +431,16 @@ body.cadastro-page .form-link-text {
 .task-layout,
 .reward-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
     gap: 20px;
     align-items: start;
+}
+
+.task-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+}
+
+.reward-layout {
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .task-group,
@@ -452,10 +459,25 @@ body.cadastro-page .form-link-text {
     gap: 16px;
 }
 
+.reward-heading-tools {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+}
+
 .task-group-heading h2,
 .section-heading h2,
-.add-task-card h2 {
+.add-task-card h2,
+.add-reward-card h2 {
     margin: 5px 0 0;
+}
+
+.task-group-tools {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
 }
 
 .task-count {
@@ -577,6 +599,10 @@ body.cadastro-page .form-link-text {
 
 .task-edit-modal[hidden],
 .task-confirm-modal[hidden] {
+    display: none;
+}
+
+.task-delete-button[hidden] {
     display: none;
 }
 

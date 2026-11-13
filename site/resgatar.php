@@ -176,7 +176,16 @@ require_once __DIR__ . '/includes/header.php';
                     <div>
                         <div class="section-heading">
                             <div><p class="small-label">Catálogo</p><h2>Suas recompensas</h2></div>
-                            <span class="muted-text"><?php echo count($rewards); ?> disponíveis</span>
+                            <div class="reward-heading-tools">
+                                <span class="muted-text"><?php echo count($rewards); ?> disponíveis</span>
+                                <?php if ($userId !== null): ?>
+                                    <button class="btn btn-primary add-reward-button" type="button" aria-label="Adicionar recompensa">
+                                        <img src="assets/img/icons/plus-icon.png" alt="" aria-hidden="true" class="add-reward-icon">
+                                    </button>
+                                <?php else: ?>
+                                    <a class="pill active" href="login/login.php">Entrar para adicionar</a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div class="reward-grid">
                             <?php foreach ($rewards as $reward):
@@ -211,23 +220,6 @@ require_once __DIR__ . '/includes/header.php';
                             <?php if (!$rewards): ?><div class="card empty-state">Nenhuma recompensa cadastrada ainda.</div><?php endif; ?>
                         </div>
                     </div>
-                    <aside class="card add-task-card">
-                        <p class="small-label">Sua próxima conquista</p>
-                        <h2>Adicionar recompensa</h2>
-                        <p>Cadastre algo que você quer conquistar e defina o custo em pontos.</p>
-                        <?php if ($userId !== null): ?>
-                            <form method="post" class="task-form">
-                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
-                                <label for="descricao">Recompensa</label>
-                                <input id="descricao" name="descricao" required maxlength="180" placeholder="Ex.: Uma hora de videogame">
-                                <label for="pontos">Custo em pontos</label>
-                                <input id="pontos" name="pontos" type="number" min="1" max="100000" required placeholder="300">
-                                <button class="btn form-submit" name="adicionar_recompensa" type="submit">Adicionar recompensa</button>
-                            </form>
-                        <?php else: ?>
-                            <a class="pill active" href="login/login.php">Entrar para continuar</a>
-                        <?php endif; ?>
-                    </aside>
                 </section>
             </main>
         </div>
@@ -237,7 +229,7 @@ require_once __DIR__ . '/includes/header.php';
             <div class="logout-modal-backdrop" data-close-reward-edit></div>
             <div class="logout-modal-card task-edit-card">
                 <button class="logout-modal-close" type="button" aria-label="Fechar" data-close-reward-edit>&times;</button>
-                <p class="small-label">Atualize sua conquista</p>
+                <p class="small-label" id="rewardEditEyebrow">Atualize sua conquista</p>
                 <h2 id="rewardEditTitle">Editar recompensa</h2>
                 <form method="post" id="rewardEditForm" class="task-form">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
@@ -249,7 +241,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="task-edit-actions">
                         <button class="task-delete-button" type="button" id="deleteRewardButton">Excluir</button>
                         <button class="btn-secundario" type="button" data-close-reward-edit>Cancelar</button>
-                        <button class="btn form-submit" type="submit" name="editar_recompensa">Salvar alterações</button>
+                        <button class="btn form-submit" type="submit" id="rewardFormSubmit" name="editar_recompensa">Salvar alterações</button>
                     </div>
                 </form>
                 <form method="post" id="rewardDeleteForm" hidden>

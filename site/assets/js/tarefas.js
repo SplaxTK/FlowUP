@@ -14,6 +14,11 @@
     const points = document.getElementById('editTaskPoints');
     const deleteTaskId = document.getElementById('deleteTaskId');
     const deleteButton = document.getElementById('deleteTaskButton');
+    const addButtons = document.querySelectorAll('.add-task-button');
+    const addRewardButtons = document.querySelectorAll('.add-reward-button');
+    const modalEyebrow = document.getElementById('taskEditEyebrow');
+    const modalTitle = document.getElementById('taskEditTitle');
+    const submitButton = document.getElementById('taskFormSubmit');
 
     if (!modal || !confirmModal || !editForm || !deleteForm) return;
 
@@ -21,7 +26,7 @@
     let confirmAction = null;
     let pendingUrl = null;
     let closingEdit = false;
-    let editTrigger = null;
+    let editorTrigger = null;
 
     function currentValues() {
         return {
@@ -59,14 +64,14 @@
         confirmModal.hidden = true;
         document.body.classList.remove('modal-aberto');
         closingEdit = false;
-        if (editTrigger) editTrigger.focus();
+        if (editorTrigger) editorTrigger.focus();
     }
 
     function requestEditorClose() {
         if (hasUnsavedChanges()) {
             openConfirm(
                 'Sair sem salvar?',
-                'As alterações desta tarefa não foram salvas. Deseja sair mesmo assim?',
+                'As alterações não foram salvas. Deseja sair mesmo assim?',
                 'Continuar editando',
                 'Sair sem salvar',
                 closeEditor,
@@ -77,18 +82,48 @@
         closeEditor();
     }
 
+    function openEditor(trigger, isEditing, task) {
+        editorTrigger = trigger;
+        taskId.value = isEditing ? task.id : '';
+        deleteTaskId.value = isEditing ? task.id : '';
+        description.value = isEditing ? task.description : '';
+        type.value = task.type;
+        points.value = isEditing ? task.points : '';
+        modalEyebrow.textContent = isEditing ? 'Atualize seu objetivo' : 'Adicione um novo objetivo';
+        modalTitle.textContent = isEditing ? 'Editar tarefa' : 'Criar tarefa';
+        submitButton.name = isEditing ? 'editar_tarefa' : 'adicionar';
+        submitButton.textContent = isEditing ? 'Salvar alterações' : 'Criar tarefa';
+        deleteButton.hidden = !isEditing;
+        originalValues = currentValues();
+        modal.hidden = false;
+        document.body.classList.add('modal-aberto');
+        description.focus();
+    }
+
     editButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            editTrigger = button;
-            taskId.value = button.dataset.tarefaId;
-            deleteTaskId.value = button.dataset.tarefaId;
-            description.value = button.dataset.descricao || '';
-            type.value = button.dataset.tipo || 'diaria';
-            points.value = button.dataset.pontos || '';
-            originalValues = currentValues();
-            modal.hidden = false;
-            document.body.classList.add('modal-aberto');
-            description.focus();
+            openEditor(button, true, {
+                id: button.dataset.tarefaId,
+                description: button.dataset.descricao || '',
+                type: button.dataset.tipo || 'diaria',
+                points: button.dataset.pontos || ''
+            });
+        });
+    });
+
+    addButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            openEditor(button, false, {
+                type: button.dataset.addTaskType || 'diaria'
+            });
+        });
+    });
+
+    addRewardButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            openEditor(button, false, {
+                type: button.dataset.addTaskType || 'diaria'
+            });
         });
     });
 
@@ -143,7 +178,7 @@
         pendingUrl = link.href;
         openConfirm(
             'Sair sem salvar?',
-            'As alterações desta tarefa não foram salvas. Deseja sair mesmo assim?',
+            'As alterações não foram salvas. Deseja sair mesmo assim?',
             'Continuar editando',
             'Sair sem salvar',
             function () {

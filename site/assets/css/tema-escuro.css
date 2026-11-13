@@ -34,6 +34,11 @@ body.escuro .task-count {
     border-color: #3b5c91;
 }
 
+body.escuro .add-task-icon,
+body.escuro .add-reward-icon {
+    filter: invert(1);
+}
+
 body.escuro .points-badge {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -179,6 +184,7 @@ body.escuro .config-card .opcao p,
 body.escuro .campo label,
 body.escuro .task-row span,
 body.escuro .add-task-card > p,
+body.escuro .add-reward-card > p,
 body.escuro .reward-card > p,
 body.escuro .muted-text,
 body.escuro .empty-state,

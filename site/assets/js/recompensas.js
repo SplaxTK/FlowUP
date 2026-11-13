@@ -13,6 +13,10 @@
     const points = document.getElementById('editRewardPoints');
     const deleteRewardId = document.getElementById('deleteRewardId');
     const deleteButton = document.getElementById('deleteRewardButton');
+    const addButton = document.querySelector('.add-reward-button');
+    const modalEyebrow = document.getElementById('rewardEditEyebrow');
+    const modalTitle = document.getElementById('rewardEditTitle');
+    const submitButton = document.getElementById('rewardFormSubmit');
 
     if (!modal || !confirmModal || !editForm || !deleteForm) return;
 
@@ -44,6 +48,23 @@
         confirmAction = action;
         confirmModal.hidden = false;
         confirmCancel.focus();
+    }
+
+    function openEditor(trigger, isEditing, reward) {
+        editTrigger = trigger;
+        rewardId.value = isEditing ? reward.id : '';
+        deleteRewardId.value = isEditing ? reward.id : '';
+        description.value = isEditing ? reward.description : '';
+        points.value = isEditing ? reward.points : '';
+        modalEyebrow.textContent = isEditing ? 'Atualize sua conquista' : 'Defina sua próxima conquista';
+        modalTitle.textContent = isEditing ? 'Editar recompensa' : 'Adicionar recompensa';
+        submitButton.name = isEditing ? 'editar_recompensa' : 'adicionar_recompensa';
+        submitButton.textContent = isEditing ? 'Salvar alterações' : 'Adicionar recompensa';
+        deleteButton.hidden = !isEditing;
+        originalValues = currentValues();
+        modal.hidden = false;
+        document.body.classList.add('modal-aberto');
+        description.focus();
     }
 
     function closeConfirm() {
@@ -79,17 +100,19 @@
 
     editButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            editTrigger = button;
-            rewardId.value = button.dataset.recompensaId;
-            deleteRewardId.value = button.dataset.recompensaId;
-            description.value = button.dataset.descricao || '';
-            points.value = button.dataset.pontos || '';
-            originalValues = currentValues();
-            modal.hidden = false;
-            document.body.classList.add('modal-aberto');
-            description.focus();
+            openEditor(button, true, {
+                id: button.dataset.recompensaId,
+                description: button.dataset.descricao || '',
+                points: button.dataset.pontos || ''
+            });
         });
     });
+
+    if (addButton) {
+        addButton.addEventListener('click', function () {
+            openEditor(addButton, false, {});
+        });
+    }
 
     modal.querySelectorAll('[data-close-reward-edit]').forEach(function (element) {
         element.addEventListener('click', requestEditorClose);

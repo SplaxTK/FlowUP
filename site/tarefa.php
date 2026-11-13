@@ -203,7 +203,15 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="task-list-column">
                     <?php foreach ($grupos as $tipo => $titulo): ?>
                         <section class="card task-group">
-                            <div class="task-group-heading"><div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div><span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span></div>
+                            <div class="task-group-heading">
+                                <div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div>
+                                <div class="task-group-tools">
+                                    <span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span>
+                                    <button class="btn btn-primary add-task-button" type="button" data-add-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" aria-label="Adicionar tarefa: <?php echo htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8'); ?>">
+                                        <img src="assets/img/icons/plus-icon.png" alt="" aria-hidden="true" class="add-task-icon">
+                                    </button>
+                                </div>
+                            </div>
                             <?php $temTarefa = false; foreach ($tarefas as $tarefa): if ($tarefa['tipo'] !== $tipo) continue; $temTarefa = true; $feito = isset($concluidas[(int) $tarefa['id_tarefas']]); ?>
                                 <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>">
                                     <div><strong><?php echo htmlspecialchars($tarefa['descricao']); ?></strong><span>+<?php echo (int) $tarefa['qtd_pon_ganho']; ?> pontos</span></div>
@@ -237,7 +245,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="logout-modal-backdrop" data-close-task-edit></div>
         <div class="logout-modal-card task-edit-card">
             <button class="logout-modal-close" type="button" aria-label="Fechar" data-close-task-edit>&times;</button>
-            <p class="small-label">Atualize seu objetivo</p>
+            <p class="small-label" id="taskEditEyebrow">Atualize seu objetivo</p>
             <h2 id="taskEditTitle">Editar tarefa</h2>
             <form method="post" id="taskEditForm" class="task-form">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
@@ -256,7 +264,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="task-edit-actions">
                     <button class="task-delete-button" type="button" id="deleteTaskButton">Excluir</button>
                     <button class="btn-secundario" type="button" data-close-task-edit>Cancelar</button>
-                    <button class="btn form-submit" type="submit" name="editar_tarefa">Salvar alterações</button>
+                    <button class="btn form-submit" type="submit" id="taskFormSubmit" name="editar_tarefa">Salvar alterações</button>
                 </div>
             </form>
             <form method="post" id="taskDeleteForm" hidden>

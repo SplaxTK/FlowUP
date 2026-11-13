@@ -148,6 +148,32 @@
     color: #b91c1c;
 }
 
+.add-task-button,
+.add-reward-button {
+    display: grid;
+    flex: 0 0 36px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    place-items: center;
+    background: #eef4ff;
+    border-radius: 50%;
+    border: none;
+    color: #2563eb;
+}
+
+.add-task-icon,
+.add-reward-icon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.add-task-button:hover,
+.add-reward-button:hover {
+    background: #dbeafe;
+}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
           BOTÃO DE TEMA
