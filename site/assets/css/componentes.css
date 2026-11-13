@@ -151,9 +151,9 @@
 .add-task-button,
 .add-reward-button {
     display: grid;
-    flex: 0 0 36px;
-    width: 30px;
-    height: 30px;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     place-items: center;
     background: #eef4ff;
