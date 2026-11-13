@@ -242,16 +242,28 @@ require_once __DIR__ . '/includes/header.php';
                     <?php if ($userId !== null && !empty($tarefas)): ?><p class="empty-state task-filter-empty" data-task-filter-empty hidden>Nenhuma tarefa corresponde à pesquisa ou aos filtros selecionados.</p><?php endif; ?>
                     <div class="task-groups">
                     <?php foreach ($grupos as $tipo => $titulo): ?>
-                        <section class="card task-group">
+                        <?php
+                        $diasAteReset = 1;
+                        if ($tipo === 'semanal') {
+                            $diasAteReset = 8 - (int) date('N');
+                        } elseif ($tipo === 'mensal') {
+                            $diasAteReset = (int) date('t') - (int) date('j') + 1;
+                        } elseif ($tipo === 'meta') {
+                            $diasAteReset = PHP_INT_MAX;
+                        }
+                        ?>
+                        <section class="card task-group" data-task-group data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-reset-days="<?php echo $diasAteReset; ?>">
                             <div class="task-group-heading">
                                 <div><p class="small-label"><?php echo $tipo === 'diaria' ? 'Recomeça hoje' : 'Seu ritmo'; ?></p><h2><?php echo $titulo; ?></h2></div>
                                 <div class="task-group-tools">
                                     <span class="task-count"><?php echo count(array_filter($tarefas, fn($t) => $t['tipo'] === $tipo)); ?></span>
+                                    <button class="task-group-toggle" type="button" aria-label="Recolher tarefas desta categoria" aria-expanded="true" title="Recolher tarefas desta categoria"><img src="assets/img/icons/seta-cima-icon2.png" alt="" aria-hidden="true"></button>
                                     <button class="btn btn-primary add-task-button" type="button" data-add-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" aria-label="Adicionar tarefa: <?php echo htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8'); ?>">
                                         <img src="assets/img/icons/plus-icon.png" alt="" aria-hidden="true" class="add-task-icon">
                                     </button>
                                 </div>
                             </div>
+                            <?php if ($tipo !== 'meta'): ?><p class="task-group-reset">Recomeça em <?php echo $diasAteReset; ?> dia<?php echo $diasAteReset > 1 ? 's' : ''; ?>.</p><?php endif; ?>
                             <?php $temTarefa = false; foreach ($tarefas as $tarefa): if ($tarefa['tipo'] !== $tipo) continue; $temTarefa = true; $feito = isset($concluidas[(int) $tarefa['id_tarefas']]); ?>
                                 <div class="task-row <?php echo $feito ? 'is-complete' : ''; ?>" data-task-row data-task-type="<?php echo htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'); ?>" data-task-completed="<?php echo $feito ? 'true' : 'false'; ?>">
                                     <div><strong><?php echo htmlspecialchars($tarefa['descricao']); ?></strong><span>+<?php echo (int) $tarefa['qtd_pon_ganho']; ?> pontos</span></div>
