@@ -61,11 +61,39 @@ require_once __DIR__ . '/../includes/header.php';
                                 <input type="hidden" name="token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                                 <div class="form-field">
                                     <label for="nova_senha">Nova senha</label>
-                                    <input id="nova_senha" name="nova_senha" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
+                                    <div class="password-input-wrap">
+                                        <input id="nova_senha" name="nova_senha" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
+                                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="nova_senha" aria-pressed="false">
+                                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                                <path d="m3 3 18 18"></path>
+                                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="confirmar_senha">Confirmar nova senha</label>
-                                    <input id="confirmar_senha" name="confirmar_senha" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
+                                    <div class="password-input-wrap">
+                                        <input id="confirmar_senha" name="confirmar_senha" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
+                                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="confirmar_senha" aria-pressed="false">
+                                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                                <path d="m3 3 18 18"></path>
+                                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                                 <button class="pill" type="submit">Salvar nova senha</button>
                             </form>
