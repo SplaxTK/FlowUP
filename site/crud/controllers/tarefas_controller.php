@@ -23,3 +23,4 @@ if ($acao == 'editar' && $id) {
     $registro = obterTarefaPorId($pdo, $id);
 }
 $todos = obterTodasTarefas($pdo);
+$tarefasUsuarios = obterTodasTarefasDosUsuarios($pdo);

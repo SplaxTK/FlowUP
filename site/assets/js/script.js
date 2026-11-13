@@ -28,19 +28,61 @@ function abrirModalSenha() {
             <form id="formModalSenha" novalidate>
                 <div class="campo">
                     <label for="senhaAtualModal">Senha atual</label>
-                    <input type="password" id="senhaAtualModal" name="senha_atual"
-                           autocomplete="current-password" maxlength="1024" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="senhaAtualModal" name="senha_atual"
+                               autocomplete="current-password" maxlength="1024" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="senhaAtualModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="campo">
                     <label for="novaSenhaModal">Nova senha</label>
-                    <input type="password" id="novaSenhaModal" name="nova_senha"
-                           autocomplete="new-password" minlength="6" maxlength="72" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="novaSenhaModal" name="nova_senha"
+                               autocomplete="new-password" minlength="6" maxlength="72" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="novaSenhaModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <small class="campo-ajuda">Mínimo de 6 caracteres.</small>
                 </div>
                 <div class="campo">
                     <label for="confirmarSenhaModal">Confirmar nova senha</label>
-                    <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
-                           autocomplete="new-password" minlength="6" maxlength="72" required>
+                    <div class="password-input-wrap">
+                        <input type="password" id="confirmarSenhaModal" name="confirmar_senha"
+                               autocomplete="new-password" minlength="6" maxlength="72" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="confirmarSenhaModal" aria-pressed="false">
+                            <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                <path d="m3 3 18 18"></path>
+                                <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <p class="form-message error" id="modalSenhaErro" role="alert" hidden></p>
@@ -195,6 +237,35 @@ function abrirModalSenha() {
 if (btnSenha) {
     btnSenha.addEventListener("click", abrirModalSenha);
 }
+
+document.addEventListener("click", function (evento) {
+    const botao = evento.target instanceof Element
+        ? evento.target.closest(".toggle-password")
+        : null;
+    if (!botao) return;
+
+    const inputId = botao.getAttribute("aria-controls");
+    const grupoCampo = botao.closest(".password-input-wrap");
+    const campo = inputId
+        ? document.getElementById(inputId)
+        : grupoCampo
+            ? grupoCampo.querySelector("input")
+            : null;
+    if (!campo) return;
+
+    const mostrarSenha = campo.type === "password";
+    campo.type = mostrarSenha ? "text" : "password";
+    botao.setAttribute("aria-pressed", String(mostrarSenha));
+    botao.setAttribute("aria-label", mostrarSenha ? "Ocultar senha" : "Mostrar senha");
+
+    const iconeMostrar = botao.querySelector('[data-password-icon="show"]');
+    const iconeOcultar = botao.querySelector('[data-password-icon="hide"]');
+    if (iconeMostrar && iconeOcultar) {
+        iconeMostrar.hidden = mostrarSenha;
+        iconeOcultar.hidden = !mostrarSenha;
+    }
+});
+
 // ==========================
 // SAIR DA CONTA
 // ==========================
@@ -307,28 +378,3 @@ if (perfilActions && perfilButton && perfilMenu) {
         }
     });
 }
-
-document.querySelectorAll(".toggle-password").forEach(function (botao) {
-    botao.addEventListener("click", function () {
-        const grupoCampo = botao.closest(".form-field");
-        const campo = botao.getAttribute("aria-controls")
-            ? document.getElementById(botao.getAttribute("aria-controls"))
-            : grupoCampo
-                ? grupoCampo.querySelector('input[type="password"], input[type="text"]')
-                : null;
-
-        if (!campo) return;
-
-        const mostrarSenha = campo.type === "password";
-        campo.type = mostrarSenha ? "text" : "password";
-        botao.setAttribute("aria-pressed", String(mostrarSenha));
-        botao.setAttribute("aria-label", mostrarSenha ? "Ocultar senha" : "Mostrar senha");
-
-        const iconeMostrar = botao.querySelector('[data-password-icon="show"]');
-        const iconeOcultar = botao.querySelector('[data-password-icon="hide"]');
-        if (iconeMostrar && iconeOcultar) {
-            iconeMostrar.hidden = mostrarSenha;
-            iconeOcultar.hidden = !mostrarSenha;
-        }
-    });
-});

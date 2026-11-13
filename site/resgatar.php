@@ -165,13 +165,42 @@ require_once __DIR__ . '/includes/header.php';
             </nav>
         </aside>
         <div class="main-painel">
-            <header class="topbar">
+            <header class="topbar reward-topbar">
                 <div><p class="small-label">Recompensas</p><h1>Troque seus pontos por recompensas</h1></div>
                 <div class="topbar-actions points-actions"><span class="points-badge" aria-label="Pontos acumulados"><?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts</span></div>
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
             <main class="content reward-page">
                 <?php if ($message): ?><p class="form-message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
+                <div class="reward-toolbar">
+                    <label class="task-search reward-search">
+                        <svg class="task-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="2"></circle>
+                            <path d="m16 16 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                        </svg>
+                        <input type="search" data-reward-search placeholder="Pesquisar recompensas" aria-label="Pesquisar recompensas">
+                    </label>
+                    <div class="reward-filter">
+                        <button class="filter-button" type="button" aria-label="Filtrar recompensas" aria-expanded="false" aria-controls="rewardFilterPanel">
+                            <span class="filter-icon-light" aria-hidden="true"></span>
+                            <span class="filter-icon-dark" aria-hidden="true"></span>
+                            Filtrar
+                        </button>
+                        <div class="card task-filter-panel reward-filter-panel" id="rewardFilterPanel" aria-label="Filtros de recompensas" hidden>
+                            <fieldset>
+                                <legend>Pontos</legend>
+                                <label><input type="checkbox" data-reward-affordability-filter="affordable" checked> Posso resgatar</label>
+                                <label><input type="checkbox" data-reward-affordability-filter="saving" checked> Preciso juntar pontos</label>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Ordenação por custo</legend>
+                                <label><input type="radio" name="reward-sort-order" data-reward-sort-filter="asc" value="asc"> Menor custo</label>
+                                <label><input type="radio" name="reward-sort-order" data-reward-sort-filter="desc" value="desc"> Maior custo</label>
+                            </fieldset>
+                            <button class="task-filter-reset reward-filter-reset" type="button">Limpar filtros</button>
+                        </div>
+                    </div>
+                </div>
                 <section class="reward-layout">
                     <div>
                         <div class="section-heading">
@@ -187,12 +216,13 @@ require_once __DIR__ . '/includes/header.php';
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="reward-grid">
+                        <p class="empty-state reward-filter-empty" data-reward-filter-empty role="status" aria-live="polite" hidden>Nenhuma recompensa corresponde à pesquisa ou aos filtros selecionados.</p>
+                        <div class="reward-grid" data-reward-grid>
                             <?php foreach ($rewards as $reward):
                                 $canRedeem = $pontosUsuario >= (int) $reward['qtd_pon_neces'];
                                 $isOwner = $userId !== null && (int) ($reward['user_id'] ?? 0) === $userId;
                             ?>
-                                <article class="card reward-card">
+                                <article class="card reward-card" data-reward-card data-reward-cost="<?php echo (int) $reward['qtd_pon_neces']; ?>" data-reward-affordable="<?php echo $canRedeem ? 'true' : 'false'; ?>">
                                     <h3><?php echo htmlspecialchars($reward['descricao'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                     <p>Use seus pontos para resgatar esta recompensa.</p>
                                     <div class="reward-footer">
@@ -262,6 +292,6 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
         </div>
-        <script src="assets/js/recompensas.js" defer></script>
     <?php endif; ?>
+    <script src="assets/js/recompensas.js" defer></script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

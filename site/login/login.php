@@ -93,13 +93,21 @@ require_once __DIR__ . '/../includes/header.php';
 
                         <div class="form-field">
                             <label for="password">Senha</label>
-                            <input id="password" name="password" type="password" autocomplete="current-password" required>
-                            <button type="button" class="toggle-password" aria-label="Mostrar senha">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                            </button>
+                            <div class="password-input-wrap">
+                                <input id="password" name="password" type="password" autocomplete="current-password" required>
+                                <button type="button" class="toggle-password" aria-label="Mostrar senha" aria-controls="password" aria-pressed="false">
+                                    <svg data-password-icon="show" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg data-password-icon="hide" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                                        <path d="m3 3 18 18"></path>
+                                        <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                        <path d="M9.9 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a16 16 0 0 1-3.1 3.8"></path>
+                                        <path d="M6.6 6.6C3.6 8.5 1 12 1 12s4 7 11 7a10.8 10.8 0 0 0 4-.8"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
 
                         <button class="pill btn-entrar" type="submit">Entrar</button>

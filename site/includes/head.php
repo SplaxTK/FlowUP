@@ -2,12 +2,12 @@
 $siteUrl = $siteUrl ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="<?php echo basename($_SERVER['SCRIPT_NAME'] ?? '') === 'cadastro.php' ? 'tema-claro-fixo' : ''; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle ?? 'FlowUp', ENT_QUOTES, 'UTF-8'); ?></title>
-    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/img/flowUp.png">
+    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/img/flowUp02.png">
     
     <script>
         (function () {
@@ -71,13 +71,16 @@ $siteUrl = $siteUrl ?? '';
             function apply(value) {
                 const activePreferences = value ? sanitize(value) : preferences;
                 const root = document.documentElement;
-                root.dataset.tema = activePreferences.tema;
+                const pagePreferences = root.classList.contains('tema-claro-fixo')
+                    ? Object.assign({}, activePreferences, { tema: 'claro' })
+                    : activePreferences;
+                root.dataset.tema = pagePreferences.tema;
                 root.dataset.cor = activePreferences.cor;
                 root.dataset.densidade = activePreferences.densidade;
                 root.dataset.fonte = activePreferences.fonte;
                 root.dataset.negrito = activePreferences.negrito ? 'true' : 'false';
                 if (document.body) {
-                    document.body.classList.toggle('escuro', activePreferences.tema === 'escuro');
+                    document.body.classList.toggle('escuro', pagePreferences.tema === 'escuro');
                     document.body.classList.toggle('texto-negrito', activePreferences.negrito);
                 }
             }
@@ -138,7 +141,7 @@ $siteUrl = $siteUrl ?? '';
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/layout.css">
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/componentes.css">
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/paginas.css">
-    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/tema-escuro.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/tema-escuro.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/tema-escuro.css'); ?>">
 
     <?php
         $calendarCssPath = __DIR__ . '/../assets/css/calendar.css';
@@ -153,5 +156,5 @@ $siteUrl = $siteUrl ?? '';
 
     <link rel="stylesheet" href="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/css/responsivo.css">
 
-    <script src="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/js/script.js" defer></script>
+    <script src="<?php echo htmlspecialchars($siteUrl, ENT_QUOTES, 'UTF-8'); ?>/assets/js/script.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/script.js'); ?>" defer></script>
 </head>

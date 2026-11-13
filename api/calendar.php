@@ -1,20 +1,29 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../app/GoogleCalendarService.php';
-
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, private');
 
-function calendar_reply(array $data, int $status = 200)
+function calendar_reply(array $data, int $status = 200): void
 {
     http_response_code($status);
     echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
+}
+
+define('FLOWUP_JSON_API_REQUEST', true);
+
+try {
+    require_once __DIR__ . '/../site/config/config.php';
+    require_once __DIR__ . '/../app/GoogleCalendarService.php';
+    require_once __DIR__ . '/../app/IcsCalendarService.php';
+} catch (Throwable $error) {
+    error_log('Calendar API bootstrap error: ' . $error->getMessage());
+    calendar_reply(['error' => 'Não foi possível iniciar a API do calendário.'], 500);
+}
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
 
 if (empty($_SESSION['user_id'])) {
@@ -26,16 +35,6 @@ $action = $_GET['action'] ?? '';
 
 try {
     GoogleCalendarService::prepareSchema($pdo);
-    $google = new GoogleCalendarService($pdo, $userId);
-
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'status') {
-        $account = $google->status();
-        calendar_reply(['connected' => (bool) $account, 'account' => $account, 'configured' => GoogleCalendarService::configured()]);
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'google-calendars') {
-        calendar_reply(['calendars' => $google->listCalendars()]);
-    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'categories') {
         $pdo->beginTransaction();
@@ -69,7 +68,13 @@ try {
             calendar_reply(['error' => 'A data final deve ser posterior à inicial.'], 422);
         }
         $where = ['e.user_id = :user_id', '((e.starts_at < :range_end AND e.ends_at >= :range_start) OR e.repeat_rule IS NOT NULL)'];
-        $timezone = new DateTimeZone(getenv('APP_TIMEZONE') ?: 'America/Sao_Paulo');
+        if (($_GET['show_declined'] ?? '0') !== '1') {
+            $where[] = 'e.is_declined = 0';
+        }
+        if (($_GET['show_completed_tasks'] ?? '0') !== '1') {
+            $where[] = '(e.event_type <> \'task\' OR e.is_completed = 0)';
+        }
+        $timezone = calendar_timezone();
         $params = [
             'user_id' => $userId,
             'range_start' => $rangeStartDate->setTimezone($timezone)->format('Y-m-d H:i:s'),
@@ -128,20 +133,43 @@ try {
         calendar_reply($events);
     }
 
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'export-file') {
+        $timezone = calendar_timezone();
+        [$calendarFile, $eventCount] = IcsCalendarService::export($pdo, $userId, $timezone);
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename="flowup-calendar.ics"');
+        header('Content-Length: ' . strlen($calendarFile));
+        header('X-Exported-Events: ' . $eventCount);
+        echo $calendarFile;
+        exit;
+    }
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         calendar_reply(['error' => 'Ação não encontrada.'], 404);
     }
     if (!hash_equals($_SESSION['calendar_csrf'] ?? '', $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '')) {
         calendar_reply(['error' => 'Token de segurança inválido. Atualize a página e tente novamente.'], 403);
     }
+    if ($action === 'import-file') {
+        if (!isset($_FILES['calendar_file']) || $_FILES['calendar_file']['error'] !== UPLOAD_ERR_OK) {
+            calendar_reply(['error' => 'Selecione um arquivo .zip ou .ics para importar.'], 422);
+        }
+        if ($_FILES['calendar_file']['size'] > 20_000_000) {
+            calendar_reply(['error' => 'O arquivo excede o limite de 20 MB.'], 413);
+        }
+        $timezone = calendar_timezone();
+        $result = IcsCalendarService::importFile(
+            $pdo,
+            $userId,
+            $_FILES['calendar_file']['tmp_name'],
+            $_FILES['calendar_file']['name'],
+            $timezone
+        );
+        calendar_reply(['message' => 'Importação concluída.'] + $result);
+    }
     $input = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
     if (!is_array($input)) {
         calendar_reply(['error' => 'Dados inválidos.'], 400);
-    }
-
-    if ($action === 'sync') {
-        $count = $google->sync($pdo);
-        calendar_reply(['message' => 'Agenda sincronizada.', 'googleEvents' => $count, 'status' => $google->status()]);
     }
 
     $id = filter_var($input['id'] ?? null, FILTER_VALIDATE_INT);
@@ -159,9 +187,6 @@ try {
         if (!$existing) {
             calendar_reply(['error' => 'Evento inválido.'], 422);
         }
-        if (!empty($existing['google_event_id'])) {
-            $google->deleteEvent($existing);
-        }
         $delete = $pdo->prepare('DELETE FROM calendar_events WHERE id = ? AND user_id = ?');
         $delete->execute([$id, $userId]);
         calendar_reply(['message' => 'Evento excluído.']);
@@ -175,6 +200,7 @@ try {
         $copy['title'] .= ' (cópia)';
         $copy['starts_at'] = date('Y-m-d H:i:s', strtotime($copy['starts_at'] . ' +1 day'));
         $copy['ends_at'] = date('Y-m-d H:i:s', strtotime($copy['ends_at'] . ' +1 day'));
+        $copy['is_completed'] = 0;
         unset($copy['id'], $copy['google_event_id'], $copy['google_calendar_id'], $copy['google_etag']);
         $newId = save_calendar_event($pdo, $userId, $copy, false);
         calendar_reply(['id' => (string) $newId, 'message' => 'Evento duplicado.'], 201);
@@ -184,6 +210,10 @@ try {
         calendar_reply(['error' => 'Ação não encontrada.'], 404);
     }
     $title = trim((string) ($input['title'] ?? ''));
+    $eventType = $input['event_type'] ?? 'event';
+    if (!in_array($eventType, ['event', 'task', 'appointment'], true)) {
+        calendar_reply(['error' => 'O tipo de item escolhido é inválido.'], 422);
+    }
     $allDay = !empty($input['all_day']);
     $startsAt = calendar_datetime($input['start'] ?? '', $allDay);
     $endsAt = calendar_datetime($input['end'] ?? '', $allDay);
@@ -211,6 +241,7 @@ try {
         calendar_reply(['error' => 'O lembrete escolhido é inválido.'], 422);
     }
     $event = [
+        'id' => $existing ? (int) $existing['id'] : null,
         'category_id' => $categoryId ?: null,
         'title' => $title,
         'description' => trim((string) ($input['description'] ?? '')),
@@ -223,6 +254,9 @@ try {
         'repeat_rule' => $repeat ?: null,
         'reminder_minutes' => $reminder,
         'notes' => trim((string) ($input['notes'] ?? '')),
+        'event_type' => $eventType,
+        'is_completed' => $eventType === 'task' && !empty($input['is_completed']) ? 1 : 0,
+        'is_declined' => (int) ($existing['is_declined'] ?? 0),
         'google_event_id' => $existing['google_event_id'] ?? null,
         'google_calendar_id' => $existing['google_calendar_id'] ?? null,
         'google_etag' => $existing['google_etag'] ?? null,
@@ -231,18 +265,15 @@ try {
         calendar_reply(['error' => 'Um dos campos excede o tamanho permitido.'], 422);
     }
 
-    if ($existing && !empty($existing['google_event_id'])) {
-        $event['id'] = $id;
-        $googleResult = $google->updateEvent($event);
-        $event['google_etag'] = $googleResult['etag'] ?? $event['google_etag'];
-    }
     $savedId = save_calendar_event($pdo, $userId, $event, (bool) $existing);
     calendar_reply(['id' => (string) $savedId, 'message' => 'Evento salvo.'], $existing ? 200 : 201);
 } catch (JsonException $error) {
     calendar_reply(['error' => 'O corpo da solicitação não contém JSON válido.'], 400);
+} catch (InvalidArgumentException $error) {
+    calendar_reply(['error' => $error->getMessage()], 422);
 } catch (Throwable $error) {
     error_log('Calendar API error: ' . $error->getMessage());
-    calendar_reply(['error' => $error->getMessage()], 502);
+    calendar_reply(['error' => 'Não foi possível processar a solicitação do calendário.'], 500);
 }
 
 function calendar_datetime($value, bool $allDay): ?string
@@ -251,7 +282,7 @@ function calendar_datetime($value, bool $allDay): ?string
         return null;
     }
     $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i';
-    $date = DateTimeImmutable::createFromFormat('!' . $format, $value, new DateTimeZone(getenv('APP_TIMEZONE') ?: 'America/Sao_Paulo'));
+    $date = DateTimeImmutable::createFromFormat('!' . $format, $value, calendar_timezone());
     $errors = DateTimeImmutable::getLastErrors();
     if (!$date || ($errors && ($errors['warning_count'] || $errors['error_count']))) {
         return null;
@@ -259,9 +290,27 @@ function calendar_datetime($value, bool $allDay): ?string
     return $allDay ? $date->format('Y-m-d') . ' 00:00:00' : $date->format('Y-m-d H:i:s');
 }
 
+function calendar_timezone(): DateTimeZone
+{
+    static $timezone = null;
+    if ($timezone instanceof DateTimeZone) {
+        return $timezone;
+    }
+
+    $timezoneName = trim((string) (getenv('APP_TIMEZONE') ?: ''));
+    if ($timezoneName !== '') {
+        try {
+            return $timezone = new DateTimeZone($timezoneName);
+        } catch (Throwable $error) {
+            error_log('Invalid APP_TIMEZONE configuration; using America/Sao_Paulo.');
+        }
+    }
+    return $timezone = new DateTimeZone('America/Sao_Paulo');
+}
+
 function save_calendar_event(PDO $pdo, int $userId, array $event, bool $update): int
 {
-    $fields = ['category_id', 'title', 'description', 'starts_at', 'ends_at', 'all_day', 'location', 'color', 'guests', 'repeat_rule', 'reminder_minutes', 'notes'];
+    $fields = ['category_id', 'title', 'description', 'starts_at', 'ends_at', 'all_day', 'location', 'color', 'guests', 'repeat_rule', 'reminder_minutes', 'notes', 'event_type', 'is_completed'];
     $values = array_map(static fn(string $field) => $event[$field] ?? null, $fields);
     if ($update) {
         $assignments = implode(', ', array_map(static fn(string $field) => $field . ' = ?', $fields));
@@ -294,6 +343,9 @@ function calendar_event_json(array $row, string $start, string $end, ?string $di
             'repeatRule' => $row['repeat_rule'],
             'reminderMinutes' => $row['reminder_minutes'],
             'notes' => $row['notes'],
+            'eventType' => $row['event_type'],
+            'isCompleted' => (bool) $row['is_completed'],
+            'isDeclined' => (bool) $row['is_declined'],
             'googleSynced' => (bool) $row['google_event_id'],
             'parentEventId' => (string) $row['id'],
         ],
