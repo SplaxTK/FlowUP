@@ -83,8 +83,12 @@
     }
 
     function openEditor(trigger, isEditing, task) {
-        editorTrigger = trigger;
-        taskId.value = isEditing ? task.id : '';
+        if (isEditing) {
+            taskId.value = task.id;
+        } else {
+            taskId.value = '';
+        }
+        //    taskId.value = isEditing ? task.id : '';
         deleteTaskId.value = isEditing ? task.id : '';
         description.value = isEditing ? task.description : '';
         type.value = task.type;

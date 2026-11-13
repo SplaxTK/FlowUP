@@ -47,12 +47,16 @@
         confirmTrigger = trigger || document.activeElement;
         confirmAction = action;
         confirmModal.hidden = false;
-        confirmCancel.focus();
+        confirmCancel.focus()
     }
 
     function openEditor(trigger, isEditing, reward) {
-        editTrigger = trigger;
-        rewardId.value = isEditing ? reward.id : '';
+        if (isEditing) {
+        rewardId.value = reward.id;
+        } else {
+        rewardId.value = '';
+        }
+       // rewardId.value = isEditing ? reward.id : '';
         deleteRewardId.value = isEditing ? reward.id : '';
         description.value = isEditing ? reward.description : '';
         points.value = isEditing ? reward.points : '';
