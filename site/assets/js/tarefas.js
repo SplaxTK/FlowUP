@@ -85,23 +85,27 @@
     function openEditor(trigger, isEditing, task) {
         if (isEditing) {
             taskId.value = task.id;
+            deleteTaskId.value = task.id;
+            description.value = task.description;
+            type.value = task.type;
+            points.value = task.points;
+            modalEyebrow.textContent = 'Atualize sua tarefa';
+            modalTitle.textContent = 'Editar tarefa';
+            submitButton.name = 'editar_tarefa';
+            submitButton.textContent = 'Salvar alterações';
+            deleteButton.hidden = false;
         } else {
             taskId.value = '';
+            deleteTaskId.value = '';
+            description.value = '';
+            type.value = task.type || 'diaria';
+            points.value = '';
+            modalEyebrow.textContent = 'Defina sua próxima tarefa';
+            modalTitle.textContent = 'Adicionar tarefa';
+            submitButton.name = 'adicionar_tarefa';
+            submitButton.textContent = 'Adicionar tarefa';
+            deleteButton.hidden = true;
         }
-        //    taskId.value = isEditing ? task.id : '';
-        deleteTaskId.value = isEditing ? task.id : '';
-        description.value = isEditing ? task.description : '';
-        type.value = task.type;
-        points.value = isEditing ? task.points : '';
-        modalEyebrow.textContent = isEditing ? 'Atualize seu objetivo' : 'Adicione um novo objetivo';
-        modalTitle.textContent = isEditing ? 'Editar tarefa' : 'Criar tarefa';
-        submitButton.name = isEditing ? 'editar_tarefa' : 'adicionar';
-        submitButton.textContent = isEditing ? 'Salvar alterações' : 'Criar tarefa';
-        deleteButton.hidden = !isEditing;
-        originalValues = currentValues();
-        modal.hidden = false;
-        document.body.classList.add('modal-aberto');
-        description.focus();
     }
 
     editButtons.forEach(function (button) {

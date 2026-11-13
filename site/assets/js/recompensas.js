@@ -52,23 +52,27 @@
 
     function openEditor(trigger, isEditing, reward) {
         if (isEditing) {
-        rewardId.value = reward.id;
+            rewardId.value = reward.id;
+            deleteRewardId.value = reward.id;
+            description.value = reward.description;
+            points.value = reward.points;
+            modalEyebrow.textContent = 'Atualize sua conquista';
+            modalTitle.textContent = 'Editar recompensa';
+            submitButton.name = 'editar_recompensa';
+            submitButton.textContent = 'Salvar alterações';
+            deleteButton.hidden = false;
         } else {
-        rewardId.value = '';
+            rewardId.value = '';
+            rewardId.value = '';
+            deleteRewardId.value = '';
+            description.value = '';
+            points.value = '';
+            modalEyebrow.textContent = 'Defina sua próxima conquista';
+            modalTitle.textContent = 'Adicionar recompensa';
+            submitButton.name = 'adicionar_recompensa';
+            submitButton.textContent = 'Adicionar recompensa';
+            deleteButton.hidden = true;
         }
-       // rewardId.value = isEditing ? reward.id : '';
-        deleteRewardId.value = isEditing ? reward.id : '';
-        description.value = isEditing ? reward.description : '';
-        points.value = isEditing ? reward.points : '';
-        modalEyebrow.textContent = isEditing ? 'Atualize sua conquista' : 'Defina sua próxima conquista';
-        modalTitle.textContent = isEditing ? 'Editar recompensa' : 'Adicionar recompensa';
-        submitButton.name = isEditing ? 'editar_recompensa' : 'adicionar_recompensa';
-        submitButton.textContent = isEditing ? 'Salvar alterações' : 'Adicionar recompensa';
-        deleteButton.hidden = !isEditing;
-        originalValues = currentValues();
-        modal.hidden = false;
-        document.body.classList.add('modal-aberto');
-        description.focus();
     }
 
     function closeConfirm() {
@@ -189,4 +193,4 @@
             event.returnValue = '';
         }
     });
-})();
+});
