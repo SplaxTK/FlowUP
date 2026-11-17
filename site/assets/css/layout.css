@@ -444,7 +444,7 @@ body:not(.tela-login-body) .topbar {
     flex: 0 0 auto;
 }
 
-.perfil-button {
+.perfil-button, .notifications-actions {
     display: grid;
     width: 44px;
     height: 44px;
@@ -457,10 +457,18 @@ body:not(.tela-login-body) .topbar {
 }
 
 .perfil-button:hover,
-.perfil-button:focus-visible {
+.perfil-button:focus-visible,
+.notifications-actions:hover,
+.notifications-actions:focus-visible {
     border-color: var(--cor-principal);
     outline: 2px solid var(--cor-principal);
     outline-offset: 2px;
+}
+
+.notifications-icon {
+    display: block;
+    width: 30px;
+    height: 30px;
 }
 
 .perfil-user-icon {

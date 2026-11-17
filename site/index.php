@@ -50,7 +50,9 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
                 </div>
-                        
+                <button class="topbar-actions notifications-actions" type="button" aria-label="Notificações" data-notifications-button>
+                    <img class="notifications-icon" src="assets/img/icons/bell-notfi-icon.png" alt="" aria-hidden="true">
+                </button>
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
 
