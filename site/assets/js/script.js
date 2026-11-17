@@ -352,6 +352,39 @@ if (sidebarToggle && appShell) {
 const perfilActions = document.getElementById("perfilActions");
 const perfilButton = document.getElementById("perfilButton");
 const perfilMenu = document.getElementById("perfilMenu");
+const notificationsContainer = document.querySelector("[data-notifications]");
+const notificationsButton = document.querySelector("[data-notifications-button]");
+const notificationsPanel = document.getElementById("notificationsPanel");
+
+if (notificationsContainer && notificationsButton && notificationsPanel) {
+    function fecharNotificacoes(devolverFoco) {
+        notificationsPanel.hidden = true;
+        notificationsButton.setAttribute("aria-expanded", "false");
+        if (devolverFoco) notificationsButton.focus();
+    }
+
+    notificationsButton.addEventListener("click", function () {
+        const abrirPainel = notificationsPanel.hidden;
+        notificationsPanel.hidden = !abrirPainel;
+        notificationsButton.setAttribute("aria-expanded", String(abrirPainel));
+        if (abrirPainel && perfilMenu && perfilButton) {
+            perfilMenu.hidden = true;
+            perfilButton.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    document.addEventListener("click", function (evento) {
+        if (!notificationsContainer.contains(evento.target)) {
+            fecharNotificacoes(false);
+        }
+    });
+
+    document.addEventListener("keydown", function (evento) {
+        if (evento.key === "Escape" && !notificationsPanel.hidden) {
+            fecharNotificacoes(true);
+        }
+    });
+}
 
 if (perfilActions && perfilButton && perfilMenu) {
     function fecharMenuPerfil(devolverFoco) {
@@ -364,6 +397,10 @@ if (perfilActions && perfilButton && perfilMenu) {
         const abrirMenu = perfilMenu.hidden;
         perfilMenu.hidden = !abrirMenu;
         perfilButton.setAttribute("aria-expanded", String(abrirMenu));
+        if (abrirMenu && notificationsPanel && notificationsButton) {
+            notificationsPanel.hidden = true;
+            notificationsButton.setAttribute("aria-expanded", "false");
+        }
     });
 
     document.addEventListener("click", function (evento) {

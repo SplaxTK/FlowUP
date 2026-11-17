@@ -172,6 +172,24 @@ function flowup_metas_hoje(PDO $pdo, ?int $userId): int
     return (int) $stmt->fetchColumn();
 }
 
+function flowup_notificacoes(PDO $pdo, ?int $userId): array
+{
+    if (!$userId) {
+        return [];
+    }
+
+    $stmt = $pdo->prepare(
+        'SELECT titulo, mensagem, dt_criacao, dt_leitura
+         FROM notificacoes
+         WHERE user_id = :user_id
+         ORDER BY dt_criacao DESC, id_notificacao DESC
+         LIMIT 10'
+    );
+    $stmt->execute(['user_id' => $userId]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function flowup_pontos_id(PDO $pdo, int $userId): int
 {
     $stmt = $pdo->prepare(

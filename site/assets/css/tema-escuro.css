@@ -6,6 +6,7 @@ body.escuro .topbar,
 body.escuro .card,
 body.escuro .hero-card,
 body.escuro .perfil-menu,
+body.escuro .notifications-panel,
 body.escuro .hero-card_2,
 body.escuro .card-login,
 body.escuro .hero-card-recuperar {
@@ -14,11 +15,16 @@ body.escuro .hero-card-recuperar {
 }
 
 body.escuro .perfil-menu-user,
+body.escuro .notification-item,
 body.escuro .opcao,
 body.escuro .switch-item,
 body.escuro .task-row,
 body.escuro .sidebar {
     border-color: #374151;
+}
+
+body.escuro .notification-item.notification-unread {
+    background: #263b61;
 }
 
 body.escuro .perfil-menu-links .perfil-menu-logout {
@@ -165,6 +171,8 @@ body.escuro.legal-page .legal-card {
 body.escuro.legal-page .legal-card h1,
 body.escuro .form-field label,
 body.escuro .perfil-menu-links a,
+body.escuro .notifications-panel,
+body.escuro .notification-item h3,
 body.escuro .hero-card h2,
 body.escuro .hero-card_2 h2,
 body.escuro .card-login h2 {
@@ -178,6 +186,9 @@ body.escuro .reward-footer strong {
 
 body.escuro.legal-page .legal-updated,
 body.escuro .perfil-menu-user-info span,
+body.escuro .notification-item p,
+body.escuro .notification-item time,
+body.escuro .notifications-empty,
 body.escuro .config-intro p,
 body.escuro .config-card .titulo-card p,
 body.escuro .config-card .opcao p,
