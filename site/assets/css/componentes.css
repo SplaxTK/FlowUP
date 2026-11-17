@@ -862,6 +862,106 @@ body.modal-exclusao-aberto {
     color: #991b1b;
 }
 
+.flowup-toast-region {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1200;
+    width: min(420px, calc(100vw - 32px));
+}
+
+.flowup-toast {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    overflow: hidden;
+    padding: 14px 14px 18px 17px;
+    border: 1px solid #bbf7d0;
+    border-left: 4px solid #16a34a;
+    border-radius: 12px;
+    background: #f0fdf4;
+    color: #166534;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.22);
+    animation: flowup-toast-in 180ms ease-out;
+}
+
+.flowup-toast-error {
+    border-color: #fecaca;
+    border-left-color: #dc2626;
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.flowup-toast-text {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.flowup-toast-close {
+    display: grid;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    margin: -5px -5px 0 0;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.flowup-toast-close:hover,
+.flowup-toast-close:focus-visible {
+    background: rgba(15, 23, 42, 0.08);
+}
+
+.flowup-toast-close:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+}
+
+.flowup-toast-progress {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    transform: scaleX(1);
+    transform-origin: left center;
+    background: #16a34a;
+    animation: flowup-toast-countdown 5s linear forwards;
+}
+
+.flowup-toast-error .flowup-toast-progress {
+    background: #dc2626;
+}
+
+@keyframes flowup-toast-countdown {
+    to {
+        transform: scaleX(0);
+    }
+}
+
+@keyframes flowup-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .weather-status {
     padding: 16px;
     color: #64748b;
@@ -889,8 +989,19 @@ body.modal-exclusao-aberto {
 }
 
 @media (max-width: 640px) {
+    .flowup-toast-region {
+        right: 16px;
+        bottom: calc(82px + env(safe-area-inset-bottom));
+    }
+
     .cookie-notice-actions {
         justify-content: flex-end;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flowup-toast {
+        animation: none;
     }
 }
 

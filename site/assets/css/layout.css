@@ -444,7 +444,7 @@ body:not(.tela-login-body) .topbar {
     flex: 0 0 auto;
 }
 
-.perfil-button {
+.perfil-button, .notifications-actions {
     display: grid;
     width: 44px;
     height: 44px;
@@ -457,10 +457,110 @@ body:not(.tela-login-body) .topbar {
 }
 
 .perfil-button:hover,
-.perfil-button:focus-visible {
+.perfil-button:focus-visible,
+.notifications-actions:hover,
+.notifications-actions:focus-visible {
     border-color: var(--cor-principal);
     outline: 2px solid var(--cor-principal);
     outline-offset: 2px;
+}
+
+.notifications-icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+.notifications-container {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.topbar-actions.notifications-actions {
+    position: relative;
+    display: grid;
+    flex: 0 0 44px;
+    justify-content: center;
+    place-items: center;
+}
+
+.notifications-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    display: grid;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.notifications-badge[hidden] {
+    display: none;
+}
+
+.notifications-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 20;
+    width: min(340px, calc(100vw - 24px));
+    max-height: min(420px, calc(100vh - 100px));
+    overflow-y: auto;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    color: #1f2937;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+}
+
+.notifications-panel h2 {
+    margin: 0 0 12px;
+    font-size: 1rem;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-item {
+    padding: 12px 8px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.notification-item.notification-unread {
+    border-left: 3px solid var(--cor-principal);
+    background: #f8fafc;
+    padding-left: 10px;
+}
+
+.notification-item h3 {
+    margin: 0 0 5px;
+    font-size: 0.9rem;
+}
+
+.notification-item p,
+.notifications-empty {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.notification-item time {
+    display: block;
+    margin-top: 8px;
+    color: #878c96;
+    font-size: 0.75rem;
 }
 
 .perfil-user-icon {

@@ -50,7 +50,6 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
                 <?php echo number_format($pontosUsuario, 0, ',', '.'); ?> pts
                 </span>
                 </div>
-                        
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
 

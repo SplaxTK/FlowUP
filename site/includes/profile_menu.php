@@ -1,3 +1,7 @@
+<?php
+$notificacoes = flowup_notificacoes($pdo, flowup_user_id());
+require __DIR__ . '/notifications_menu.php';
+?>
 <div class="perfil-actions" id="perfilActions">
     <?php if (isset($_SESSION['user_id'])): ?>
         <button class="perfil-button" id="perfilButton" type="button" aria-label="Abrir menu de perfil" aria-expanded="false" aria-controls="perfilMenu">
