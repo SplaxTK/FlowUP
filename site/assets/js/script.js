@@ -1,3 +1,202 @@
+window.FlowUpNotifications = (function () {
+    "use strict";
+
+    const container = document.querySelector("[data-notifications]");
+    const panel = document.getElementById("notificationsPanel");
+    const button = document.querySelector("[data-notifications-button]");
+    const emptyMessage = panel ? panel.querySelector(".notifications-empty") : null;
+    let list = panel ? panel.querySelector(".notifications-list") : null;
+    if (panel && !list) {
+        list = document.createElement("div");
+        list.className = "notifications-list";
+        if (emptyMessage) {
+            panel.insertBefore(list, emptyMessage);
+        } else {
+            panel.appendChild(list);
+        }
+    }
+    const badge = document.querySelector("[data-notifications-badge]");
+    const storageKey = "flowup_notification_history_" + (container ? container.dataset.notificationsUser : "visitante");
+    const serverItems = list ? Array.from(list.querySelectorAll(".notification-item")).map(function (item) {
+        const time = item.querySelector("time");
+        return {
+            title: item.querySelector("h3").textContent,
+            message: item.querySelector("p").textContent,
+            createdAt: time ? time.dateTime : "",
+            read: !item.classList.contains("notification-unread"),
+            server: true
+        };
+    }) : [];
+    let history = [];
+    let toastTimer = null;
+    let activeToast = null;
+
+    function readHistory() {
+        try {
+            const stored = window.localStorage.getItem(storageKey);
+            const parsed = stored ? JSON.parse(stored) : [];
+            history = Array.isArray(parsed) ? parsed.filter(function (item) {
+                return item && typeof item.title === "string" &&
+                    typeof item.message === "string" &&
+                    typeof item.createdAt === "string";
+            }) : [];
+        } catch (error) {
+            console.error("Não foi possível carregar o histórico de notificações do FlowUp.", error);
+            history = [];
+        }
+    }
+
+    function saveHistory() {
+        try {
+            window.localStorage.setItem(storageKey, JSON.stringify(history.slice(0, 10)));
+        } catch (error) {
+            console.error("Não foi possível salvar o histórico de notificações do FlowUp.", error);
+        }
+    }
+
+    function formatDate(value) {
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function renderHistory() {
+        if (!list) return;
+
+        const items = serverItems.concat(history.map(function (item) {
+            return Object.assign({ server: false }, item);
+        })).sort(function (a, b) {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }).slice(0, 10);
+
+        list.replaceChildren();
+        items.forEach(function (item) {
+            const article = document.createElement("article");
+            article.className = "notification-item" + (item.read ? "" : " notification-unread");
+            const title = document.createElement("h3");
+            title.textContent = item.title;
+            const message = document.createElement("p");
+            message.textContent = item.message;
+            const time = document.createElement("time");
+            time.dateTime = item.createdAt;
+            time.textContent = formatDate(item.createdAt);
+            article.append(title, message, time);
+            list.appendChild(article);
+        });
+
+        if (emptyMessage) emptyMessage.hidden = items.length > 0;
+        if (badge) {
+            const unreadCount = history.filter(function (item) { return !item.read; }).length;
+            badge.textContent = unreadCount > 9 ? "9+" : String(unreadCount);
+            badge.hidden = unreadCount === 0;
+            if (button) button.setAttribute("aria-label", unreadCount
+                ? "Notificações, " + unreadCount + " não lidas"
+                : "Notificações");
+        }
+    }
+
+    function dismissToast() {
+        window.clearTimeout(toastTimer);
+        toastTimer = null;
+        if (activeToast) activeToast.remove();
+        activeToast = null;
+    }
+
+    function showToast(message, type) {
+        dismissToast();
+        let region = document.querySelector("[data-flowup-toast-region]");
+        if (!region) {
+            region = document.createElement("div");
+            region.className = "flowup-toast-region";
+            region.dataset.flowupToastRegion = "true";
+            region.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+            region.setAttribute("aria-relevant", "additions");
+            document.body.appendChild(region);
+        } else {
+            region.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+        }
+
+        const toast = document.createElement("div");
+        toast.className = "flowup-toast" + (type === "error" ? " flowup-toast-error" : "");
+        toast.setAttribute("role", type === "error" ? "alert" : "status");
+        const text = document.createElement("span");
+        text.className = "flowup-toast-text";
+        text.textContent = message;
+        const close = document.createElement("button");
+        close.className = "flowup-toast-close";
+        close.type = "button";
+        close.setAttribute("aria-label", "Fechar notificação");
+        close.textContent = "×";
+        const progress = document.createElement("span");
+        progress.className = "flowup-toast-progress";
+        progress.setAttribute("aria-hidden", "true");
+        toast.append(text, close, progress);
+        region.appendChild(toast);
+        activeToast = toast;
+        close.addEventListener("click", dismissToast);
+        toastTimer = window.setTimeout(dismissToast, 5000);
+    }
+
+    function notify(message, options) {
+        const settings = options || {};
+        const type = settings.type === "error" ? "error" : "success";
+        const title = settings.title || (type === "error" ? "Não foi possível concluir" : "Atualização concluída");
+        const text = String(message || "");
+        if (!text) return;
+
+        if (container && list) {
+            history.unshift({
+                title: title,
+                message: text,
+                createdAt: new Date().toISOString(),
+                read: false
+            });
+            history = history.slice(0, 10);
+            saveHistory();
+            renderHistory();
+        }
+        showToast(text, type);
+    }
+
+    readHistory();
+    renderHistory();
+
+    document.querySelectorAll("[data-flowup-notice]").forEach(function (element) {
+        const type = element.dataset.flowupNoticeType === "error" ? "error" : "success";
+        const title = element.dataset.flowupNoticeTitle;
+        const message = element.textContent.trim();
+        element.hidden = true;
+        if (message) notify(message, { type: type, title: title });
+    });
+
+    if (window.location.pathname.endsWith("/configuracoes.php")) {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get("sucesso") === "1") {
+            url.searchParams.delete("sucesso");
+            window.history.replaceState({}, "", url.href);
+        }
+    }
+
+    if (container && panel && button) {
+        button.addEventListener("click", function () {
+            if (panel.hidden) {
+                history = history.map(function (item) {
+                    return Object.assign({}, item, { read: true });
+                });
+                saveHistory();
+                renderHistory();
+            }
+        });
+    }
+
+    return Object.freeze({ notify: notify });
+})();
+
 // ==========================
 // ALTERAR SENHA (com senha atual)
 // ==========================

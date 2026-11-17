@@ -36,6 +36,9 @@
 
             <main class="content configuracoes-content">
                 <div class="config-intro"><h2>Configurações</h2><p>Gerencie sua conta e as preferências do FlowUp.</p></div>
+                <?php if (($_GET['sucesso'] ?? '') === '1'): ?>
+                    <p data-flowup-notice data-flowup-notice-title="Dados da conta atualizados">Informações da conta salvas com sucesso.</p>
+                <?php endif; ?>
 
                 <section class="card config-card">
                     <div class="titulo-card"><div class="icone icone-tema"><img class="img-icon icone-claro" src="assets/img/icons/user-icon.png" alt="Ícone de perfil"><img class="img-icon icone-escuro" src="assets/img/icons/user-icon-2.png" alt="" aria-hidden="true"></div><div><h2>Minha conta</h2><p>Gerencie suas informações pessoais.</p></div></div>

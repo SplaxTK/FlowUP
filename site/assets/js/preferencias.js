@@ -209,6 +209,14 @@
     }
 
     function showMessage(text, kind) {
+        if (window.FlowUpNotifications) {
+            window.FlowUpNotifications.notify(text, {
+                type: kind === 'error' ? 'error' : 'success',
+                title: kind === 'error' ? 'Erro ao salvar personalizações' : 'Personalizações alteradas'
+            });
+            if (message) message.hidden = true;
+            return;
+        }
         if (!message) return;
         message.textContent = text;
         message.className = 'preferences-message ' + kind;

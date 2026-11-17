@@ -1,6 +1,7 @@
-<div class="notifications-container" data-notifications>
+<div class="notifications-container" data-notifications data-notifications-user="<?php echo htmlspecialchars((string) (flowup_user_id() ?? 'visitante'), ENT_QUOTES, 'UTF-8'); ?>">
     <button class="topbar-actions notifications-actions" type="button" aria-label="Notificações" aria-expanded="false" aria-controls="notificationsPanel" data-notifications-button>
         <img class="notifications-icon" src="assets/img/icons/bell-notfi-icon.png" alt="" aria-hidden="true">
+        <span class="notifications-badge" data-notifications-badge hidden></span>
     </button>
     <section class="notifications-panel" id="notificationsPanel" aria-label="Notificações recentes" hidden>
         <h2>Notificações</h2>

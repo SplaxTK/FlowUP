@@ -12,18 +12,13 @@
     let calendar;
     let categories = [];
     let currentEvent = null;
-    let toastTimer;
-
     function toast(message, isError) {
-        const existing = document.querySelector(".toast-message");
-        if (existing) existing.remove();
-        const element = document.createElement("div");
-        element.className = "toast-message" + (isError ? " error" : "");
-        element.setAttribute("role", "status");
-        element.textContent = message;
-        document.body.appendChild(element);
-        window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(function () { element.remove(); }, 4200);
+        if (window.FlowUpNotifications) {
+            window.FlowUpNotifications.notify(message, {
+                type: isError ? "error" : "success",
+                title: isError ? "Erro no calendário" : "Calendário atualizado"
+            });
+        }
     }
 
     async function request(action, method, body) {

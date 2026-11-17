@@ -147,6 +147,22 @@ body.escuro .preferences-message.error {
     color: #fecaca;
 }
 
+body.escuro .flowup-toast {
+    border-color: #166534;
+    background: #052e16;
+    color: #bbf7d0;
+}
+
+body.escuro .flowup-toast-error {
+    border-color: #991b1b;
+    background: #450a0a;
+    color: #fecaca;
+}
+
+body.escuro .notifications-badge {
+    border-color: #1f2937;
+}
+
 body.escuro .logout-modal-card {
     background: #1f2937;
     border-color: #374151;
