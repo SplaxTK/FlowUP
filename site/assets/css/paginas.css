@@ -798,6 +798,14 @@ html[data-cor] .complete-button:disabled {
     max-width: 1000px;
 }
 
+.main-painel > .content.configuracoes-content {
+    max-width: 1000px;
+}
+
+.main-painel > .content.legal-content {
+    max-width: 900px;
+}
+
 .config-intro h2 {
     margin: 0 0 6px;
     font-size: 1.4rem;

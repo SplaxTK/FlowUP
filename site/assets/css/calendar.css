@@ -246,9 +246,11 @@ html[data-cor="amarelo"] .calendar-create-event img{filter:brightness(0)}
 
 .calendar-page .main-panel > .content {
   width: 100%;
+  max-width: 1200px;
   min-width: 0;
-  margin: 0 !important;
+  margin: 0 auto !important;
   padding: 24px clamp(14px, 2.4vw, 32px);
+  box-sizing: border-box;
 }
 
 .calendar-page .calendar-workspace,
