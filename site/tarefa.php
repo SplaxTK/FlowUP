@@ -198,7 +198,7 @@ require_once __DIR__ . '/includes/header.php';
                 
         </header>
         <main class="content task-page">
-            <?php if ($message): ?><p class="form-message <?php echo $messageType; ?>"><?php echo htmlspecialchars($message); ?></p><?php endif; ?>
+            <?php if ($message): ?><p class="form-message <?php echo $messageType; ?>" data-flowup-notice data-flowup-notice-type="<?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>" data-flowup-notice-title="Atualização de tarefa"><?php echo htmlspecialchars($message); ?></p><?php endif; ?>
             <section class="task-layout">
                 <div class="task-list-column">
                     <div class="task-toolbar">

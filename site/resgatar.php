@@ -171,7 +171,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
             <main class="content reward-page">
-                <?php if ($message): ?><p class="form-message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
+                <?php if ($message): ?><p class="form-message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>" data-flowup-notice data-flowup-notice-type="<?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>" data-flowup-notice-title="Atualização de recompensa"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p><?php endif; ?>
                 <div class="reward-toolbar">
                     <label class="task-search reward-search">
                         <svg class="task-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
