@@ -394,7 +394,7 @@ body.cadastro-page .form-link-text {
 }
 
 .task-layout {
-    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .reward-layout {
@@ -796,6 +796,14 @@ html[data-cor] .complete-button:disabled {
 
 .configuracoes-content {
     max-width: 1000px;
+}
+
+.main-painel > .content.configuracoes-content {
+    max-width: 1200px;
+}
+
+.main-painel > .content.legal-content {
+    max-width: 900px;
 }
 
 .config-intro h2 {

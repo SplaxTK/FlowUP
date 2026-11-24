@@ -77,6 +77,14 @@ body.auth-shell-page .content {
     transition: margin-left 0.2s ease;
 }
 
+.main-painel > .content {
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+}
+
 .app-shell {
     display: flex !important;
     width: 100% !important;
