@@ -54,12 +54,20 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
+
+    error_log('Database connection failed: ' . $e->getMessage());
+    http_response_code(500);
+
     if (defined('FLOWUP_JSON_API_REQUEST') && FLOWUP_JSON_API_REQUEST) {
-        error_log('Database connection failed: ' . $e->getMessage());
-        http_response_code(500);
         header('Content-Type: application/json; charset=utf-8');
         exit(json_encode(['error' => 'Não foi possível conectar ao banco de dados.'], JSON_UNESCAPED_UNICODE));
     }
 
-    exit('Erro MySQL: ' . $e->getMessage());
+    $isLocal = ($host === 'localhost' || $host === '127.0.0.1');
+    
+    if ($isLocal) {
+        exit('Erro MySQL (Ambiente Local): ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
+    }
+
+    exit('Não foi possível conectar ao banco de dados no momento. Tente novamente mais tarde.');
 }
