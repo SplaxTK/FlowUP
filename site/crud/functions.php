@@ -165,6 +165,17 @@ function deletarTarefa($pdo, $id) {
 
 // ===== RECOMPENSA =====
 
+function recompensasPossuemColunaUsuario($pdo) {
+    $stmt = $pdo->query(
+        "SELECT COUNT(*)
+         FROM information_schema.columns
+         WHERE table_schema = DATABASE()
+           AND table_name = 'recompensas'
+           AND column_name = 'user_id'"
+    );
+    return (bool) $stmt->fetchColumn();
+}
+
 function criarRecompensa($pdo, $descricao, $qtdPontos) {
     try {
         $sql = "INSERT INTO recompensas (descricao, qtd_pon_neces) VALUES (:descricao, :qtdPontos)";
@@ -181,14 +192,30 @@ function criarRecompensa($pdo, $descricao, $qtdPontos) {
 }
 
 function obterTodasRecompensas($pdo) {
-    $sql = "SELECT * FROM recompensas ORDER BY data_criacao DESC";
+    $filtroGlobal = recompensasPossuemColunaUsuario($pdo) ? " WHERE user_id IS NULL" : '';
+    $sql = "SELECT * FROM recompensas" . $filtroGlobal . " ORDER BY data_criacao DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
+function obterTodasRecompensasDosUsuarios($pdo) {
+    if (!recompensasPossuemColunaUsuario($pdo)) {
+        return [];
+    }
+
+    $sql = "SELECT r.*, u.nome_completo, u.email
+            FROM recompensas AS r
+            LEFT JOIN usuarios AS u ON u.id = r.user_id
+            WHERE r.user_id IS NOT NULL
+            ORDER BY r.data_criacao DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
 function obterRecompensaPorId($pdo, $id) {
-    $sql = "SELECT * FROM recompensas WHERE id_recompensa = :id";
+    $filtroGlobal = recompensasPossuemColunaUsuario($pdo) ? " AND user_id IS NULL" : '';
+    $sql = "SELECT * FROM recompensas WHERE id_recompensa = :id" . $filtroGlobal;
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => (int) $id]);
     $resultado = $stmt->fetch();
@@ -197,7 +224,8 @@ function obterRecompensaPorId($pdo, $id) {
 
 function atualizarRecompensa($pdo, $id, $descricao, $qtdPontos) {
     try {
-            $sql = "UPDATE recompensas SET descricao = :descricao, qtd_pon_neces = :qtdPontos WHERE id_recompensa = :id";
+        $filtroGlobal = recompensasPossuemColunaUsuario($pdo) ? " AND user_id IS NULL" : '';
+        $sql = "UPDATE recompensas SET descricao = :descricao, qtd_pon_neces = :qtdPontos WHERE id_recompensa = :id" . $filtroGlobal;
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':descricao' => $descricao,
@@ -213,7 +241,8 @@ function atualizarRecompensa($pdo, $id, $descricao, $qtdPontos) {
 
 function deletarRecompensa($pdo, $id) {
     try {
-        $sql = "DELETE FROM recompensas WHERE id_recompensa = :id";
+        $filtroGlobal = recompensasPossuemColunaUsuario($pdo) ? " AND user_id IS NULL" : '';
+        $sql = "DELETE FROM recompensas WHERE id_recompensa = :id" . $filtroGlobal;
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id' => (int) $id]);
 

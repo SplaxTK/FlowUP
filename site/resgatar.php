@@ -33,18 +33,60 @@ if ($userId !== null) {
             $_SESSION['reward_message'] = 'Sua sessão expirou. Atualize a página e tente novamente.';
             $_SESSION['reward_message_type'] = 'error';
         } elseif (isset($_POST['adicionar_recompensa'])) {
-            $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
-            $pontos = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
+            $origem = is_string($_POST['origem_recompensa'] ?? null) ? $_POST['origem_recompensa'] : '';
+            $descricao = null;
+            $pontos = null;
 
-            if (!flowup_reward_description_is_valid($descricao) || $pontos === false || $pontos < 1 || $pontos > 100000) {
-                $_SESSION['reward_message'] = 'Informe uma recompensa e uma quantidade válida de pontos.';
+            if (!in_array($origem, ['personalizada', 'padrao'], true)) {
+                $_SESSION['reward_message'] = 'Escolha como adicionar a recompensa.';
                 $_SESSION['reward_message_type'] = 'error';
+            } elseif ($origem === 'personalizada') {
+                $descricaoInformada = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
+                $pontosInformados = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
+
+                if (!flowup_reward_description_is_valid($descricaoInformada) || $pontosInformados === false || $pontosInformados < 1 || $pontosInformados > 100000) {
+                    $_SESSION['reward_message'] = 'Informe uma recompensa e uma quantidade válida de pontos.';
+                    $_SESSION['reward_message_type'] = 'error';
+                } else {
+                    $descricao = $descricaoInformada;
+                    $pontos = $pontosInformados;
+                }
             } else {
+                $idModelo = filter_var($_POST['id_modelo_recompensa'] ?? null, FILTER_VALIDATE_INT);
+                if ($idModelo === false || $idModelo < 1) {
+                    $_SESSION['reward_message'] = 'Selecione uma recompensa padrão.';
+                    $_SESSION['reward_message_type'] = 'error';
+                } else {
+                    $stmt = $pdo->prepare(
+                        'SELECT descricao, qtd_pon_neces
+                         FROM recompensas
+                         WHERE id_recompensa = :id
+                           AND user_id IS NULL
+                           AND status = \'disponivel\''
+                    );
+                    $stmt->execute(['id' => $idModelo]);
+                    $modelo = $stmt->fetch();
+                    $pontosModelo = $modelo ? (int) $modelo['qtd_pon_neces'] : 0;
+                    if (!$modelo || !flowup_reward_description_is_valid($modelo['descricao']) || $pontosModelo < 1 || $pontosModelo > 100000) {
+                        $_SESSION['reward_message'] = 'Recompensa padrão não encontrada ou inválida.';
+                        $_SESSION['reward_message_type'] = 'error';
+                    } else {
+                        $descricao = $modelo['descricao'];
+                        $pontos = $pontosModelo;
+                    }
+                }
+            }
+
+            if ($descricao !== null && $pontos !== null) {
                 $stmt = $pdo->prepare(
                     'INSERT INTO recompensas (user_id, descricao, qtd_pon_neces)
                      VALUES (:user_id, :descricao, :pontos)'
                 );
-                $stmt->execute(['user_id' => $userId, 'descricao' => $descricao, 'pontos' => $pontos]);
+                $stmt->execute([
+                    'user_id' => $userId,
+                    'descricao' => $descricao,
+                    'pontos' => $pontos,
+                ]);
                 $_SESSION['reward_message'] = 'Recompensa adicionada.';
                 $_SESSION['reward_message_type'] = 'success';
             }
@@ -132,9 +174,18 @@ if ($userId !== null) {
     );
     $stmt->execute(['user_id' => $userId]);
     $rewards = $stmt->fetchAll();
+    $stmt = $pdo->query(
+        'SELECT id_recompensa, descricao, qtd_pon_neces
+         FROM recompensas
+         WHERE status = \'disponivel\'
+           AND user_id IS NULL
+         ORDER BY descricao'
+    );
+    $modelosRecompensa = $stmt->fetchAll();
     $pontosUsuario = flowup_pontos($pdo, $userId);
 } else {
     $rewards = [];
+    $modelosRecompensa = [];
     $pontosUsuario = 0;
     $csrfToken = '';
     if (empty($message)) {
@@ -264,10 +315,37 @@ require_once __DIR__ . '/includes/header.php';
                 <form method="post" id="rewardEditForm" class="task-form">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
                     <input type="hidden" name="id_recompensa" id="editRewardId">
-                    <label for="editRewardDescription">Nome da recompensa</label>
-                    <input id="editRewardDescription" name="descricao" required maxlength="180">
-                    <label for="editRewardPoints">Custo em pontos</label>
-                    <input id="editRewardPoints" name="pontos" type="number" min="1" max="100000" required>
+                    <div id="rewardAddFields">
+                        <label for="rewardCreationMode">Como deseja adicionar?</label>
+                        <select id="rewardCreationMode" name="origem_recompensa">
+                            <option value="personalizada">Criar minha recompensa</option>
+                            <option value="padrao">Escolher recompensa pronta</option>
+                        </select>
+                        <div id="rewardCustomFields">
+                            <label for="addRewardDescription">Nome da recompensa</label>
+                            <input id="addRewardDescription" name="descricao" maxlength="180" required>
+                            <label for="addRewardPoints">Custo em pontos</label>
+                            <input id="addRewardPoints" name="pontos" type="number" min="1" max="100000" required>
+                        </div>
+                        <div id="rewardTemplateFields" hidden>
+                            <label for="rewardTemplateSelect">Recompensas padrão</label>
+                            <select id="rewardTemplateSelect" name="id_modelo_recompensa" disabled>
+                                <option value="">Selecione uma recompensa</option>
+                                <?php foreach ($modelosRecompensa as $modelo): ?>
+                                    <option value="<?php echo (int) $modelo['id_recompensa']; ?>">
+                                        <?php echo htmlspecialchars($modelo['descricao'], ENT_QUOTES, 'UTF-8'); ?>
+                                        (<?php echo number_format((int) $modelo['qtd_pon_neces'], 0, ',', '.'); ?> pts)
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="rewardEditFields" hidden>
+                        <label for="editRewardDescription">Nome da recompensa</label>
+                        <input id="editRewardDescription" name="descricao" required maxlength="180" disabled>
+                        <label for="editRewardPoints">Custo em pontos</label>
+                        <input id="editRewardPoints" name="pontos" type="number" min="1" max="100000" required disabled>
+                    </div>
                     <div class="task-edit-actions">
                         <button class="task-delete-button" type="button" id="deleteRewardButton">Excluir</button>
                         <button class="btn-secundario" type="button" data-close-reward-edit>Cancelar</button>

@@ -25,3 +25,4 @@ if ($acao == 'editar' && $id) {
     $registro = obterRecompensaPorId($pdo, $id);
 }
 $todos = obterTodasRecompensas($pdo);
+$recompensasUsuarios = obterTodasRecompensasDosUsuarios($pdo);

@@ -17,6 +17,14 @@
     const modalEyebrow = document.getElementById('rewardEditEyebrow');
     const modalTitle = document.getElementById('rewardEditTitle');
     const submitButton = document.getElementById('rewardFormSubmit');
+    const addFields = document.getElementById('rewardAddFields');
+    const creationMode = document.getElementById('rewardCreationMode');
+    const customFields = document.getElementById('rewardCustomFields');
+    const customDescription = document.getElementById('addRewardDescription');
+    const customPoints = document.getElementById('addRewardPoints');
+    const templateFields = document.getElementById('rewardTemplateFields');
+    const templateSelect = document.getElementById('rewardTemplateSelect');
+    const editFields = document.getElementById('rewardEditFields');
 
     if (!modal || !confirmModal || !editForm || !deleteForm) return;
 
@@ -30,8 +38,24 @@
     function currentValues() {
         return {
             descricao: description.value.trim(),
-            pontos: points.value
+            pontos: points.value,
+            modelo: templateSelect.value,
+            modo: creationMode.value,
+            descricaoNova: customDescription.value.trim(),
+            pontosNovos: customPoints.value
         };
+    }
+
+    function setAddMode() {
+        const useTemplate = creationMode.value === 'padrao';
+        customFields.hidden = useTemplate;
+        customDescription.disabled = useTemplate;
+        customDescription.required = !useTemplate;
+        customPoints.disabled = useTemplate;
+        customPoints.required = !useTemplate;
+        templateFields.hidden = !useTemplate;
+        templateSelect.disabled = !useTemplate;
+        templateSelect.required = useTemplate;
     }
 
     function hasUnsavedChanges() {
@@ -51,6 +75,16 @@
     }
 
     function openEditor(trigger, isEditing, reward) {
+        editTrigger = trigger;
+        addFields.hidden = isEditing;
+        addFields.querySelectorAll('input, select').forEach(function (field) {
+            field.disabled = isEditing;
+        });
+        editFields.hidden = !isEditing;
+        editFields.querySelectorAll('input').forEach(function (field) {
+            field.disabled = !isEditing;
+        });
+
         if (isEditing) {
             rewardId.value = reward.id;
             deleteRewardId.value = reward.id;
@@ -66,18 +100,23 @@
             deleteRewardId.value = '';
             description.value = '';
             points.value = '';
+            customDescription.value = '';
+            customPoints.value = '';
+            creationMode.value = 'personalizada';
+            templateSelect.value = '';
             modalEyebrow.textContent = 'Defina sua próxima conquista';
             modalTitle.textContent = 'Adicionar recompensa';
             submitButton.name = 'adicionar_recompensa';
             submitButton.textContent = 'Adicionar recompensa';
             deleteButton.hidden = true;
+            setAddMode();
         }
 
         originalValues = currentValues();
         closingEdit = false;
         modal.hidden = false;
         document.body.classList.add('modal-aberto');
-        description.focus();
+        (isEditing ? description : customDescription).focus();
     }
 
     function closeConfirm() {
@@ -126,6 +165,8 @@
             openEditor(addButton, false, {});
         });
     }
+
+    creationMode.addEventListener('change', setAddMode);
 
     modal.querySelectorAll('[data-close-reward-edit]').forEach(function (element) {
         element.addEventListener('click', requestEditorClose);
