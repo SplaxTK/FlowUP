@@ -1,3 +1,11 @@
+<?php
+// Valores padrão para evitar avisos de variáveis não definidas.
+$acao = $acao ?? '';
+$todos = $todos ?? [];
+$manter_form = $manter_form ?? false;
+$registro = $registro ?? null;
+?>
+
 <div class="card">
     <div class="section-title">
         <h2>Gestão de recompensas</h2>

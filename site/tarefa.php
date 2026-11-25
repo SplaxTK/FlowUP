@@ -302,6 +302,15 @@ require_once __DIR__ . '/includes/header.php';
             <h2 id="taskEditTitle">Editar tarefa</h2>
             <form method="post" id="taskEditForm" class="task-form">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+
+                <label for="taskSelect">Tarefas prontas</label>
+                <select id="taskSelect" name="id_tarefa" required>
+                    <option value="">Selecione uma tarefa</option>
+                    <?php foreach ($tarefas as $tarefa): ?>
+                        <option value="<?php echo (int) $tarefa['id_tarefas']; ?>"><?php echo htmlspecialchars($tarefa['descricao'], ENT_QUOTES, 'UTF-8'); ?></option>
+                    <?php endforeach; ?>
+                </select>
+
                 <input type="hidden" name="id_tarefa" id="editTaskId">
                 <label for="editTaskDescription">Nome da tarefa</label>
                 <input id="editTaskDescription" name="descricao" required maxlength="180">

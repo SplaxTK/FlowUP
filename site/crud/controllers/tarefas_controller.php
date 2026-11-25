@@ -1,4 +1,6 @@
 <?php
+$id = $id ?? null;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['criar'])) {
         $resultado = criarTarefa($pdo, $_POST['descricao'], $_POST['qtdpontos']);
