@@ -23,10 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if (isset($_POST['atualizar'])) {
-        $resultado = atualizarCadastro($pdo, $_POST['email'], $_POST['usuario'], $_POST['nome_completo']);
+        $resultado = atualizarCadastro(
+            $pdo,
+            $_POST['email'],
+            $_POST['usuario'],
+            $_POST['nome_completo'],
+            (string) ($_POST['nova_senha'] ?? ''),
+            (string) ($_POST['confirmar_senha'] ?? ''),
+            $isSuperAdmin
+        );
         $mensagem = $resultado['mensagem'];
         $tipo_mensagem = $resultado['sucesso'] ? 'sucesso' : 'erro';
-        $acao = '';
+        $acao = $resultado['sucesso'] ? '' : 'editar';
+        if (!$resultado['sucesso']) {
+            $email = $_POST['email'];
+        }
     }
     if (isset($_POST['atualizar_nivel'])) {
         if ($isSuperAdmin) {

@@ -56,7 +56,19 @@ $registroEhSuperAdmin = $registro && flowup_user_is_super_admin(['email' => $reg
             </div>
             
             <?php if ($acao == 'editar'): ?>
-                <p>A senha não pode ser alterada pelo painel administrativo.</p>
+                <?php if ($isSuperAdmin): ?>
+                    <div class="form-group">
+                        <label for="nova_senha">Nova senha (opcional):</label>
+                        <input type="password" id="nova_senha" name="nova_senha" autocomplete="new-password" minlength="6" maxlength="72" value="">
+                        <small>Deixe em branco para manter a senha atual.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmar_senha">Confirmar nova senha:</label>
+                        <input type="password" id="confirmar_senha" name="confirmar_senha" autocomplete="new-password" minlength="6" maxlength="72" value="">
+                    </div>
+                <?php else: ?>
+                    <p>A senha não pode ser alterada pelo painel administrativo.</p>
+                <?php endif; ?>
             <?php else: ?>
                 <div class="form-group">
                     <label for="senha">Senha:</label>

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/../helpers/senha_helper.php';
 
 // ===== CADASTRO (Usuários) =====
 
@@ -57,15 +58,35 @@ function obterCadastroPorEmail($pdo, $email) {
     return $resultado ?: null;
 }
 
-function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto) {
+function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto, $novaSenha = '', $confirmacaoSenha = '', $isSuperAdmin = false) {
     try {
-        $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo WHERE email = :email";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
+        $alterarSenha = $novaSenha !== '' || $confirmacaoSenha !== '';
+        if ($alterarSenha && !$isSuperAdmin) {
+            return ['sucesso' => false, 'mensagem' => 'Somente a conta principal pode alterar senhas pelo painel.'];
+        }
+
+        if ($alterarSenha) {
+            $erroSenha = flowup_validar_nova_senha($novaSenha, $confirmacaoSenha);
+            if ($erroSenha !== null) {
+                return ['sucesso' => false, 'mensagem' => $erroSenha];
+            }
+        }
+
+        $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo";
+        $parametros = [
             ':usuario' => $usuario,
             ':nome_completo' => $nomeCompleto,
             ':email' => $email
-        ]);
+        ];
+
+        if ($alterarSenha) {
+            $sql .= ", senha = :senha";
+            $parametros[':senha'] = password_hash($novaSenha, PASSWORD_DEFAULT);
+        }
+
+        $sql .= " WHERE email = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($parametros);
 
         return ['sucesso' => true, 'mensagem' => 'Cadastro atualizado com sucesso!'];
     } catch (PDOException $e) {
