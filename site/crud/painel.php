@@ -4,7 +4,13 @@ require_once __DIR__ . '/../helpers/auth_middleware.php';
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/includes/helpers.php';
 
-if (!flowup_user_is_admin(['email' => $_SESSION['user_email'] ?? ''])) {
+$usuarioLogado = [
+    'email' => $_SESSION['user_email'] ?? '',
+    'is_admin' => $_SESSION['is_admin'] ?? false
+];
+$isSuperAdmin = flowup_user_is_super_admin($usuarioLogado);
+
+if (!flowup_user_is_admin($usuarioLogado)) {
     header('Location: ../index.php');
     exit;
 }

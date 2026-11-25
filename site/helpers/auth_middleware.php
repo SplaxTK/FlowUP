@@ -26,7 +26,7 @@ if (!$isPublicPage) {
 
     if ($usuarioLogado) {
         require_once __DIR__ . '/../config/config.php';
-        $stmt = $pdo->prepare('SELECT id, nome_completo, usuario, email FROM usuarios WHERE id = :id');
+        $stmt = $pdo->prepare('SELECT id, nome_completo, usuario, email, is_admin FROM usuarios WHERE id = :id');
         $stmt->execute(['id' => $usuarioLogado['user_id']]);
         $usuario = $stmt->fetch();
 

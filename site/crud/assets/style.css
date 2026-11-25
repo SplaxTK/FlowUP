@@ -358,3 +358,64 @@ button, a.btn {
         width: 100%;
     }
 }
+
+.form-adm {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-adm > span {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.switch-adm {
+    position: relative;
+    display: inline-block;
+    flex: none;
+    width: 3em;
+    height: 1.7em;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.switch-adm input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.slider-adm {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background-color: rgb(182, 182, 182);
+    cursor: pointer;
+    transition: background-color 0.4s;
+}
+
+.slider-adm::before {
+    position: absolute;
+    bottom: 0.25em;
+    left: 0.25em;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 7px;
+    background-color: #fff;
+    content: "";
+    transition: transform 0.4s;
+}
+
+.switch-adm input:checked + .slider-adm {
+    background-color: #6978ff;
+}
+
+.switch-adm input:checked + .slider-adm::before {
+    transform: translateX(1.3em);
+}
+
+.switch-adm input:focus-visible + .slider-adm {
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.35);
+}

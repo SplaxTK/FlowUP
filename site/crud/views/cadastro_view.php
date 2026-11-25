@@ -6,6 +6,7 @@ $manter_form = $manter_form ?? false;
 $registro = $registro ?? null;
 $busca = $busca ?? '';
 $erro_email = $erro_email ?? '';
+$registroEhSuperAdmin = $registro && flowup_user_is_super_admin(['email' => $registro['email']]);
 ?>
 
 <div class="card">
@@ -62,10 +63,25 @@ $erro_email = $erro_email ?? '';
                     <input type="password" id="senha" name="senha" required value="">
                 </div>
             <?php endif; ?>
-            
+            <br>
+            <?php if ($isSuperAdmin && !$registroEhSuperAdmin): ?>
+                <div class="form-adm">
+                    <span id="is_admin_label">Acesso de administrador ao CRUD:</span>
+                    <label class="switch-adm" aria-labelledby="is_admin_label">
+                        <input type="checkbox" id="is_admin" name="is_admin" <?php echo ($registro && (int) $registro['is_admin'] === 1) ? 'checked' : ''; ?>>
+                        <span class="slider-adm" aria-hidden="true"></span>
+                    </label>
+                </div>
+            <?php elseif ($registroEhSuperAdmin): ?>
+                <p>A conta principal mantém acesso irrestrito ao painel.</p>
+            <?php endif; ?>
+
             <div class="botoes">
                 <?php if ($acao == 'editar'): ?>
                     <button type="submit" name="atualizar" class="btn-primario">Atualizar</button>
+                    <?php if ($isSuperAdmin && !$registroEhSuperAdmin): ?>
+                        <button type="submit" name="atualizar_nivel" class="btn-secundario">Salvar nível de acesso</button>
+                    <?php endif; ?>
                     <a href="painel.php?secao=cadastro" class="btn-secundario">Cancelar</a>
                 <?php else: ?>
                     <button type="submit" name="criar" class="btn-primario">Criar</button>
@@ -84,6 +100,7 @@ $erro_email = $erro_email ?? '';
                     <tr>
                         <th>Email</th>
                         <th>Usuário</th>
+                        <th>Nível de acesso</th>
                         <th>Data Criação</th>
                         <th>Ações</th>
                     </tr>
@@ -93,14 +110,26 @@ $erro_email = $erro_email ?? '';
                         <tr>
                             <td><?php echo e($item['email']); ?></td>
                             <td><?php echo e($item['usuario']); ?></td>
+                            <td>
+                                <?php
+                                if (flowup_user_is_super_admin(['email' => $item['email']])) {
+                                    echo 'Superadministrador';
+                                } else {
+                                    echo ((int) $item['is_admin'] === 1) ? 'Administrador' : 'Usuário';
+                                }
+                                ?>
+                            </td>
                             <td><?php echo e(date('d/m/Y H:i', strtotime($item['criado_em']))); ?></td>
                             <td>
                                 <div class="acoes">
                                     <a href="painel.php?secao=cadastro&acao=editar&email=<?php echo urlencode($item['email']); ?>" class="btn-editar">Editar</a>
-                                        <form method="POST" class="form-excluir-cadastro" style="display:inline;">                                        <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION['csrf_token']); ?>">
-                                        <input type="hidden" name="email" value="<?php echo e($item['email']); ?>">
-                                        <button type="submit" name="deletar" class="btn-deletar">Excluir</button>
-                                    </form>
+                                        <?php if (!flowup_user_is_super_admin(['email' => $item['email']]) && ($isSuperAdmin || (int) $item['is_admin'] !== 1)): ?>
+                                        <form method="POST" class="form-excluir-cadastro" style="display:inline;">
+                                            <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION['csrf_token']); ?>">
+                                            <input type="hidden" name="email" value="<?php echo e($item['email']); ?>">
+                                            <button type="submit" name="deletar" class="btn-deletar">Excluir</button>
+                                        </form>
+                                        <?php endif; ?>
                                 </div>
                             </td>
                         </tr>

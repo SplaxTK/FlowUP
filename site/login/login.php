@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($identificador === '' || $senha === '') {
         $error = 'Preencha usuário ou e-mail e senha.';
     } else {
-        $stmt = $pdo->prepare('SELECT id, nome_completo, usuario, email, senha FROM usuarios WHERE usuario = :usuario OR email = :email');
+        $stmt = $pdo->prepare('SELECT id, nome_completo, usuario, email, senha, is_admin FROM usuarios WHERE usuario = :usuario OR email = :email');
         $stmt->execute(['usuario' => $identificador, 'email' => $identificador]);
         $user = $stmt->fetch();
 
