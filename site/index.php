@@ -12,6 +12,56 @@ if ($userId === null && !$continuarSemLogin) {
     exit;
 }
 
+$cookieLayoutNome = 'flowup_dashboard_layout_' . ($userId ?? 'visitante');
+
+$dadosExistentes = json_decode($_COOKIE[$cookieLayoutNome] ?? '[]', true);
+if (!is_array($dadosExistentes)) {
+    $dadosExistentes = [];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar_layout'])) {
+    $layoutData = json_decode($_POST['layout'] ?? '', true);
+    if (is_array($layoutData)) {
+        $dadosAtualizados = array_merge($dadosExistentes, $layoutData);
+
+        setcookie($cookieLayoutNome, json_encode($dadosAtualizados), [
+            'expires' => time() + (86400 * 365),
+            'path' => '/',
+            'samesite' => 'Lax'
+        ]);
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'ok']);
+        exit;
+    }
+}
+
+$blocos = [
+    'planejamento' => '
+        <article class="card large-card" data-preferencia-inicio="planejamento" data-card-id="planejamento">
+            <div class="card-title">Planejamento</div>
+        </article>',
+    'calendario' => '
+        <article class="card" data-preferencia-inicio="calendario" data-card-id="calendario">
+            <div class="card-title">Calendário</div>
+        </article>',
+    'tarefas' => '
+        <article class="card" data-preferencia-inicio="tarefas" data-card-id="tarefas">
+            <div class="card-title">Lista de tarefas</div>
+        </article>',
+    'clima' => '
+        <article class="card card_clima" data-preferencia-inicio="clima" data-card-id="clima">
+            <div class="card-title">Clima</div>
+            <p class="weather-status" data-weather-status></p>
+            <div class="elfsight-app-f3057ea1-0a30-4ca5-9abd-1cdefccf7fb0" data-elfsight-app-lazy data-weather-widget hidden></div>
+        </article>'
+];
+
+$ordemCardsGrid  = $dadosExistentes['cards-grid']  ?? ['planejamento', 'calendario'];
+$ordemBottomGrid = $dadosExistentes['bottom-grid'] ?? ['tarefas', 'clima'];
+
+$faltantes = array_diff(array_keys($blocos), array_merge($ordemCardsGrid, $ordemBottomGrid));
+$ordemBottomGrid = array_merge($ordemBottomGrid, $faltantes);
+
 require_once __DIR__ . '/includes/header.php';
 
 $tarefasHoje = flowup_tarefas_hoje($pdo, $userId);
@@ -53,8 +103,12 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
                 <?php require __DIR__ . '/includes/profile_menu.php'; ?>
             </header>
 
+            <button class="edit-dashbord-button" id="editDashboardButton" type="button" aria-label="Editar dashboard" aria-pressed="false" title="Editar dashboard">
+                <img class="sidebar-icon" src="assets/img/icons/edit-icon.png" alt="" aria-hidden="true">
+            </button>
+
             <main class="content">
-                <section class="hero-card" data-preferencia-inicio="resumo">
+                <article class="hero-card" data-preferencia-inicio="resumo">
                     <div>
                         <p class="small-label">Hoje</p>
                         <h2>Organize sua rotina com mais clareza</h2>
@@ -63,30 +117,22 @@ $metasHoje = flowup_metas_hoje($pdo, $userId);
                         <div class="stat-box"><?php echo $tarefasHoje; ?> tarefas</div>
                         <div class="stat-box"><?php echo $metasHoje; ?> metas</div>
                     </div>
+                </article>
+
+                <section class="cards-grid" id="cardsGrid">
+                    <?php foreach ($ordemCardsGrid as $id): ?>
+                        <?php if (isset($blocos[$id])) echo $blocos[$id]; ?>
+                    <?php endforeach; ?>
                 </section>
 
-                <section class="cards-grid">
-                    <article class="card large-card" data-preferencia-inicio="planejamento">
-                        <div class="card-title">Planejamento</div>
-                    </article>
-
-                    <article class="card" data-preferencia-inicio="calendario">
-                        <div class="card-title">Calendário</div>
-                    </article>
-                </section>
-
-                <section class="bottom-grid">
-                    <article class="card" data-preferencia-inicio="tarefas">
-                        <div class="card-title">Lista de tarefas</div>
-                    </article>
-
-                    <article class="card_clima" data-preferencia-inicio="clima">
-                        <p class="weather-status" data-weather-status></p>
-                        <div class="elfsight-app-f3057ea1-0a30-4ca5-9abd-1cdefccf7fb0" data-elfsight-app-lazy data-weather-widget hidden></div>
-                    </article>
-
+                <section class="bottom-grid" id="bottomGrid">
+                    <?php foreach ($ordemBottomGrid as $id): ?>
+                        <?php if (isset($blocos[$id])) echo $blocos[$id]; ?>
+                    <?php endforeach; ?>
                 </section>
             </main>
         </div>
     </div>
+
+    <script src="assets/js/dashboard.js?v=<?php echo filemtime(__DIR__ . '/assets/js/dashboard.js'); ?>" defer></script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

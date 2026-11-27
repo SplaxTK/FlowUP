@@ -71,13 +71,10 @@
 }
 
 .card_clima {
-    border-radius: 20px;
-    padding: 0;
-    background: transparent;
-    box-shadow: none;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
     max-width: 100%;
     overflow: hidden;
 }
@@ -1042,4 +1039,50 @@ body.modal-exclusao-aberto {
 
 .toggle-password:hover svg {
     color: #2563eb;
+}
+
+.edit-dashbord-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid #82858894;
+    border-radius: 30%;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.edit-dashbord-button:hover {
+    background: #e5e7eb;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.edit-dashbord-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.app-shell.modo-edicao .edit-dashbord-button,
+.edit-dashbord-button[aria-pressed="true"] {
+    background: var(--cor-principal, #2563eb);
+    border-color: var(--cor-principal, #2563eb);
+    box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--cor-principal, #2563eb) 20%, transparent),
+        0 6px 16px color-mix(in srgb, var(--cor-principal, #2563eb) 35%, transparent);
+}
+
+.app-shell.modo-edicao .edit-dashbord-button img,
+.edit-dashbord-button[aria-pressed="true"] img {
+    filter: brightness(0) invert(1);
+}
+
+.app-shell.modo-edicao .content [data-preferencia-inicio] {
+    outline: 2px dashed var(--cor-principal, #2563eb);
+    outline-offset: 3px;
 }
