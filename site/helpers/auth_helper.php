@@ -36,7 +36,7 @@ if (is_file($envFile) && is_readable($envFile)) {
 
 define('JWT_SECRET', getenv('JWT_SECRET_KEY') ?: '');
 
-function flowup_user_is_admin(array $user): bool
+function flowup_user_is_super_admin(array $user): bool
 {
     $email = strtolower(trim((string) ($user['email'] ?? '')));
 
@@ -47,6 +47,11 @@ function flowup_user_is_admin(array $user): bool
     }
 
     return false;
+}
+
+function flowup_user_is_admin(array $user): bool
+{
+    return flowup_user_is_super_admin($user) || (int) ($user['is_admin'] ?? 0) === 1;
 }
 
 function flowup_is_https_request(): bool

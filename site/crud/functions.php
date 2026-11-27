@@ -1,19 +1,21 @@
 <?php
 require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/../helpers/senha_helper.php';
 
 // ===== CADASTRO (Usuários) =====
 
-function criarCadastro($pdo, $email, $usuario, $nomeCompleto, $senha) {
+function criarCadastro($pdo, $email, $usuario, $nomeCompleto, $senha, $isAdmin = false) {
     try {
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
         
-        $sql = "INSERT INTO usuarios (email, usuario, nome_completo, senha) VALUES (:email, :usuario, :nome_completo, :senha)";
+        $sql = "INSERT INTO usuarios (email, usuario, nome_completo, senha, is_admin) VALUES (:email, :usuario, :nome_completo, :senha, :is_admin)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':email' => $email,
             ':usuario' => $usuario,
             ':nome_completo' => $nomeCompleto,
-            ':senha' => $senhaHash
+            ':senha' => $senhaHash,
+            ':is_admin' => $isAdmin ? 1 : 0
         ]);
 
         return ['sucesso' => true, 'mensagem' => 'Cadastro criado com sucesso!'];
@@ -26,7 +28,7 @@ function criarCadastro($pdo, $email, $usuario, $nomeCompleto, $senha) {
 }
 
 function obterTodosCadastros($pdo) {
-    $sql = "SELECT email, usuario, nome_completo, criado_em FROM usuarios ORDER BY criado_em DESC";
+    $sql = "SELECT email, usuario, nome_completo, is_admin, criado_em FROM usuarios ORDER BY criado_em DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
@@ -34,7 +36,7 @@ function obterTodosCadastros($pdo) {
 
 function buscarCadastros($pdo, $busca) {
     try {
-        $sql = "SELECT email, usuario, nome_completo, criado_em FROM usuarios WHERE email LIKE :busca OR usuario LIKE :busca OR nome_completo LIKE :busca ORDER BY criado_em DESC";
+        $sql = "SELECT email, usuario, nome_completo, is_admin, criado_em FROM usuarios WHERE email LIKE :busca OR usuario LIKE :busca OR nome_completo LIKE :busca ORDER BY criado_em DESC";
         $stmt = $pdo->prepare($sql);
         
         $termo = '%' . $busca . '%';
@@ -56,15 +58,35 @@ function obterCadastroPorEmail($pdo, $email) {
     return $resultado ?: null;
 }
 
-function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto) {
+function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto, $novaSenha = '', $confirmacaoSenha = '', $isSuperAdmin = false) {
     try {
-        $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo WHERE email = :email";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
+        $alterarSenha = $novaSenha !== '' || $confirmacaoSenha !== '';
+        if ($alterarSenha && !$isSuperAdmin) {
+            return ['sucesso' => false, 'mensagem' => 'Somente a conta principal pode alterar senhas pelo painel.'];
+        }
+
+        if ($alterarSenha) {
+            $erroSenha = flowup_validar_nova_senha($novaSenha, $confirmacaoSenha);
+            if ($erroSenha !== null) {
+                return ['sucesso' => false, 'mensagem' => $erroSenha];
+            }
+        }
+
+        $sql = "UPDATE usuarios SET usuario = :usuario, nome_completo = :nome_completo";
+        $parametros = [
             ':usuario' => $usuario,
             ':nome_completo' => $nomeCompleto,
             ':email' => $email
-        ]);
+        ];
+
+        if ($alterarSenha) {
+            $sql .= ", senha = :senha";
+            $parametros[':senha'] = password_hash($novaSenha, PASSWORD_DEFAULT);
+        }
+
+        $sql .= " WHERE email = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($parametros);
 
         return ['sucesso' => true, 'mensagem' => 'Cadastro atualizado com sucesso!'];
     } catch (PDOException $e) {
@@ -72,8 +94,47 @@ function atualizarCadastro($pdo, $email, $usuario, $nomeCompleto) {
     }
 }
 
-function deletarCadastro($pdo, $email) {
+function atualizarNivelCadastro($pdo, $email, $isAdmin) {
     try {
+        if (flowup_user_is_super_admin(['email' => $email])) {
+            return ['sucesso' => false, 'mensagem' => 'O nível da conta principal não pode ser alterado.'];
+        }
+
+        $sql = "UPDATE usuarios SET is_admin = :is_admin WHERE email = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':is_admin' => $isAdmin ? 1 : 0,
+            ':email' => $email
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+            $verificar = $pdo->prepare("SELECT 1 FROM usuarios WHERE email = :email");
+            $verificar->execute([':email' => $email]);
+            if (!$verificar->fetchColumn()) {
+                return ['sucesso' => false, 'mensagem' => 'Cadastro não encontrado.'];
+            }
+        }
+
+        return ['sucesso' => true, 'mensagem' => 'Nível de acesso atualizado com sucesso!'];
+    } catch (PDOException $e) {
+        return ['sucesso' => false, 'mensagem' => 'Erro ao atualizar o nível de acesso.'];
+    }
+}
+
+function deletarCadastro($pdo, $email, $isSuperAdmin = false) {
+    try {
+        if (flowup_user_is_super_admin(['email' => $email])) {
+            return ['sucesso' => false, 'mensagem' => 'A conta principal não pode ser excluída pelo painel.'];
+        }
+
+        if (!$isSuperAdmin) {
+            $verificar = $pdo->prepare("SELECT is_admin FROM usuarios WHERE email = :email");
+            $verificar->execute([':email' => $email]);
+            if ((int) $verificar->fetchColumn() === 1) {
+                return ['sucesso' => false, 'mensagem' => 'Somente a conta principal pode excluir outros administradores.'];
+            }
+        }
+
         $sql = "DELETE FROM usuarios WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
