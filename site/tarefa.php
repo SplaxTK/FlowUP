@@ -34,29 +34,76 @@ if ($userId !== null) {
             $_SESSION['form_message_type'] = 'error';
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
-        } elseif (isset($_POST['adicionar']) || isset($_POST['adicionar_tarefa'])) {
-            $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
+        } elseif (isset($_POST['adicionar_tarefa'])) {
+            $origem = is_string($_POST['origem_tarefa'] ?? null) ? $_POST['origem_tarefa'] : '';
             $tipo = is_string($_POST['tipo'] ?? null) ? $_POST['tipo'] : '';
-            $pontos = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
+            $descricao = null;
+            $pontos = null;
 
-            if (!flowup_task_description_is_valid($descricao) || $pontos === false || $pontos < 1 || $pontos > 10000 || !in_array($tipo, $tiposTarefa, true)) {
-                $_SESSION['form_message'] = 'Preencha a tarefa, o tipo e uma pontuação válida.';
+            if (!in_array($origem, ['personalizada', 'padrao'], true) || !in_array($tipo, $tiposTarefa, true)) {
+                $_SESSION['form_message'] = 'Escolha como adicionar a tarefa e informe uma frequência válida.';
                 $_SESSION['form_message_type'] = 'error';
+            } elseif ($origem === 'personalizada') {
+                $descricaoInformada = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
+                $pontosInformados = filter_var($_POST['pontos'] ?? null, FILTER_VALIDATE_INT);
+
+                if (!flowup_task_description_is_valid($descricaoInformada) || $pontosInformados === false || $pontosInformados < 1 || $pontosInformados > 10000) {
+                    $_SESSION['form_message'] = 'Preencha a tarefa e informe uma pontuação válida.';
+                    $_SESSION['form_message_type'] = 'error';
+                } else {
+                    $descricao = $descricaoInformada;
+                    $pontos = $pontosInformados;
+                }
             } else {
+                $idModelo = filter_var($_POST['id_modelo_tarefa'] ?? null, FILTER_VALIDATE_INT);
+                if ($idModelo === false || $idModelo < 1) {
+                    $_SESSION['form_message'] = 'Selecione uma tarefa padrão.';
+                    $_SESSION['form_message_type'] = 'error';
+                } else {
+                    $stmt = $pdo->prepare(
+                        'SELECT descricao, qtd_pon_ganho
+                         FROM tarefas
+                         WHERE id_tarefas = :id AND status = \'ativa\''
+                    );
+                    $stmt->execute(['id' => $idModelo]);
+                    $modelo = $stmt->fetch();
+                    $pontosModelo = $modelo ? (int) $modelo['qtd_pon_ganho'] : 0;
+
+                    if (!$modelo || !flowup_task_description_is_valid($modelo['descricao']) || $pontosModelo < 1 || $pontosModelo > 10000) {
+                        $_SESSION['form_message'] = 'Tarefa padrão não encontrada ou inválida.';
+                        $_SESSION['form_message_type'] = 'error';
+                    } else {
+                        $descricao = $modelo['descricao'];
+                        $pontos = $pontosModelo;
+                    }
+                }
+            }
+
+            if ($descricao !== null && $pontos !== null) {
                 if (flowup_table_has_column($pdo, 'novas_tarefas', 'user_id')) {
                     $stmt = $pdo->prepare(
                         'INSERT INTO novas_tarefas (user_id, descricao, tipo, qtd_pon_ganho)
                          VALUES (:user_id, :descricao, :tipo, :pontos)'
                     );
-                    $stmt->execute(['user_id' => $userId, 'descricao' => $descricao, 'tipo' => $tipo, 'pontos' => $pontos]);
+                    $stmt->execute([
+                        'user_id' => $userId,
+                        'descricao' => $descricao,
+                        'tipo' => $tipo,
+                        'pontos' => $pontos,
+                    ]);
                 } else {
                     $stmt = $pdo->prepare(
                         'INSERT INTO novas_tarefas (email, descricao, tipo, qtd_pon_ganho)
                          SELECT email, :descricao, :tipo, :pontos FROM usuarios WHERE id = :user_id'
                     );
-                    $stmt->execute(['descricao' => $descricao, 'tipo' => $tipo, 'pontos' => $pontos, 'user_id' => $userId]);
+                    $stmt->execute([
+                        'descricao' => $descricao,
+                        'tipo' => $tipo,
+                        'pontos' => $pontos,
+                        'user_id' => $userId,
+                    ]);
                 }
-                
+
                 $_SESSION['form_message'] = 'Tarefa adicionada com sucesso!';
                 $_SESSION['form_message_type'] = 'success';
             }
@@ -152,10 +199,18 @@ if ($userId !== null) {
     );
     $stmt->execute(['user_id' => $userId]);
     $tarefas = $stmt->fetchAll();
+    $stmt = $pdo->query(
+        'SELECT id_tarefas, descricao, qtd_pon_ganho
+         FROM tarefas
+         WHERE status = \'ativa\'
+         ORDER BY descricao'
+    );
+    $modelosTarefa = $stmt->fetchAll();
     $concluidas = flowup_concluidas($pdo, $userId, $tarefas);
     $pontosUsuario = flowup_pontos($pdo, $userId);
 } else {
     $tarefas = [];
+    $modelosTarefa = [];
     $concluidas = [];
     $pontosUsuario = 0;
     $csrfToken = '';
@@ -302,18 +357,47 @@ require_once __DIR__ . '/includes/header.php';
             <h2 id="taskEditTitle">Editar tarefa</h2>
             <form method="post" id="taskEditForm" class="task-form">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
-                <input type="hidden" name="id_tarefa" id="editTaskId">
-                <label for="editTaskDescription">Nome da tarefa</label>
-                <input id="editTaskDescription" name="descricao" required maxlength="180">
-                <label for="editTaskType">Frequência</label>
-                <select id="editTaskType" name="tipo" required>
-                    <option value="diaria">Diária</option>
-                    <option value="semanal">Semanal</option>
-                    <option value="mensal">Mensal</option>
-                    <option value="meta">Meta</option>
-                </select>
-                <label for="editTaskPoints">Pontos</label>
-                <input id="editTaskPoints" name="pontos" type="number" min="1" max="10000" required>
+
+                <div id="taskAddFields">
+                    <label for="taskCreationMode">Como deseja adicionar?</label>
+                    <select id="taskCreationMode" name="origem_tarefa">
+                        <option value="personalizada">Criar minha tarefa</option>
+                        <option value="padrao">Escolher tarefa pronta</option>
+                    </select>
+                    <div id="taskCustomFields">
+                        <label for="addTaskDescription">Nome da tarefa</label>
+                        <input id="addTaskDescription" name="descricao" maxlength="180" required>
+                        <label for="addTaskPoints">Pontos</label>
+                        <input id="addTaskPoints" name="pontos" type="number" min="1" max="10000" required>
+                    </div>
+                    <div id="taskTemplateFields" hidden>
+                        <label for="taskTemplateSelect">Tarefas padrão</label>
+                        <select id="taskTemplateSelect" name="id_modelo_tarefa" disabled>
+                            <option value="">Selecione uma tarefa</option>
+                            <?php foreach ($modelosTarefa as $modelo): ?>
+                                <option value="<?php echo (int) $modelo['id_tarefas']; ?>">
+                                    <?php echo htmlspecialchars($modelo['descricao'], ENT_QUOTES, 'UTF-8'); ?>
+                                    (+<?php echo (int) $modelo['qtd_pon_ganho']; ?> pontos)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <input type="hidden" name="tipo" id="addTaskType" value="diaria">
+                </div>
+                <div id="taskEditFields" hidden>
+                    <input type="hidden" name="id_tarefa" id="editTaskId" disabled>
+                    <label for="editTaskDescription">Nome da tarefa</label>
+                    <input id="editTaskDescription" name="descricao" required maxlength="180" disabled>
+                    <label for="editTaskType">Frequência</label>
+                    <select id="editTaskType" name="tipo" required disabled>
+                        <option value="diaria">Diária</option>
+                        <option value="semanal">Semanal</option>
+                        <option value="mensal">Mensal</option>
+                        <option value="meta">Meta</option>
+                    </select>
+                    <label for="editTaskPoints">Pontos</label>
+                    <input id="editTaskPoints" name="pontos" type="number" min="1" max="10000" required disabled>
+                </div>
                 <div class="task-edit-actions">
                     <button class="task-delete-button" type="button" id="deleteTaskButton">Excluir</button>
                     <button class="btn-secundario" type="button" data-close-task-edit>Cancelar</button>

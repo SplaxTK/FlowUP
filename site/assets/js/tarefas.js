@@ -19,6 +19,15 @@
     const modalEyebrow = document.getElementById('taskEditEyebrow');
     const modalTitle = document.getElementById('taskEditTitle');
     const submitButton = document.getElementById('taskFormSubmit');
+    const addFields = document.getElementById('taskAddFields');
+    const creationMode = document.getElementById('taskCreationMode');
+    const customFields = document.getElementById('taskCustomFields');
+    const customDescription = document.getElementById('addTaskDescription');
+    const customPoints = document.getElementById('addTaskPoints');
+    const templateFields = document.getElementById('taskTemplateFields');
+    const templateSelect = document.getElementById('taskTemplateSelect');
+    const addTaskType = document.getElementById('addTaskType');
+    const editFields = document.getElementById('taskEditFields');
 
     if (!modal || !confirmModal || !editForm || !deleteForm) return;
 
@@ -32,8 +41,24 @@
         return {
             descricao: description.value.trim(),
             tipo: type.value,
-            pontos: points.value
+            pontos: points.value,
+            modelo: templateSelect.value,
+            modo: creationMode.value,
+            descricaoNova: customDescription.value.trim(),
+            pontosNovos: customPoints.value
         };
+    }
+
+    function setAddMode() {
+        const useTemplate = creationMode.value === 'padrao';
+        customFields.hidden = useTemplate;
+        customDescription.disabled = useTemplate;
+        customDescription.required = !useTemplate;
+        customPoints.disabled = useTemplate;
+        customPoints.required = !useTemplate;
+        templateFields.hidden = !useTemplate;
+        templateSelect.disabled = !useTemplate;
+        templateSelect.required = useTemplate;
     }
 
     function hasUnsavedChanges() {
@@ -83,6 +108,15 @@
     }
 
     function openEditor(trigger, isEditing, task) {
+        addFields.hidden = isEditing;
+        addFields.querySelectorAll('input, select').forEach(function (field) {
+            field.disabled = isEditing;
+        });
+        editFields.hidden = !isEditing;
+        editFields.querySelectorAll('input, select').forEach(function (field) {
+            field.disabled = !isEditing;
+        });
+
         if (isEditing) {
             taskId.value = task.id;
             deleteTaskId.value = task.id;
@@ -98,6 +132,11 @@
             taskId.value = '';
             deleteTaskId.value = '';
             description.value = '';
+            customDescription.value = '';
+            customPoints.value = '';
+            creationMode.value = 'personalizada';
+            templateSelect.value = '';
+            addTaskType.value = task.type || 'diaria';
             type.value = task.type || 'diaria';
             points.value = '';
             modalEyebrow.textContent = 'Defina sua próxima tarefa';
@@ -105,13 +144,14 @@
             submitButton.name = 'adicionar_tarefa';
             submitButton.textContent = 'Adicionar tarefa';
             deleteButton.hidden = true;
+            setAddMode();
         }
 
         originalValues = currentValues();
         closingEdit = false;
         modal.hidden = false;
         document.body.classList.add('modal-aberto');
-        description.focus();
+        (isEditing ? description : customDescription).focus();
     }
 
     editButtons.forEach(function (button) {
@@ -133,11 +173,11 @@
         });
     });
 
+    creationMode.addEventListener('change', setAddMode);
+
     addRewardButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            openEditor(button, false, {
-                type: button.dataset.addTaskType || 'diaria'
-            });
+            openEditor(button, false, { type: 'diaria' });
         });
     });
 

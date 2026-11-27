@@ -1,4 +1,7 @@
 <?php
+$email = $email ?? null;
+$busca = $busca ?? '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['criar'])) {
         $resultado = criarCadastro(

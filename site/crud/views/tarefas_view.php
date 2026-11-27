@@ -1,3 +1,12 @@
+<?php
+// Valores padrão para evitar avisos de variáveis não definidas.
+$acao = $acao ?? '';
+$todos = $todos ?? [];
+$manter_form = $manter_form ?? false;
+$registro = $registro ?? null;
+$tarefasUsuarios = $tarefasUsuarios ?? [];
+?>
+
 <div class="card">
     <div class="section-title">
         <h2>Gestão de tarefas</h2>
@@ -6,12 +15,12 @@
         <button class="tab-botao <?php echo ($acao != 'editar') ? 'ativo' : ''; ?>" onclick="abrirTab('lista', this)">
             Listas de tarefas
         </button>
-        <button class="tab-botao <?php echo ($acao == 'editar') ? 'ativo' : ''; ?>" onclick="abrirTab('formulario', this)">
+        <button class="tab-botao <?php echo ($acao == 'editar' || $acao == 'criar') ? 'ativo' : ''; ?>" onclick="abrirTab('formulario', this)">
            <?php echo ($acao == 'editar') ? 'Editar' : 'Nova'; ?> Tarefa
         </button>
     </div>
     
-    <div class="tab-conteudo <?php echo ($acao == 'editar') ? 'ativo' : ''; ?>" id="formulario">
+    <div class="tab-conteudo <?php echo ($acao == 'editar' || $acao == 'criar') ? 'ativo' : ''; ?>" id="formulario">
         <h2><?php echo ($acao == 'editar') ? 'Editar Tarefa' : 'Nova Tarefa'; ?></h2>
         
         <form method="POST">
@@ -82,7 +91,7 @@
             </table>
         <?php else: ?>
             <div class="vazio">
-                <p>Nenhuma tarefa cadastrada. <a href="painel.php?secao=tarefas">Crie uma nova!</a></p>
+                <p>Nenhuma tarefa cadastrada. <a href="painel.php?secao=tarefas&amp;acao=criar">Crie uma nova!</a></p>
             </div>
         <?php endif; ?>
 

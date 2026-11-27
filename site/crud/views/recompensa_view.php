@@ -1,3 +1,12 @@
+<?php
+// Valores padrão para evitar avisos de variáveis não definidas.
+$acao = $acao ?? '';
+$todos = $todos ?? [];
+$manter_form = $manter_form ?? false;
+$registro = $registro ?? null;
+$recompensasUsuarios = $recompensasUsuarios ?? [];
+?>
+
 <div class="card">
     <div class="section-title">
         <h2>Gestão de recompensas</h2>
@@ -44,7 +53,7 @@
     </div>
     
     <div class="tab-conteudo <?php echo ($acao != 'editar') ? 'ativo' : ''; ?>" id="lista">
-        <h2>Recompensas</h2>
+        <h2>Recompensas padrão do sistema</h2>
         
         <?php if (count($todos) > 0): ?>
             <table class="tabela">
@@ -83,6 +92,36 @@
         <?php else: ?>
             <div class="vazio">
                 <p>Nenhuma recompensa cadastrada. <a href="painel.php?secao=recompensa">Crie uma nova!</a></p>
+            </div>
+        <?php endif; ?>
+
+        <h2>Recompensas cadastradas pelos usuários (<?php echo count($recompensasUsuarios); ?>)</h2>
+        <?php if (count($recompensasUsuarios) > 0): ?>
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Descrição</th>
+                        <th>Pontos</th>
+                        <th>Status</th>
+                        <th>Criação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($recompensasUsuarios as $item): ?>
+                        <tr>
+                            <td><?php echo e($item['nome_completo'] ?: $item['email'] ?: 'Usuário desconhecido'); ?></td>
+                            <td><?php echo e(substr($item['descricao'], 0, 50)); ?></td>
+                            <td><strong><?php echo e($item['qtd_pon_neces']); ?></strong></td>
+                            <td><?php echo e(ucfirst($item['status'] ?? 'Disponível')); ?></td>
+                            <td><?php echo e(date('d/m/Y', strtotime($item['data_criacao']))); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="vazio">
+                <p>Nenhuma recompensa cadastrada pelos usuários.</p>
             </div>
         <?php endif; ?>
     </div>

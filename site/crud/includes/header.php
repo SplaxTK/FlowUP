@@ -1,3 +1,8 @@
+<?php
+// Valores padrão para evitar avisos de variáveis não definidas.
+$secao = $secao ?? '';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
